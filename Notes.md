@@ -13,8 +13,14 @@
 
 - Landsat 30 m global water mask: 
 			Google Earth Engine or Landsat Collection 2 Level-3 Dynamic Surface Water Extent Science Product | U.S. Geological Survey
+https://geemap.org/installation/
+
 - VIIRS SDR data (I bands (I1, I2, I3, I4, I5) and GITCO geolocation data) can be downloaded from CLASS:  
 			Data Access | OSPO
+
+https://www.aev.class.noaa.gov/saa/products/psearchVIIRS_SDR
+https://coastwatch.noaa.gov/cwn/products/experimental-eddy-products.html
+
 
 -----------------------------------------------------------------------------
 
