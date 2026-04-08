@@ -1,0 +1,32 @@
+Source/GITCO-SVI01-SVI02-SVI03-SVI04-SVI05_npp_d20260125_t2315015_e2320401_b73826_c20260127210812288114_oeac_ops.h5
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data/outputs
+outputs/
+*.csv
+*.xlsx
