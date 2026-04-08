@@ -1,0 +1,11 @@
+training/viirs_d20220125/*.h5
+training/viirs_d20220125_unused/*.h5
+training/viirs_d20220912/*.h5
+training/viirs_d20220912_unused/*.h5
+training/viirs_d20221005/*.h5
+training/viirs_d20220311/*.h5
+training/viirs_d20210503/*.h5
+training/viirs_d20220311/outputs/viirs_alaska_20220311.tif
+training/viirs_d20221005/outputs/viirs_alaska_20221005.tif
+training/viirs_d20210503/outputs/viirs_alaska_20210503.tif
+training/viirs_d20220912_unused/outputs/viirs_alaska_20220912.tif
