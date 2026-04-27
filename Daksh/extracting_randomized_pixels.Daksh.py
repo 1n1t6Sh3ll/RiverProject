@@ -27,6 +27,7 @@ from rasterio.windows import from_bounds as window_from_bounds
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import matplotlib.patheffects as path_effects
 
 # ---------------------------------------------------------------------------
 # Configuration — same constants as main.py
@@ -34,7 +35,8 @@ import matplotlib.pyplot as plt
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR     = os.path.join(PROJECT_ROOT, "data")
-WATER_MASK   = os.path.join(DATA_DIR, "alaska_occ_375m.tif")
+WATER_MASK_OCC = os.path.join(DATA_DIR, "alaska_occ_375m.tif")
+WATER_MASK_SEA = os.path.join(DATA_DIR, "alaska_sea_375m.tif")
 LANDSAT_DIR  = os.path.join(DATA_DIR, "landsat")
 OUTPUT_DIR   = os.path.join(PROJECT_ROOT, "output")
 PIXEL_DIR    = os.path.join(PROJECT_ROOT, "output_pixels")
@@ -164,7 +166,7 @@ def discover_output_dates(requested_dates=None):
 
 def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
                      b10_path=None, mtl_vals=None, overwrite=False,
-                     seed=None, mode="stratified"):
+                     seed=None, mode="stratified", region=None, side=None):
 
     date_fmt = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
     pixel_date_dir = os.path.join(PIXEL_DIR, date_str)
@@ -241,27 +243,32 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
         fin = int(np.sum(np.isfinite(arr)))
         log.info(f"    {name}: {fin:,} valid pixels")
 
-    # Read water mask
-    log.info(f"  Loading water mask ...")
-    with rasterio.open(WATER_MASK) as wm_src:
-        wm_win = window_from_bounds(scene_lon_min, scene_lat_min,
+    # Read both water masks (occurrence + seasonality)
+    def _load_wm(path):
+        with rasterio.open(path) as src:
+            win = window_from_bounds(scene_lon_min, scene_lat_min,
                                      scene_lon_max, scene_lat_max,
-                                     transform=wm_src.transform)
-        wm_raw = wm_src.read(1, window=wm_win).astype(np.float32)
-        wm_win_tf = wm_src.window_transform(wm_win)
-        if wm_src.nodata is not None:
-            wm_raw[wm_raw == wm_src.nodata] = np.nan
+                                     transform=src.transform)
+            raw = src.read(1, window=win).astype(np.float32)
+            win_tf = src.window_transform(win)
+            if src.nodata is not None:
+                raw[raw == src.nodata] = np.nan
+        out = np.full((scene_h, scene_w), np.nan, np.float32)
+        rio_reproject(source=raw, destination=out,
+                      src_transform=win_tf, src_crs=TARGET_CRS,
+                      src_nodata=np.nan,
+                      dst_transform=scene_tf, dst_crs=TARGET_CRS,
+                      dst_nodata=np.nan,
+                      resampling=Resampling.bilinear)
+        return out
 
-    wm = np.full((scene_h, scene_w), np.nan, np.float32)
-    rio_reproject(
-        source=wm_raw, destination=wm,
-        src_transform=wm_win_tf, src_crs=TARGET_CRS,
-        src_nodata=np.nan,
-        dst_transform=scene_tf, dst_crs=TARGET_CRS,
-        dst_nodata=np.nan,
-        resampling=Resampling.bilinear,
-    )
-    log.info(f"    Shape: {wm.shape}  valid: {int(np.sum(np.isfinite(wm))):,}")
+    log.info(f"  Loading occurrence mask ...")
+    wm_occ = _load_wm(WATER_MASK_OCC)
+    log.info(f"    occ shape: {wm_occ.shape}  valid: {int(np.sum(np.isfinite(wm_occ))):,}")
+    log.info(f"  Loading seasonality mask ...")
+    wm_sea = _load_wm(WATER_MASK_SEA)
+    log.info(f"    sea shape: {wm_sea.shape}  valid: {int(np.sum(np.isfinite(wm_sea))):,}")
+    wm = wm_occ  # used by the "JRC water" panel
 
     # Landsat valid mask
     log.info(f"  Building Landsat valid mask ...")
@@ -273,17 +280,45 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
             ls_valid |= (band != NODATA) & np.isfinite(band) & (band != 0)
     log.info(f"    Landsat valid: {int(ls_valid.sum()):,} px")
 
-    # Narrow river pixels
-    narrow = (np.isfinite(wm) & (wm > 0.05) & (wm < 0.95) &
+    # Mixed-pixel candidates: 0.05 < occ < 0.90 AND sea < 1.0
+    narrow = (np.isfinite(wm_occ) & (wm_occ > 0.05) & (wm_occ < 0.90) &
+              np.isfinite(wm_sea) & (wm_sea < 1.0) &
               np.isfinite(viirs_grids["I1"]) & ls_valid)
     rows_n, cols_n = np.where(narrow)
-    log.info(f"  Narrow river pixels: {len(rows_n):,}")
+    log.info(f"  Mixed-pixel candidates: {len(rows_n):,}")
 
     if len(rows_n) == 0:
-        log.warning(f"  No narrow river pixels — skipping {date_str}")
+        log.warning(f"  No mixed-pixel candidates — skipping {date_str}")
         return
 
     all_pixels = list(zip(rows_n, cols_n))
+
+    # Optional region (row-based: top/middle/bottom) and side (column-based: left/right).
+    if region is not None:
+        if region == "top":
+            all_pixels = [(r, c) for r, c in all_pixels if r < scene_h / 2]
+        elif region == "bottom":
+            all_pixels = [(r, c) for r, c in all_pixels if r >= scene_h / 2]
+        elif region == "middle":
+            all_pixels = [(r, c) for r, c in all_pixels
+                          if scene_h / 4 <= r < 3 * scene_h / 4]
+        else:
+            log.warning(f"  Unknown region '{region}' — ignored")
+        log.info(f"  Region '{region}': pool now {len(all_pixels):,} pixels")
+
+    if side is not None:
+        if side == "left":
+            all_pixels = [(r, c) for r, c in all_pixels if c < scene_w / 2]
+        elif side == "right":
+            all_pixels = [(r, c) for r, c in all_pixels if c >= scene_w / 2]
+        else:
+            log.warning(f"  Unknown side '{side}' — ignored")
+        log.info(f"  Side '{side}': pool now {len(all_pixels):,} pixels")
+
+    if not all_pixels:
+        log.warning(f"  No candidates after region/side filter — skipping {date_str}")
+        return
+
     rng = np.random.default_rng(seed)
     seed_msg = f", seed={seed}" if seed is not None else ""
 
@@ -355,13 +390,15 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
                 return round(float(v), 4) if v is not None else ""
 
             row = {
+                "id":              idx + 1,
                 "viirs_date":      date_fmt,
                 "landsat_scene":   ls_scene_id,
                 "row_shared_grid": r_shared,
                 "col_shared_grid": c_shared,
-                "lat":             round(lat_px, 5),
-                "lon":             round(lon_px, 5),
-                "water_fraction":  round(float(wm[r, c]), 4),
+                "lat":                  round(lat_px, 5),
+                "lon":                  round(lon_px, 5),
+                "water_fraction_occ":   round(float(wm_occ[r, c]), 4),
+                "water_fraction_sea":   round(float(wm_sea[r, c]), 4),
             }
             for name in VIIRS_BAND_ORDER:
                 row[name] = _safe_viirs(name)
@@ -406,6 +443,7 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
                 else:
                     auto_class = "ice_covered_river_snow_covered_land"
                 row["ground_truth_class"] = auto_class
+                row["manual_verified_class"] = ""
                 row["notes"] = (f"Landsat confirmed at 30m. "
                                 f"ST_B10={round(st_b10, 2)}K "
                                 f"NDSI={round(ndsi, 4)}.")
@@ -413,10 +451,12 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
                 is_snow = ndsi > 0.4
                 row["ground_truth_class"] = ("snow_covered_land" if is_snow
                                              else "snow_free_land")
+                row["manual_verified_class"] = ""
                 row["notes"] = (f"NDSI={round(ndsi, 4)}. "
                                 f"No thermal — ice status unknown.")
             else:
                 row["ground_truth_class"] = ""
+                row["manual_verified_class"] = ""
                 row["notes"] = ("Landsat null — outside swath. Classify manually."
                                 if not ls_inside else
                                 "NDSI unavailable — classify manually.")
@@ -445,9 +485,23 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
     i2 = viirs_grids["I2"]
     i1 = viirs_grids["I1"]
 
-    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+    # Load Landsat bands (downsampled) for visualization
+    log.info(f"  Loading Landsat bands for visualization ...")
+    LS_VIZ_W = min(2048, ls_w)
+    LS_VIZ_H = max(1, int(round(LS_VIZ_W * ls_h / ls_w)))
+    ls_viz_bands = {}
+    with rasterio.open(landsat_path) as ls_src:
+        for bname in ("B4", "B5"):
+            if bname in ls_band_names:
+                bi = ls_band_names.index(bname) + 1
+                arr = ls_src.read(bi, out_shape=(LS_VIZ_H, LS_VIZ_W),
+                                  resampling=Resampling.bilinear).astype(np.float32)
+                arr[arr == NODATA] = np.nan
+                ls_viz_bands[bname] = arr
+
+    fig, axes = plt.subplots(1, 3, figsize=(22, 6))
     fig.suptitle(
-        f"VIIRS 2-2-1 false color vs JRC water fraction\n"
+        f"VIIRS 2-2-1 false color | JRC water fraction | Landsat 5-5-4 false color\n"
         f"VIIRS {date_fmt}  |  "
         f"lon {scene_lon_min:.1f}\u2013{scene_lon_max:.1f}  "
         f"lat {scene_lat_min:.1f}\u2013{scene_lat_max:.1f}",
@@ -462,6 +516,15 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
                    extent=[scene_lon_min, scene_lon_max,
                            scene_lat_min, scene_lat_max],
                    aspect="auto", origin="upper")
+    for i, (r, c) in enumerate(candidates):
+        lon_pt = scene_lon_min + (c + 0.5) * VIIRS_RES
+        lat_pt = scene_lat_max - (r + 0.5) * VIIRS_RES
+        axes[0].plot(lon_pt, lat_pt, "rx", markersize=8, markeredgewidth=2)
+        t = axes[0].text(lon_pt + VIIRS_RES * 0.5, lat_pt + VIIRS_RES * 0.5,
+                         str(i + 1), color="white", fontsize=8, fontweight="bold",
+                         ha="left", va="bottom")
+        t.set_path_effects([path_effects.Stroke(linewidth=1.5, foreground="black"),
+                            path_effects.Normal()])
     axes[0].set_title("VIIRS 2-2-1 (I2\u2192R, I2\u2192G, I1\u2192B)\n"
                       "Ice/snow=bright | Water=dark | NaN=transparent")
     axes[0].set_xlabel("Longitude"); axes[0].set_ylabel("Latitude")
@@ -472,18 +535,130 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
                                   scene_lat_min, scene_lat_max],
                           aspect="auto", origin="upper")
     plt.colorbar(im2, ax=axes[1], fraction=0.03, label="Water fraction")
-    for r, c in candidates:
+    for i, (r, c) in enumerate(candidates):
         lon_pt = scene_lon_min + (c + 0.5) * VIIRS_RES
         lat_pt = scene_lat_max - (r + 0.5) * VIIRS_RES
         axes[1].plot(lon_pt, lat_pt, "rx", markersize=8, markeredgewidth=2)
+        t = axes[1].text(lon_pt + VIIRS_RES * 0.5, lat_pt + VIIRS_RES * 0.5,
+                         str(i + 1), color="white", fontsize=8, fontweight="bold",
+                         ha="left", va="bottom")
+        t.set_path_effects([path_effects.Stroke(linewidth=1.5, foreground="black"),
+                            path_effects.Normal()])
     axes[1].set_title("JRC water fraction (occurrence)\n"
                       "\u00d7 = candidate training pixels")
     axes[1].set_xlabel("Longitude"); axes[1].set_ylabel("Latitude")
+
+    b5 = ls_viz_bands.get("B5")
+    b4 = ls_viz_bands.get("B4")
+    if b5 is not None and b4 is not None:
+        ls_rgb = np.stack([_normalize(b5), _normalize(b5), _normalize(b4)], axis=-1)
+        ls_nan = ~(np.isfinite(b5) & np.isfinite(b4))
+        ls_alpha = np.where(ls_nan, 0.0, 1.0)
+        ls_rgba = np.dstack([ls_rgb, ls_alpha])
+        axes[2].imshow(ls_rgba, interpolation="nearest",
+                       extent=[ls_bounds.left, ls_bounds.right,
+                               ls_bounds.bottom, ls_bounds.top],
+                       aspect="auto", origin="upper")
+        ls_title = ("Landsat 5-5-4 (B5→R, B5→G, B4→B)\n"
+                    "Ice/snow=bright | Water=dark | × = candidate pixels")
+    else:
+        axes[2].set_facecolor("black")
+        axes[2].set_xlim(ls_bounds.left, ls_bounds.right)
+        axes[2].set_ylim(ls_bounds.bottom, ls_bounds.top)
+        ls_title = "Landsat (B4/B5 unavailable)\n× = candidate pixels"
+    for i, (r, c) in enumerate(candidates):
+        lon_pt = scene_lon_min + (c + 0.5) * VIIRS_RES
+        lat_pt = scene_lat_max - (r + 0.5) * VIIRS_RES
+        axes[2].plot(lon_pt, lat_pt, "rx", markersize=8, markeredgewidth=2)
+        t = axes[2].text(lon_pt + VIIRS_RES * 0.5, lat_pt + VIIRS_RES * 0.5,
+                         str(i + 1), color="white", fontsize=8, fontweight="bold",
+                         ha="left", va="bottom")
+        t.set_path_effects([path_effects.Stroke(linewidth=1.5, foreground="black"),
+                            path_effects.Normal()])
+    axes[2].set_title(ls_title)
+    axes[2].set_xlabel("Longitude"); axes[2].set_ylabel("Latitude")
 
     plt.tight_layout()
     plt.savefig(png_path, dpi=150, bbox_inches="tight")
     plt.close()
     log.info(f"  Saved PNG: {png_path}")
+
+    # --- Individual panels (separate PNGs) ---
+    panels_dir = os.path.join(pixel_date_dir, "panels")
+    os.makedirs(panels_dir, exist_ok=True)
+
+    fig_v, ax_v = plt.subplots(figsize=(8, 6))
+    ax_v.imshow(rgba_viirs, interpolation="nearest",
+                extent=[scene_lon_min, scene_lon_max,
+                        scene_lat_min, scene_lat_max],
+                aspect="auto", origin="upper")
+    for i, (r, c) in enumerate(candidates):
+        lon_pt = scene_lon_min + (c + 0.5) * VIIRS_RES
+        lat_pt = scene_lat_max - (r + 0.5) * VIIRS_RES
+        ax_v.plot(lon_pt, lat_pt, "rx", markersize=8, markeredgewidth=2)
+        t = ax_v.text(lon_pt + VIIRS_RES * 0.5, lat_pt + VIIRS_RES * 0.5,
+                      str(i + 1), color="white", fontsize=8, fontweight="bold",
+                      ha="left", va="bottom")
+        t.set_path_effects([path_effects.Stroke(linewidth=1.5, foreground="black"),
+                            path_effects.Normal()])
+    ax_v.set_title(f"VIIRS 2-2-1 — {date_fmt}\n× = candidate pixels")
+    ax_v.set_xlabel("Longitude"); ax_v.set_ylabel("Latitude")
+    plt.tight_layout()
+    viirs_panel = os.path.join(panels_dir, f"viirs_{date_fmt}{tag}.png")
+    plt.savefig(viirs_panel, dpi=150, bbox_inches="tight")
+    plt.close()
+
+    fig_w, ax_w = plt.subplots(figsize=(8, 6))
+    im_w = ax_w.imshow(wm, cmap="Blues", vmin=0, vmax=1,
+                        interpolation="nearest",
+                        extent=[scene_lon_min, scene_lon_max,
+                                scene_lat_min, scene_lat_max],
+                        aspect="auto", origin="upper")
+    plt.colorbar(im_w, ax=ax_w, fraction=0.03, label="Water fraction")
+    for i, (r, c) in enumerate(candidates):
+        lon_pt = scene_lon_min + (c + 0.5) * VIIRS_RES
+        lat_pt = scene_lat_max - (r + 0.5) * VIIRS_RES
+        ax_w.plot(lon_pt, lat_pt, "rx", markersize=8, markeredgewidth=2)
+        t = ax_w.text(lon_pt + VIIRS_RES * 0.5, lat_pt + VIIRS_RES * 0.5,
+                      str(i + 1), color="white", fontsize=8, fontweight="bold",
+                      ha="left", va="bottom")
+        t.set_path_effects([path_effects.Stroke(linewidth=1.5, foreground="black"),
+                            path_effects.Normal()])
+    ax_w.set_title(f"JRC water fraction — {date_fmt}\n× = candidate pixels")
+    ax_w.set_xlabel("Longitude"); ax_w.set_ylabel("Latitude")
+    plt.tight_layout()
+    wm_panel = os.path.join(panels_dir, f"watermask_{date_fmt}{tag}.png")
+    plt.savefig(wm_panel, dpi=150, bbox_inches="tight")
+    plt.close()
+
+    fig_l, ax_l = plt.subplots(figsize=(8, 6))
+    if b5 is not None and b4 is not None:
+        ax_l.imshow(ls_rgba, interpolation="nearest",
+                    extent=[ls_bounds.left, ls_bounds.right,
+                            ls_bounds.bottom, ls_bounds.top],
+                    aspect="auto", origin="upper")
+        l_title = f"Landsat 5-5-4 — {date_fmt}\n× = candidate pixels"
+    else:
+        ax_l.set_facecolor("black")
+        ax_l.set_xlim(ls_bounds.left, ls_bounds.right)
+        ax_l.set_ylim(ls_bounds.bottom, ls_bounds.top)
+        l_title = f"Landsat (B4/B5 unavailable) — {date_fmt}\n× = candidate pixels"
+    for i, (r, c) in enumerate(candidates):
+        lon_pt = scene_lon_min + (c + 0.5) * VIIRS_RES
+        lat_pt = scene_lat_max - (r + 0.5) * VIIRS_RES
+        ax_l.plot(lon_pt, lat_pt, "rx", markersize=8, markeredgewidth=2)
+        t = ax_l.text(lon_pt + VIIRS_RES * 0.5, lat_pt + VIIRS_RES * 0.5,
+                      str(i + 1), color="white", fontsize=8, fontweight="bold",
+                      ha="left", va="bottom")
+        t.set_path_effects([path_effects.Stroke(linewidth=1.5, foreground="black"),
+                            path_effects.Normal()])
+    ax_l.set_title(l_title)
+    ax_l.set_xlabel("Longitude"); ax_l.set_ylabel("Latitude")
+    plt.tight_layout()
+    ls_panel = os.path.join(panels_dir, f"landsat_{date_fmt}{tag}.png")
+    plt.savefig(ls_panel, dpi=150, bbox_inches="tight")
+    plt.close()
+    log.info(f"  Saved 3 panel PNGs to: {panels_dir}")
 
 # ---------------------------------------------------------------------------
 # Main
@@ -494,10 +669,26 @@ def main():
     uniform      = "--uniform" in sys.argv
     pure_random  = "--pure-random" in sys.argv
     seed      = None
+    region    = None
     args = sys.argv[1:]
     if "--seed" in args:
         si = args.index("--seed")
         seed = int(args[si + 1])
+        args = args[:si] + args[si + 2:]
+    if "--region" in args:
+        ri = args.index("--region")
+        region = args[ri + 1]
+        if region not in ("top", "bottom", "middle"):
+            log.error(f"--region must be one of: top, bottom, middle (got '{region}')")
+            return
+        args = args[:ri] + args[ri + 2:]
+    side = None
+    if "--side" in args:
+        si = args.index("--side")
+        side = args[si + 1]
+        if side not in ("left", "right"):
+            log.error(f"--side must be one of: left, right (got '{side}')")
+            return
         args = args[:si] + args[si + 2:]
     requested = [a for a in args if not a.startswith("--")]
     mode = "uniform" if uniform else ("pure-random" if pure_random else "stratified")
@@ -524,7 +715,7 @@ def main():
             log.info(f"  B10 + MTL found — thermal enabled")
 
         extract_and_save(viirs_path, landsat_path, date_str, out_dir,
-                         b10_path, mtl_vals, overwrite, seed, mode)
+                         b10_path, mtl_vals, overwrite, seed, mode, region, side)
 
     log.info(f"\n{'='*60}")
     log.info("Pixel extraction complete.")
