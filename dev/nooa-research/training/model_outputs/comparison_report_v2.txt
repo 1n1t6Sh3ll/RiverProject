@@ -1,0 +1,319 @@
+=== Dataset A (Valentina confirmed) ===
+Total rows: 43
+  ice_covered_river_snow_covered_land: 19
+  ice_covered_river_snow_free_land: 6
+  ice_free_river_snow_free_land: 12
+  ice_free_river_snow_land: 6
+
+=== Daksh v2 after filters: 86 rows ===
+  ice_covered_river_snow_covered_land: 36
+  ice_covered_river_snow_free_land: 11
+  ice_free_river_snow_free_land: 35
+  ice_free_river_snow_land: 4
+
+=== May 2021 n50 after filters: 21 rows ===
+  ice_covered_river_snow_covered_land: 3
+  ice_free_river_snow_free_land: 9
+  ice_free_river_snow_land: 9
+
+=== Building Dataset B (A + Daksh v2 + n50) ===
+  B: removed 7 duplicate (lat,lon) rows
+  B total: 143  (valentina=36, daksh=86, n50=21)
+    ice_covered_river_snow_covered_land: 52
+    ice_covered_river_snow_free_land: 16
+    ice_free_river_snow_free_land: 56
+    ice_free_river_snow_land: 19
+
+=== Building Dataset C (A + Daksh v2 only) ===
+  C: removed 7 duplicate (lat,lon) rows
+  C total: 122  (valentina=36, daksh=86)
+    ice_covered_river_snow_covered_land: 49
+    ice_covered_river_snow_free_land: 16
+    ice_free_river_snow_free_land: 47
+    ice_free_river_snow_land: 10
+
+  NaN per feature in Dataset A:
+    I1: 0
+    I2: 0
+    I3: 0
+    I4: 0
+    I5: 0
+    LS_SR_B2: 0
+    LS_SR_B3: 0
+    LS_SR_B4: 0
+    LS_SR_B5: 0
+    LS_SR_B6: 0
+    LS_ST_B10: 0
+    LS_NDWI: 0
+    LS_NDSI: 0
+  NaN per feature in Dataset B:
+    I1: 0
+    I2: 0
+    I3: 0
+    I4: 0
+    I5: 0
+    LS_SR_B2: 0
+    LS_SR_B3: 0
+    LS_SR_B4: 0
+    LS_SR_B5: 0
+    LS_SR_B6: 0
+    LS_ST_B10: 0
+    LS_NDWI: 0
+    LS_NDSI: 0
+  NaN per feature in Dataset C:
+    I1: 0
+    I2: 0
+    I3: 0
+    I4: 0
+    I5: 0
+    LS_SR_B2: 0
+    LS_SR_B3: 0
+    LS_SR_B4: 0
+    LS_SR_B5: 0
+    LS_SR_B6: 0
+    LS_ST_B10: 0
+    LS_NDWI: 0
+    LS_NDSI: 0
+============================================================
+VERIFICATION BEFORE TRAINING
+============================================================
+Features (13): ['I1', 'I2', 'I3', 'I4', 'I5', 'LS_SR_B2', 'LS_SR_B3', 'LS_SR_B4', 'LS_SR_B5', 'LS_SR_B6', 'LS_ST_B10', 'LS_NDWI', 'LS_NDSI']
+Label encoding:
+  ice_covered_river_snow_covered_land -> 0
+  ice_covered_river_snow_free_land -> 1
+  ice_free_river_snow_free_land -> 2
+  ice_free_river_snow_land -> 3
+
+Dataset A shape: (43, 13)
+  Train class counts: {0: 15, 1: 5, 2: 9, 3: 5}
+  Test  class counts: {0: 4, 1: 1, 2: 3, 3: 1}
+  Total NaN in features: 0
+  WARNING: 'ice_free_river_snow_land' has only 6 samples
+  WARNING: 'ice_covered_river_snow_free_land' has only 6 samples
+
+Dataset B shape: (143, 13)
+  Train class counts: {0: 41, 1: 13, 2: 45, 3: 15}
+  Test  class counts: {0: 11, 1: 3, 2: 11, 3: 4}
+  Total NaN in features: 0
+
+Dataset C shape: (122, 13)
+  Train class counts: {0: 39, 1: 13, 2: 37, 3: 8}
+  Test  class counts: {0: 10, 1: 3, 2: 10, 3: 2}
+  Total NaN in features: 0
+
+  WARNING: RF-A falling back to LeaveOneOut (class <2 in test)
+
+=== RF-A (RF on Dataset A) ===
+                                     precision    recall  f1-score   support
+
+ice_covered_river_snow_covered_land       1.00      0.95      0.97        19
+   ice_covered_river_snow_free_land       0.86      1.00      0.92         6
+      ice_free_river_snow_free_land       1.00      1.00      1.00        12
+           ice_free_river_snow_land       1.00      1.00      1.00         6
+
+                           accuracy                           0.98        43
+                          macro avg       0.96      0.99      0.97        43
+                       weighted avg       0.98      0.98      0.98        43
+
+Confusion matrix:
+[[18  1  0  0]
+ [ 0  6  0  0]
+ [ 0  0 12  0]
+ [ 0  0  0  6]]
+Feature importances:
+  LS_ST_B10: 0.160300
+  I4: 0.129689
+  I5: 0.115641
+  LS_NDSI: 0.107520
+  LS_SR_B2: 0.087478
+  LS_SR_B5: 0.077921
+  LS_SR_B3: 0.076281
+  LS_SR_B4: 0.074060
+  LS_NDWI: 0.054231
+  I2: 0.050758
+  I1: 0.040352
+  LS_SR_B6: 0.016146
+  I3: 0.009622
+
+
+=== RF-B (RF on Dataset B) ===
+                                     precision    recall  f1-score   support
+
+ice_covered_river_snow_covered_land       0.80      0.73      0.76        11
+   ice_covered_river_snow_free_land       0.33      0.33      0.33         3
+      ice_free_river_snow_free_land       0.90      0.82      0.86        11
+           ice_free_river_snow_land       0.50      0.75      0.60         4
+
+                           accuracy                           0.72        29
+                          macro avg       0.63      0.66      0.64        29
+                       weighted avg       0.75      0.72      0.73        29
+
+Confusion matrix:
+[[8 2 0 1]
+ [2 1 0 0]
+ [0 0 9 2]
+ [0 0 1 3]]
+Feature importances:
+  I4: 0.144829
+  LS_ST_B10: 0.128853
+  LS_SR_B3: 0.118078
+  I5: 0.105124
+  LS_SR_B2: 0.100770
+  LS_SR_B4: 0.081477
+  LS_NDSI: 0.071114
+  I1: 0.065745
+  I2: 0.062119
+  LS_SR_B5: 0.039476
+  LS_SR_B6: 0.034522
+  LS_NDWI: 0.026139
+  I3: 0.021753
+
+
+=== RF-C (RF on Dataset C) ===
+                                     precision    recall  f1-score   support
+
+ice_covered_river_snow_covered_land       0.80      0.80      0.80        10
+   ice_covered_river_snow_free_land       0.00      0.00      0.00         3
+      ice_free_river_snow_free_land       0.90      0.90      0.90        10
+           ice_free_river_snow_land       0.25      0.50      0.33         2
+
+                           accuracy                           0.72        25
+                          macro avg       0.49      0.55      0.51        25
+                       weighted avg       0.70      0.72      0.71        25
+
+Confusion matrix:
+[[8 1 0 1]
+ [2 0 0 1]
+ [0 0 9 1]
+ [0 0 1 1]]
+Feature importances:
+  I5: 0.130714
+  LS_SR_B2: 0.129127
+  I4: 0.127285
+  LS_ST_B10: 0.124151
+  LS_SR_B4: 0.087809
+  LS_NDSI: 0.076514
+  I1: 0.071292
+  I2: 0.069439
+  LS_SR_B3: 0.068206
+  I3: 0.034226
+  LS_NDWI: 0.033950
+  LS_SR_B5: 0.031666
+  LS_SR_B6: 0.015622
+
+  WARNING: XGB-A falling back to LeaveOneOut (class <2 in test)
+
+=== XGB-A (XGB on Dataset A) ===
+                                     precision    recall  f1-score   support
+
+ice_covered_river_snow_covered_land       0.95      0.95      0.95        19
+   ice_covered_river_snow_free_land       0.67      0.67      0.67         6
+      ice_free_river_snow_free_land       0.85      0.92      0.88        12
+           ice_free_river_snow_land       1.00      0.83      0.91         6
+
+                           accuracy                           0.88        43
+                          macro avg       0.87      0.84      0.85        43
+                       weighted avg       0.89      0.88      0.88        43
+
+Confusion matrix:
+[[18  1  0  0]
+ [ 1  4  1  0]
+ [ 0  1 11  0]
+ [ 0  0  1  5]]
+Feature importances:
+  LS_ST_B10: 2.809375
+  I1: 1.603983
+  I4: 1.485695
+  LS_SR_B5: 1.331661
+  LS_NDWI: 1.291865
+  LS_NDSI: 0.856644
+  LS_SR_B2: 0.354450
+  LS_SR_B4: 0.348183
+  I5: 0.334516
+  I2: 0.101512
+  LS_SR_B3: 0.076994
+  I3: 0.074557
+  LS_SR_B6: 0.010778
+
+
+=== XGB-B (XGB on Dataset B) ===
+                                     precision    recall  f1-score   support
+
+ice_covered_river_snow_covered_land       0.80      0.73      0.76        11
+   ice_covered_river_snow_free_land       0.25      0.33      0.29         3
+      ice_free_river_snow_free_land       0.90      0.82      0.86        11
+           ice_free_river_snow_land       0.60      0.75      0.67         4
+
+                           accuracy                           0.72        29
+                          macro avg       0.64      0.66      0.64        29
+                       weighted avg       0.75      0.72      0.74        29
+
+Confusion matrix:
+[[8 3 0 0]
+ [2 1 0 0]
+ [0 0 9 2]
+ [0 0 1 3]]
+Feature importances:
+  I2: 2.354567
+  LS_SR_B2: 2.038373
+  LS_ST_B10: 1.696862
+  I4: 1.421878
+  LS_SR_B5: 1.249221
+  LS_NDWI: 0.633961
+  I1: 0.537868
+  LS_NDSI: 0.534486
+  LS_SR_B6: 0.276638
+  I5: 0.188430
+  LS_SR_B3: 0.129522
+  I3: 0.122444
+  LS_SR_B4: 0.102989
+
+
+=== XGB-C (XGB on Dataset C) ===
+                                     precision    recall  f1-score   support
+
+ice_covered_river_snow_covered_land       0.78      0.70      0.74        10
+   ice_covered_river_snow_free_land       0.00      0.00      0.00         3
+      ice_free_river_snow_free_land       0.75      0.90      0.82        10
+           ice_free_river_snow_land       0.50      0.50      0.50         2
+
+                           accuracy                           0.68        25
+                          macro avg       0.51      0.53      0.51        25
+                       weighted avg       0.65      0.68      0.66        25
+
+Confusion matrix:
+[[7 2 1 0]
+ [2 0 1 0]
+ [0 0 9 1]
+ [0 0 1 1]]
+Feature importances:
+  I2: 2.126753
+  I4: 1.652715
+  LS_SR_B2: 1.315372
+  LS_ST_B10: 0.927121
+  LS_SR_B6: 0.878827
+  LS_SR_B5: 0.863093
+  I1: 0.609859
+  LS_NDSI: 0.481301
+  I3: 0.417093
+  I5: 0.262844
+  LS_NDWI: 0.126306
+  LS_SR_B3: 0.088988
+  LS_SR_B4: 0.055512
+
+
+============================================================
+COMPARISON TABLE
+============================================================
+Metric                   | RF-A    | RF-B    | RF-C    | XGB-A   | XGB-B   | XGB-C   
+-------------------------------------------------------------------------------------
+n_train                  | 42      | 114     | 97      | 42      | 114     | 97      
+n_test                   | 1       | 29      | 25      | 1       | 29      | 25      
+Test accuracy            | 0.9767  | 0.7241  | 0.7200  | 0.8837  | 0.7241  | 0.6800  
+CV mean accuracy         | 0.9556  | 0.8530  | 0.8357  | 0.8639  | 0.7899  | 0.8193  
+CV std                   | 0.0544  | 0.0464  | 0.0280  | 0.1630  | 0.0329  | 0.0430  
+F1 ice_free_snow_free    | 1.0000  | 0.8571  | 0.9000  | 0.8800  | 0.8571  | 0.8182  
+F1 ice_free_snow_land    | 1.0000  | 0.6000  | 0.3333  | 0.9091  | 0.6667  | 0.5000  
+F1 ice_cov_snow_cov      | 0.9730  | 0.7619  | 0.8000  | 0.9474  | 0.7619  | 0.7368  
+F1 ice_cov_snow_free     | 0.9231  | 0.3333  | 0.0000  | 0.6667  | 0.2857  | 0.0000  
+
