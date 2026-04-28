@@ -310,25 +310,40 @@ def discover_viirs():
 
 
 def parse_mtl(mtl_path):
-    """Parse MTL.txt for thermal calibration constants.
-    Returns dict with K1, K2, RADIANCE_MULT, RADIANCE_ADD for B10, or None."""
-    keys = {
+    """Parse MTL.txt for thermal constants and acquisition metadata.
+    Returns dict with whatever keys were found (K1/K2/RADIANCE_* for B10
+    thermal; DATE_ACQUIRED/SCENE_CENTER_TIME/LANDSAT_PRODUCT_ID for
+    provenance), or None on file read error."""
+    numeric_keys = {
         "K1_CONSTANT_BAND_10": "K1",
         "K2_CONSTANT_BAND_10": "K2",
         "RADIANCE_MULT_BAND_10": "RADIANCE_MULT",
         "RADIANCE_ADD_BAND_10": "RADIANCE_ADD",
     }
+    string_keys = {
+        "DATE_ACQUIRED": "DATE_ACQUIRED",
+        "SCENE_CENTER_TIME": "SCENE_CENTER_TIME",
+        "LANDSAT_PRODUCT_ID": "LANDSAT_PRODUCT_ID",
+    }
     vals = {}
     try:
         with open(mtl_path, "r") as f:
             for line in f:
-                line = line.strip()
-                for mtl_key, short in keys.items():
-                    if line.upper().startswith(mtl_key):
-                        vals[short] = float(line.split("=")[1].strip())
+                key, eq, raw = line.strip().partition("=")
+                if not eq:
+                    continue
+                key = key.strip().upper()
+                raw = raw.strip().strip('"').strip()
+                if key in numeric_keys:
+                    try:
+                        vals[numeric_keys[key]] = float(raw)
+                    except ValueError:
+                        pass
+                elif key in string_keys:
+                    vals[string_keys[key]] = raw
     except Exception:
         return None
-    if len(vals) == 4:
+    if all(k in vals for k in ("K1", "K2", "RADIANCE_MULT", "RADIANCE_ADD")):
         return vals
     return None
 
@@ -449,8 +464,18 @@ def process_viirs(gitco, gimgo, area_def, out_path):
 
 def process_landsat(folder, band_files, angle_files, out_path):
     if os.path.exists(out_path) and not OVERWRITE:
-        log.info(f"  Landsat exists, skip: {os.path.basename(out_path)}")
-        return True
+        try:
+            with rasterio.open(out_path) as _chk:
+                _ = _chk.count
+            log.info(f"  Landsat exists, skip: {os.path.basename(out_path)}")
+            return True
+        except Exception as e:
+            log.warning(f"  Existing {os.path.basename(out_path)} unreadable "
+                        f"({e.__class__.__name__}); deleting and re-processing")
+            try:
+                os.remove(out_path)
+            except OSError:
+                pass
 
     scene_tf, scene_w, scene_h = compute_landsat_scene_grid(folder, band_files)
     log.info(f"  Landsat scene grid: {scene_w}x{scene_h} px  "
@@ -469,36 +494,49 @@ def process_landsat(folder, band_files, angle_files, out_path):
     n_bands = len(entries)
     log.info(f"  Reprojecting {n_bands} bands → 4326 scene extent ...")
 
-    with rasterio.open(
-        out_path, "w", driver="GTiff",
-        height=scene_h, width=scene_w, count=n_bands,
-        dtype=np.float32, crs=TARGET_CRS, transform=scene_tf,
-        nodata=NODATA, compress="deflate", predictor=2,
-        tiled=True, blockxsize=256, blockysize=256,
-        BIGTIFF="YES",
-    ) as dst_ds:
-        for i, (path, name, resamp) in enumerate(entries, 1):
-            with rasterio.open(path) as src:
-                src_nodata = src.nodata
-                out_arr = np.full((scene_h, scene_w), np.nan, np.float32)
-                rio_reproject(
-                    source=rasterio.band(src, 1),
-                    destination=out_arr,
-                    src_transform=src.transform,
-                    src_crs=src.crs,
-                    src_nodata=src_nodata,
-                    dst_transform=scene_tf,
-                    dst_crs=TARGET_CRS,
-                    dst_nodata=np.nan,
-                    resampling=resamp,
-                )
-                out_arr[~np.isfinite(out_arr)] = NODATA
-                dst_ds.write(out_arr, i)
-                dst_ds.update_tags(i, name=name)
-                valid = int(np.sum(out_arr != NODATA))
-                log.info(f"    {name} ({resamp.name}): {valid:,} valid px")
-                del out_arr
+    # Atomic write: build .tmp, then os.replace() so an interrupted/
+    # disk-full run never leaves a half-written file at out_path.
+    tmp_path = out_path + ".tmp"
+    if os.path.exists(tmp_path):
+        try: os.remove(tmp_path)
+        except OSError: pass
 
+    try:
+        with rasterio.open(
+            tmp_path, "w", driver="GTiff",
+            height=scene_h, width=scene_w, count=n_bands,
+            dtype=np.float32, crs=TARGET_CRS, transform=scene_tf,
+            nodata=NODATA, compress="deflate", predictor=2,
+            tiled=True, blockxsize=256, blockysize=256,
+            BIGTIFF="YES",
+        ) as dst_ds:
+            for i, (path, name, resamp) in enumerate(entries, 1):
+                with rasterio.open(path) as src:
+                    src_nodata = src.nodata
+                    out_arr = np.full((scene_h, scene_w), np.nan, np.float32)
+                    rio_reproject(
+                        source=rasterio.band(src, 1),
+                        destination=out_arr,
+                        src_transform=src.transform,
+                        src_crs=src.crs,
+                        src_nodata=src_nodata,
+                        dst_transform=scene_tf,
+                        dst_crs=TARGET_CRS,
+                        dst_nodata=np.nan,
+                        resampling=resamp,
+                    )
+                    out_arr[~np.isfinite(out_arr)] = NODATA
+                    dst_ds.write(out_arr, i)
+                    dst_ds.update_tags(i, name=name)
+                    valid = int(np.sum(out_arr != NODATA))
+                    log.info(f"    {name} ({resamp.name}): {valid:,} valid px")
+                    del out_arr
+    except Exception:
+        try: os.remove(tmp_path)
+        except OSError: pass
+        raise
+
+    os.replace(tmp_path, out_path)
     mb = os.path.getsize(out_path) / 1048576
     log.info(f"  Wrote {out_path} ({mb:.1f} MB)")
     return True
@@ -625,8 +663,13 @@ def generate_csv(viirs_path, landsat_path, date_str, out_dir,
             tags = ls_src.tags(bi)
             ls_band_names.append(tags.get("name", f"band{bi}"))
 
-    # Extract Landsat scene ID from output filename or band tag
-    ls_scene_id = os.path.basename(landsat_path).replace(".tif", "")
+    # Real USGS scene ID + acquisition date from MTL when available;
+    # fall back to output filename / pipeline date string.
+    if mtl_vals and mtl_vals.get("LANDSAT_PRODUCT_ID"):
+        ls_scene_id = mtl_vals["LANDSAT_PRODUCT_ID"]
+    else:
+        ls_scene_id = os.path.basename(landsat_path).replace(".tif", "")
+    ls_date = (mtl_vals or {}).get("DATE_ACQUIRED") or date_fmt
 
     scene_lon_min, scene_lat_min = ls_bounds.left, ls_bounds.bottom
     scene_lon_max, scene_lat_max = ls_bounds.right, ls_bounds.top
@@ -775,6 +818,7 @@ def generate_csv(viirs_path, landsat_path, date_str, out_dir,
                 "id":              idx + 1,
                 "viirs_date":      date_fmt,
                 "landsat_scene":   ls_scene_id,
+                "landsat_date":    ls_date,
                 "row_shared_grid": r_shared,
                 "col_shared_grid": c_shared,
                 "lat":                  round(lat_px, 5),
