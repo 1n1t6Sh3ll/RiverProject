@@ -236,6 +236,8 @@ def process_csv(csv_path: pathlib.Path, ee) -> None:
     n_confirmed    = int(confirmed_mask.sum())
     confirmed_df   = df[confirmed_mask].copy()
 
+    print(f"  Confirmed mask: {n_confirmed} True, "
+          f"{n_total - n_confirmed} False (Landsat-null or missing LS_SR_B2)")
     print(f"  Rows total: {n_total}  |  Landsat-confirmed: {n_confirmed}"
           f"  |  skipped (Landsat-null): {n_total - n_confirmed}")
 
@@ -331,6 +333,11 @@ def main() -> None:
         '--date', metavar='YYYY-MM-DD', default=None,
         help='Process only the CSV for this scene date. '
              'Omit to process all scenes.')
+    parser.add_argument(
+        '--file', metavar='PATH', default=None,
+        help='Process a single CSV at this explicit path, bypassing '
+             'the automatic discovery logic. Path is relative to PROJECT_ROOT '
+             'or absolute.')
     args = parser.parse_args()
 
     # Initialise Earth Engine once — degrade gracefully if unavailable
@@ -344,7 +351,15 @@ def main() -> None:
               "check 'earthengine authenticate' and project access.")
         ee = None
 
-    csvs = _find_csvs(args.date)
+    if args.file:
+        explicit = PROJECT_ROOT / args.file if not pathlib.Path(args.file).is_absolute() \
+                   else pathlib.Path(args.file)
+        if not explicit.exists():
+            print(f"ERROR: File not found: {explicit}")
+            sys.exit(1)
+        csvs = [explicit]
+    else:
+        csvs = _find_csvs(args.date)
     if not csvs:
         print("No training candidate CSVs found.")
         sys.exit(0)

@@ -56,14 +56,16 @@ DATASET_A_FILES = [
     TRAINING_DIR / "20230415/training_candidates_2023-04-15_enriched.csv",
     TRAINING_DIR / "20240314/training_candidates_2024-03-14_enriched.csv",
 ]
-DAKSH_V2_FILE = TRAINING_DIR / "daksh_training_candidates_v2_cleaned.csv"
-MAY_N50_FILE = TRAINING_DIR / "viirs_d20210503_t1947/outputs/training_candidates_2021-05-03_n50.csv"
+DAKSH_V2_FILE = TRAINING_DIR / "daksh_training_candidates_v2_cleaned_enriched.csv"
+MAY_N50_FILE = TRAINING_DIR / "viirs_d20210503_t1947/outputs/training_candidates_2021-05-03_n50_enriched.csv"
 MAY_ENRICHED_FILE = TRAINING_DIR / "viirs_d20210503_t1947/outputs/training_candidates_2021-05-03_enriched.csv"
 
 FEATURE_COLUMNS = [
     "I1", "I2", "I3", "I4", "I5",
-    "LS_SR_B2", "LS_SR_B3", "LS_SR_B4", "LS_SR_B5", "LS_SR_B6",
-    "LS_ST_B10", "LS_NDWI", "LS_NDSI",
+    "SZA", "SAA", "VZA", "VAA",
+    "VIIRS_NDWI",
+    "water_fraction",
+    "modis_ndvi",
 ]
 
 F1_CLASSES = [
@@ -118,14 +120,21 @@ def _sanitize(df: pd.DataFrame, cols: List[str]) -> pd.DataFrame:
     return df
 
 
+def _add_viirs_indices(df: pd.DataFrame) -> pd.DataFrame:
+    """Compute VIIRS NDWI and NDVI from I1/I2 bands in-place."""
+    i1 = df["I1"].replace(0, np.nan)
+    i2 = df["I2"].replace(0, np.nan)
+    df["VIIRS_NDWI"] = (i1 - i2) / (i1 + i2)
+    return df
+
+
 def load_dataset_a(rep: Reporter) -> pd.DataFrame:
     frames = []
     for p in DATASET_A_FILES:
         df = pd.read_csv(p)
-        df = _sanitize(df, ["ground_truth_class", "LS_SR_B2", "notes"])
+        df = _sanitize(df, ["ground_truth_class", "notes"])
         df["notes"] = df["notes"].fillna("").astype(str)
         df = df[df["ground_truth_class"].notna()]
-        df = df[df["LS_SR_B2"].notna()]
         df = df[df["water_fraction"] < 0.90]
         df = df[~df["notes"].str.contains("Landsat null", case=False, na=False)]
         df["source"] = "valentina"
@@ -153,6 +162,7 @@ def load_daksh_v2(rep: Reporter) -> pd.DataFrame:
     df = df[df["water_fraction"] < 0.90]
     if "water_fraction_sea" in df.columns:
         df = df[df["water_fraction_sea"] < 1.0]
+    df = df[df["modis_ndvi"].notna()]
     for col in ["I3", "I4", "I5"]:
         if col not in df.columns:
             df[col] = np.nan
@@ -165,10 +175,9 @@ def load_daksh_v2(rep: Reporter) -> pd.DataFrame:
 
 def load_may_n50(dataset_a: pd.DataFrame, rep: Reporter) -> pd.DataFrame:
     n50 = pd.read_csv(MAY_N50_FILE)
-    n50 = _sanitize(n50, ["ground_truth_class", "LS_SR_B2", "notes"])
+    n50 = _sanitize(n50, ["ground_truth_class", "notes"])
     n50["notes"] = n50["notes"].fillna("").astype(str)
     n50 = n50[n50["ground_truth_class"].notna()]
-    n50 = n50[n50["LS_SR_B2"].notna()]
     n50 = n50[n50["water_fraction"] < 0.90]
     n50 = n50[~n50["notes"].str.contains("Landsat null", case=False, na=False)]
 
@@ -176,6 +185,7 @@ def load_may_n50(dataset_a: pd.DataFrame, rep: Reporter) -> pd.DataFrame:
     enriched_coords = set(zip(enriched["lat"].round(5), enriched["lon"].round(5)))
     n50["_key"] = list(zip(n50["lat"].round(5), n50["lon"].round(5)))
     n50 = n50[~n50["_key"].isin(enriched_coords)].drop(columns=["_key"])
+    n50 = n50[n50["modis_ndvi"].notna()]
     n50["source"] = "valentina_n50"
     rep.log(f"=== May 2021 n50 after filters: {len(n50)} rows ===")
     for cls, cnt in n50["ground_truth_class"].value_counts().sort_index().items():
@@ -186,7 +196,7 @@ def load_may_n50(dataset_a: pd.DataFrame, rep: Reporter) -> pd.DataFrame:
 
 def _impute_from_a(combined: pd.DataFrame, dataset_a: pd.DataFrame,
                    rep: Reporter, tag: str) -> pd.DataFrame:
-    for col in ["I3", "I4", "I5"]:
+    for col in ["I3", "I4", "I5", "modis_ndvi"]:
         med = dataset_a[col].median(skipna=True)
         missing = combined[col].isna().sum()
         combined[col] = combined[col].fillna(med)
@@ -241,6 +251,56 @@ def _nan_check(df: pd.DataFrame, name: str, rep: Reporter) -> None:
     for col, cnt in nan_counts.items():
         if cnt / len(df) > 0.30:
             raise RuntimeError(f"STOP: {name} feature '{col}' has >{30}% NaN")
+
+
+def _verify_modis_enrichment(rep: Reporter) -> None:
+    """
+    Check that all input CSVs have modis_ndvi populated before training.
+    Logs NaN rate per file. Raises RuntimeError if any file has > 10% NaN
+    in modis_ndvi (indicates enrich_modis.py was not run on that file).
+    """
+    files_to_check = DATASET_A_FILES + [DAKSH_V2_FILE, MAY_N50_FILE]
+    rep.log("=" * 60)
+    rep.log("MODIS ENRICHMENT VERIFICATION")
+    rep.log("=" * 60)
+    for path in files_to_check:
+        if not path.exists():
+            rep.log(f"  SKIP (not found): {path.name}")
+            continue
+        df = pd.read_csv(path)
+        if 'modis_ndvi' not in df.columns:
+            raise RuntimeError(
+                f"STOP: {path.name} has no modis_ndvi column — "
+                f"run enrich_modis.py against this file first.")
+        # Check NaN rate only among Landsat-confirmed rows — Landsat-null rows
+        # are never sent to EE and will always have NaN modis_ndvi; they are
+        # filtered out by the loaders before training anyway.
+        # (Mirrors _is_confirmed() in enrich_modis.py without importing it.)
+        if 'LS_SR_B2' in df.columns:
+            notes_col = df.get('notes', pd.Series('', index=df.index))
+            confirmed = (
+                df['LS_SR_B2'].replace('', np.nan).notna()
+                & ~notes_col.astype(str).str.contains('Landsat null', na=False)
+            )
+        else:
+            confirmed = pd.Series(True, index=df.index)
+        df_confirmed = df[confirmed]
+        n_check  = len(df_confirmed) if len(df_confirmed) else len(df)
+        nan_count = int(df_confirmed['modis_ndvi'].isna().sum()) \
+                    if len(df_confirmed) else int(df['modis_ndvi'].isna().sum())
+        nan_rate  = nan_count / n_check if n_check else 0
+        n_total   = len(df)
+        flag = "  ← WARNING: > 10% NaN — run enrich_modis.py" \
+               if nan_rate > 0.10 else ""
+        rep.log(f"  {path.name}: {nan_count}/{n_check} confirmed NaN "
+                f"({nan_rate*100:.1f}%) [{n_total} rows total]{flag}")
+        if nan_rate > 0.10:
+            raise RuntimeError(
+                f"STOP: {path.name} modis_ndvi is {nan_rate*100:.0f}% NaN "
+                f"among confirmed rows. "
+                f"Run: python training/enrich_modis.py --date <date> "
+                f"or --file <path>")
+    rep.log("")
 
 
 def make_bundle(name: str, df: pd.DataFrame, le: LabelEncoder) -> DatasetBundle:
@@ -379,7 +439,7 @@ def print_pretraining(bundles: Dict[str, DatasetBundle], class_names: List[str],
 
 
 def comparison_table(results: Dict[str, ModelResult], rep: Reporter) -> None:
-    order = ["RF-A", "RF-B", "RF-C", "XGB-A", "XGB-B", "XGB-C"]
+    order = ["RF-B", "RF-C", "XGB-B", "XGB-C"]
     hdr = f"{'Metric':<25}" + "".join(f"| {k:<8}" for k in order)
     rep.log("\n" + "=" * 60)
     rep.log("COMPARISON TABLE")
@@ -405,8 +465,8 @@ def comparison_table(results: Dict[str, ModelResult], rep: Reporter) -> None:
 
 
 def save_feat_imp_plot(results: Dict[str, ModelResult], path: Path) -> None:
-    order = ["RF-A", "RF-B", "RF-C", "XGB-A", "XGB-B", "XGB-C"]
-    fig, axes = plt.subplots(2, 3, figsize=(20, 12))
+    order = ["RF-B", "RF-C", "XGB-B", "XGB-C"]
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
     for ax, key in zip(axes.flatten(), order):
         s = results[key].feat_imp.sort_values(ascending=True)
         ax.barh(s.index, s.values)
@@ -420,12 +480,17 @@ def save_feat_imp_plot(results: Dict[str, ModelResult], path: Path) -> None:
 def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     rep = Reporter()
+    _verify_modis_enrichment(rep)
 
     ds_a = load_dataset_a(rep)
     daksh = load_daksh_v2(rep)
     n50 = load_may_n50(ds_a, rep)
 
     ds_a_clean, ds_b, ds_c = build_datasets(ds_a, daksh, n50, rep)
+
+    # Compute VIIRS derived indices on all datasets
+    for df in [ds_a_clean, ds_b, ds_c]:
+        _add_viirs_indices(df)
 
     for tag, df in [("A", ds_a_clean), ("B", ds_b), ("C", ds_c)]:
         for col in FEATURE_COLUMNS:
@@ -440,24 +505,23 @@ def main() -> None:
     le = LabelEncoder().fit(all_classes)
     class_names = list(le.classes_)
 
-    ba = make_bundle("Dataset A", ds_a_clean, le)
     bb = make_bundle("Dataset B", ds_b, le)
     bc = make_bundle("Dataset C", ds_c, le)
-    bundles = {"Dataset A": ba, "Dataset B": bb, "Dataset C": bc}
+    bundles = {"Dataset B": bb, "Dataset C": bc}
 
     print_pretraining(bundles, class_names, le, rep)
 
     results: Dict[str, ModelResult] = {}
     for key, mtype, bundle in [
-        ("RF-A",  "RF",  ba), ("RF-B",  "RF",  bb), ("RF-C",  "RF",  bc),
-        ("XGB-A", "XGB", ba), ("XGB-B", "XGB", bb), ("XGB-C", "XGB", bc),
+        ("RF-B",  "RF",  bb), ("RF-C",  "RF",  bc),
+        ("XGB-B", "XGB", bb), ("XGB-C", "XGB", bc),
     ]:
         results[key] = train_and_eval(key, mtype, bundle, class_names, rep)
 
     comparison_table(results, rep)
 
-    for key, fname in [("RF-A","rf_A.pkl"),("RF-B","rf_B.pkl"),("RF-C","rf_C.pkl"),
-                       ("XGB-A","xgb_A.pkl"),("XGB-B","xgb_B.pkl"),("XGB-C","xgb_C.pkl")]:
+    for key, fname in [("RF-B","rf_B.pkl"),("RF-C","rf_C.pkl"),
+                       ("XGB-B","xgb_B.pkl"),("XGB-C","xgb_C.pkl")]:
         joblib.dump(results[key].model_obj, OUTPUT_DIR / fname)
     joblib.dump(le, OUTPUT_DIR / "label_encoder.pkl")
 
