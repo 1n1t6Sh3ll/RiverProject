@@ -7,15 +7,22 @@ MODIS ENRICHMENT VERIFICATION
   training_candidates_2020-03-04_enriched.csv: 0/9 confirmed NaN (0.0%) [9 rows total]
   training_candidates_2023-04-15_enriched.csv: 0/5 confirmed NaN (0.0%) [5 rows total]
   training_candidates_2024-03-14_enriched.csv: 0/3 confirmed NaN (0.0%) [3 rows total]
+  training_candidates_2023-05-19_enriched.csv: 0/4 confirmed NaN (0.0%) [4 rows total]
+  training_candidates_2023-09-25_enriched.csv: 0/12 confirmed NaN (0.0%) [12 rows total]
+  training_candidates_2023-10-26_enriched.csv: 0/8 confirmed NaN (0.0%) [8 rows total]
+  training_candidates_2024-04-27_enriched.csv: 0/7 confirmed NaN (0.0%) [7 rows total]
+  training_candidates_2024-10-18_enriched.csv: 0/3 confirmed NaN (0.0%) [3 rows total]
+  training_candidates_2025-04-20_enriched.csv: 0/7 confirmed NaN (0.0%) [7 rows total]
+  training_candidates_2025-05-15_enriched.csv: 0/9 confirmed NaN (0.0%) [9 rows total]
   daksh_training_candidates_v2_cleaned_enriched.csv: 3/86 confirmed NaN (3.5%) [86 rows total]
   training_candidates_2021-05-03_n50_enriched.csv: 0/21 confirmed NaN (0.0%) [50 rows total]
 
 === Dataset A (Valentina confirmed) ===
-Total rows: 43
-  ice_covered_river_snow_covered_land: 19
-  ice_covered_river_snow_free_land: 6
-  ice_free_river_snow_free_land: 12
-  ice_free_river_snow_land: 6
+Total rows: 93
+  ice_covered_river_snow_covered_land: 26
+  ice_covered_river_snow_free_land: 15
+  ice_free_river_snow_free_land: 44
+  ice_free_river_snow_land: 8
 
 === Daksh v2 after filters: 83 rows ===
   ice_covered_river_snow_covered_land: 36
@@ -30,19 +37,19 @@ Total rows: 43
 
 === Building Dataset B (A + Daksh v2 + n50) ===
   B: removed 7 duplicate (lat,lon) rows
-  B total: 140  (valentina=36, daksh=83, n50=21)
-    ice_covered_river_snow_covered_land: 52
-    ice_covered_river_snow_free_land: 16
-    ice_free_river_snow_free_land: 54
-    ice_free_river_snow_land: 18
+  B total: 190  (valentina=86, daksh=83, n50=21)
+    ice_covered_river_snow_covered_land: 59
+    ice_covered_river_snow_free_land: 25
+    ice_free_river_snow_free_land: 86
+    ice_free_river_snow_land: 20
 
 === Building Dataset C (A + Daksh v2 only) ===
   C: removed 7 duplicate (lat,lon) rows
-  C total: 119  (valentina=36, daksh=83)
-    ice_covered_river_snow_covered_land: 49
-    ice_covered_river_snow_free_land: 16
-    ice_free_river_snow_free_land: 45
-    ice_free_river_snow_land: 9
+  C total: 169  (valentina=86, daksh=83)
+    ice_covered_river_snow_covered_land: 56
+    ice_covered_river_snow_free_land: 25
+    ice_free_river_snow_free_land: 77
+    ice_free_river_snow_land: 11
 
   NaN per feature in Dataset A:
     I1: 0
@@ -93,144 +100,143 @@ Label encoding:
   ice_free_river_snow_free_land -> 2
   ice_free_river_snow_land -> 3
 
-Dataset B shape: (140, 12)
-  Train class counts: {0: 42, 1: 13, 2: 43, 3: 14}
-  Test  class counts: {0: 10, 1: 3, 2: 11, 3: 4}
+Dataset B shape: (190, 12)
+  Train class counts: {0: 47, 1: 20, 2: 69, 3: 16}
+  Test  class counts: {0: 12, 1: 5, 2: 17, 3: 4}
   Total NaN in features: 0
 
-Dataset C shape: (119, 12)
-  Train class counts: {0: 39, 1: 13, 2: 36, 3: 7}
-  Test  class counts: {0: 10, 1: 3, 2: 9, 3: 2}
+Dataset C shape: (169, 12)
+  Train class counts: {0: 45, 1: 20, 2: 61, 3: 9}
+  Test  class counts: {0: 11, 1: 5, 2: 16, 3: 2}
   Total NaN in features: 0
-  WARNING: 'ice_free_river_snow_land' has only 9 samples
 
 
 === RF-B (RF on Dataset B) ===
                                      precision    recall  f1-score   support
 
-ice_covered_river_snow_covered_land       0.82      0.90      0.86        10
-   ice_covered_river_snow_free_land       0.50      0.33      0.40         3
-      ice_free_river_snow_free_land       0.77      0.91      0.83        11
-           ice_free_river_snow_land       0.50      0.25      0.33         4
+ice_covered_river_snow_covered_land       0.69      0.92      0.79        12
+   ice_covered_river_snow_free_land       0.50      0.20      0.29         5
+      ice_free_river_snow_free_land       0.83      0.88      0.86        17
+           ice_free_river_snow_land       1.00      0.50      0.67         4
 
-                           accuracy                           0.75        28
-                          macro avg       0.65      0.60      0.61        28
-                       weighted avg       0.72      0.75      0.72        28
+                           accuracy                           0.76        38
+                          macro avg       0.76      0.62      0.65        38
+                       weighted avg       0.76      0.76      0.74        38
 
 Confusion matrix:
-[[ 9  1  0  0]
- [ 2  1  0  0]
- [ 0  0 10  1]
- [ 0  0  3  1]]
+[[11  0  1  0]
+ [ 3  1  1  0]
+ [ 1  1 15  0]
+ [ 1  0  1  2]]
 Feature importances:
-  I4: 0.146573
-  I5: 0.123618
-  I2: 0.107550
-  I1: 0.103805
-  VZA: 0.095246
-  SZA: 0.081353
-  SAA: 0.078251
-  modis_ndvi: 0.072011
-  I3: 0.062351
-  VAA: 0.052021
-  VIIRS_NDWI: 0.044956
-  water_fraction: 0.032265
+  I4: 0.143394
+  VZA: 0.134035
+  I5: 0.114596
+  I1: 0.111199
+  I2: 0.103635
+  modis_ndvi: 0.091205
+  SAA: 0.067840
+  SZA: 0.057175
+  VAA: 0.051301
+  VIIRS_NDWI: 0.048937
+  I3: 0.045908
+  water_fraction: 0.030775
 
 
 === RF-C (RF on Dataset C) ===
                                      precision    recall  f1-score   support
 
-ice_covered_river_snow_covered_land       0.88      0.70      0.78        10
-   ice_covered_river_snow_free_land       0.33      0.33      0.33         3
-      ice_free_river_snow_free_land       0.82      1.00      0.90         9
-           ice_free_river_snow_land       1.00      1.00      1.00         2
+ice_covered_river_snow_covered_land       0.75      0.82      0.78        11
+   ice_covered_river_snow_free_land       0.50      0.20      0.29         5
+      ice_free_river_snow_free_land       0.79      0.94      0.86        16
+           ice_free_river_snow_land       1.00      0.50      0.67         2
 
-                           accuracy                           0.79        24
-                          macro avg       0.76      0.76      0.75        24
-                       weighted avg       0.80      0.79      0.79        24
+                           accuracy                           0.76        34
+                          macro avg       0.76      0.61      0.65        34
+                       weighted avg       0.75      0.76      0.74        34
 
 Confusion matrix:
-[[7 2 1 0]
- [1 1 1 0]
- [0 0 9 0]
- [0 0 0 2]]
+[[ 9  0  2  0]
+ [ 3  1  1  0]
+ [ 0  1 15  0]
+ [ 0  0  1  1]]
 Feature importances:
-  I4: 0.147719
-  I5: 0.126504
-  I2: 0.100572
-  SZA: 0.099149
-  modis_ndvi: 0.090834
-  VZA: 0.089724
-  I1: 0.087627
-  SAA: 0.063531
-  VIIRS_NDWI: 0.056111
-  I3: 0.049751
-  VAA: 0.048061
-  water_fraction: 0.040418
+  I4: 0.130421
+  I2: 0.115830
+  I1: 0.111920
+  I5: 0.108841
+  VZA: 0.107503
+  modis_ndvi: 0.082633
+  VAA: 0.071736
+  SAA: 0.062232
+  I3: 0.058186
+  SZA: 0.054866
+  VIIRS_NDWI: 0.053342
+  water_fraction: 0.042489
 
 
 === XGB-B (XGB on Dataset B) ===
                                      precision    recall  f1-score   support
 
-ice_covered_river_snow_covered_land       0.80      0.80      0.80        10
-   ice_covered_river_snow_free_land       0.33      0.33      0.33         3
-      ice_free_river_snow_free_land       0.79      1.00      0.88        11
-           ice_free_river_snow_land       1.00      0.25      0.40         4
+ice_covered_river_snow_covered_land       0.69      0.92      0.79        12
+   ice_covered_river_snow_free_land       0.50      0.20      0.29         5
+      ice_free_river_snow_free_land       0.82      0.82      0.82        17
+           ice_free_river_snow_land       0.67      0.50      0.57         4
 
-                           accuracy                           0.75        28
-                          macro avg       0.73      0.60      0.60        28
-                       weighted avg       0.77      0.75      0.72        28
+                           accuracy                           0.74        38
+                          macro avg       0.67      0.61      0.62        38
+                       weighted avg       0.72      0.74      0.71        38
 
 Confusion matrix:
-[[ 8  2  0  0]
- [ 2  1  0  0]
- [ 0  0 11  0]
- [ 0  0  3  1]]
+[[11  0  1  0]
+ [ 3  1  1  0]
+ [ 1  1 14  1]
+ [ 1  0  1  2]]
 Feature importances:
-  I2: 2.255904
-  I4: 1.015647
-  VZA: 0.965540
-  modis_ndvi: 0.946636
-  I1: 0.488974
-  I5: 0.427511
-  I3: 0.338637
-  SZA: 0.317518
-  SAA: 0.310726
-  VAA: 0.298065
-  VIIRS_NDWI: 0.260967
-  water_fraction: 0.197068
+  I1: 1.341783
+  modis_ndvi: 1.093051
+  I4: 0.947966
+  VZA: 0.758178
+  SAA: 0.530709
+  I2: 0.515505
+  I5: 0.420264
+  SZA: 0.347353
+  VAA: 0.342053
+  VIIRS_NDWI: 0.269615
+  water_fraction: 0.228133
+  I3: 0.182691
 
 
 === XGB-C (XGB on Dataset C) ===
                                      precision    recall  f1-score   support
 
-ice_covered_river_snow_covered_land       0.89      0.80      0.84        10
-   ice_covered_river_snow_free_land       0.33      0.33      0.33         3
-      ice_free_river_snow_free_land       1.00      1.00      1.00         9
-           ice_free_river_snow_land       0.67      1.00      0.80         2
+ice_covered_river_snow_covered_land       0.82      0.82      0.82        11
+   ice_covered_river_snow_free_land       0.67      0.40      0.50         5
+      ice_free_river_snow_free_land       0.78      0.88      0.82        16
+           ice_free_river_snow_land       0.50      0.50      0.50         2
 
-                           accuracy                           0.83        24
-                          macro avg       0.72      0.78      0.74        24
-                       weighted avg       0.84      0.83      0.83        24
+                           accuracy                           0.76        34
+                          macro avg       0.69      0.65      0.66        34
+                       weighted avg       0.76      0.76      0.76        34
 
 Confusion matrix:
-[[8 2 0 0]
- [1 1 0 1]
- [0 0 9 0]
- [0 0 0 2]]
+[[ 9  0  2  0]
+ [ 2  2  1  0]
+ [ 0  1 14  1]
+ [ 0  0  1  1]]
 Feature importances:
-  I2: 2.196030
-  I4: 1.794303
-  VZA: 0.941214
-  water_fraction: 0.376854
-  VIIRS_NDWI: 0.352703
-  I1: 0.336562
-  VAA: 0.318857
-  SZA: 0.300716
-  modis_ndvi: 0.222191
-  I3: 0.189040
-  SAA: 0.179366
-  I5: 0.100601
+  I4: 1.378148
+  I2: 1.066450
+  modis_ndvi: 0.914680
+  I1: 0.912386
+  SZA: 0.530202
+  VZA: 0.525956
+  SAA: 0.477535
+  I5: 0.411339
+  VAA: 0.302230
+  water_fraction: 0.287797
+  VIIRS_NDWI: 0.212765
+  I3: 0.197869
 
 
 ============================================================
@@ -238,13 +244,13 @@ COMPARISON TABLE
 ============================================================
 Metric                   | RF-B    | RF-C    | XGB-B   | XGB-C   
 -----------------------------------------------------------------
-n_train                  | 112     | 95      | 112     | 95      
-n_test                   | 28      | 24      | 28      | 24      
-Test accuracy            | 0.7500  | 0.7917  | 0.7500  | 0.8333  
-CV mean accuracy         | 0.7786  | 0.8152  | 0.7571  | 0.7978  
-CV std                   | 0.0728  | 0.0562  | 0.0614  | 0.0510  
-F1 ice_free_snow_free    | 0.8333  | 0.9000  | 0.8800  | 1.0000  
-F1 ice_free_snow_land    | 0.3333  | 1.0000  | 0.4000  | 0.8000  
-F1 ice_cov_snow_cov      | 0.8571  | 0.7778  | 0.8000  | 0.8421  
-F1 ice_cov_snow_free     | 0.4000  | 0.3333  | 0.3333  | 0.3333  
+n_train                  | 152     | 135     | 152     | 135     
+n_test                   | 38      | 34      | 38      | 34      
+Test accuracy            | 0.7632  | 0.7647  | 0.7368  | 0.7647  
+CV mean accuracy         | 0.7895  | 0.7861  | 0.7684  | 0.7747  
+CV std                   | 0.0166  | 0.0836  | 0.0482  | 0.0538  
+F1 ice_free_snow_free    | 0.8571  | 0.8571  | 0.8235  | 0.8235  
+F1 ice_free_snow_land    | 0.6667  | 0.6667  | 0.5714  | 0.5000  
+F1 ice_cov_snow_cov      | 0.7857  | 0.7826  | 0.7857  | 0.8182  
+F1 ice_cov_snow_free     | 0.2857  | 0.2857  | 0.2857  | 0.5000  
 

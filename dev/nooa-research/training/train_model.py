@@ -55,6 +55,13 @@ DATASET_A_FILES = [
     TRAINING_DIR / "viirs_d20200304_t2056/outputs/training_candidates_2020-03-04_enriched.csv",
     TRAINING_DIR / "20230415/training_candidates_2023-04-15_enriched.csv",
     TRAINING_DIR / "20240314/training_candidates_2024-03-14_enriched.csv",
+    TRAINING_DIR / "20230519/training_candidates_2023-05-19_enriched.csv",
+    TRAINING_DIR / "20230925/training_candidates_2023-09-25_enriched.csv",
+    TRAINING_DIR / "20231026/training_candidates_2023-10-26_enriched.csv",
+    TRAINING_DIR / "20240427/training_candidates_2024-04-27_enriched.csv",
+    TRAINING_DIR / "20241018/training_candidates_2024-10-18_enriched.csv",
+    TRAINING_DIR / "20250420/training_candidates_2025-04-20_enriched.csv",
+    TRAINING_DIR / "20250515/training_candidates_2025-05-15_enriched.csv",
 ]
 DAKSH_V2_FILE = TRAINING_DIR / "daksh_training_candidates_v2_cleaned_enriched.csv"
 MAY_N50_FILE = TRAINING_DIR / "viirs_d20210503_t1947/outputs/training_candidates_2021-05-03_n50_enriched.csv"
