@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.python-version
+
+# Editor
+.vscode/
+.idea/
+
+# Claude Code session state
+.claude/
+
+# Large data — kept locally, never committed
+viirs_data/
+*.h5
+*.tif
+
+# Re-allow training candidate CSVs (parent .gitignore excludes *.csv)
+!training_candidates_*.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+*.tmp
+
+# Local reference docs / research material (kept locally, not committed)
+Resources/
+*.docx
+*.pdf
