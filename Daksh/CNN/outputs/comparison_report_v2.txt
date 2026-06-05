@@ -1,0 +1,114 @@
+=== Combined dataset after filters: 285 rows ===
+  ice_covered_river_snow_covered_land: 82
+  ice_covered_river_snow_free_land: 41
+  ice_free_river_snow_free_land: 141
+  ice_free_river_snow_land: 21
+
+  NaN per feature in Combined:
+    I1: 0
+    I2: 0
+    I3: 0
+    I4: 0
+    I5: 0
+    SZA: 0
+    SAA: 0
+    VZA: 0
+    VAA: 0
+    VIIRS_NDWI: 0
+    water_fraction: 0
+    modis_ndvi: 0
+============================================================
+VERIFICATION BEFORE TRAINING
+============================================================
+Features (12): ['I1', 'I2', 'I3', 'I4', 'I5', 'SZA', 'SAA', 'VZA', 'VAA', 'VIIRS_NDWI', 'water_fraction', 'modis_ndvi']
+Label encoding:
+  ice_covered_river_snow_covered_land -> 0
+  ice_covered_river_snow_free_land -> 1
+  ice_free_river_snow_free_land -> 2
+  ice_free_river_snow_land -> 3
+
+Dataset Combined shape: (285, 12)
+  Train class counts: {0: 65, 1: 33, 2: 113, 3: 17}
+  Test  class counts: {0: 17, 1: 8, 2: 28, 3: 4}
+  Total NaN in features: 0
+
+
+=== RF (RF on Dataset Combined) ===
+                                     precision    recall  f1-score   support
+
+ice_covered_river_snow_covered_land       0.75      0.71      0.73        17
+   ice_covered_river_snow_free_land       0.33      0.38      0.35         8
+      ice_free_river_snow_free_land       0.86      0.89      0.88        28
+           ice_free_river_snow_land       0.67      0.50      0.57         4
+
+                           accuracy                           0.74        57
+                          macro avg       0.65      0.62      0.63        57
+                       weighted avg       0.74      0.74      0.74        57
+
+Confusion matrix:
+[[12  4  1  0]
+ [ 4  3  1  0]
+ [ 0  2 25  1]
+ [ 0  0  2  2]]
+Feature importances:
+  VZA: 0.161126
+  I4: 0.118063
+  I5: 0.103192
+  I2: 0.098798
+  modis_ndvi: 0.096225
+  I1: 0.080964
+  I3: 0.071138
+  SAA: 0.068023
+  SZA: 0.067897
+  VAA: 0.066624
+  VIIRS_NDWI: 0.040491
+  water_fraction: 0.027460
+
+
+=== XGB (XGB on Dataset Combined) ===
+                                     precision    recall  f1-score   support
+
+ice_covered_river_snow_covered_land       0.73      0.65      0.69        17
+   ice_covered_river_snow_free_land       0.38      0.38      0.38         8
+      ice_free_river_snow_free_land       0.82      0.96      0.89        28
+           ice_free_river_snow_land       1.00      0.25      0.40         4
+
+                           accuracy                           0.74        57
+                          macro avg       0.73      0.56      0.59        57
+                       weighted avg       0.74      0.74      0.72        57
+
+Confusion matrix:
+[[11  4  2  0]
+ [ 4  3  1  0]
+ [ 0  1 27  0]
+ [ 0  0  3  1]]
+Feature importances:
+  I2: 1.710419
+  modis_ndvi: 1.439050
+  SAA: 0.976815
+  VAA: 0.766939
+  I4: 0.718364
+  VZA: 0.691773
+  SZA: 0.652181
+  I5: 0.572331
+  I3: 0.425628
+  I1: 0.392760
+  VIIRS_NDWI: 0.239824
+  water_fraction: 0.177311
+
+
+============================================================
+COMPARISON TABLE
+============================================================
+Metric                   | RF      | XGB     
+---------------------------------------------
+n_train                  | 228     | 228     
+n_test                   | 57      | 57      
+Test accuracy            | 0.7368  | 0.7368  
+CV mean accuracy         | 0.8070  | 0.7895  
+CV std                   | 0.0666  | 0.0777  
+F1 ice_free_snow_free    | 0.8772  | 0.8852  
+F1 ice_free_snow_land    | 0.5714  | 0.4000  
+F1 ice_cov_snow_cov      | 0.7273  | 0.6875  
+F1 ice_cov_snow_free     | 0.3529  | 0.3750  
+
