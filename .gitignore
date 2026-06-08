@@ -30,3 +30,6 @@ Thumbs.db
 outputs/
 *.csv
 *.xlsx
+
+# Large rasters (keep local)
+*.tif
