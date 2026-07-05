@@ -49,7 +49,11 @@ All Python scripts here are configured via hardcoded constants (paths, Alaska do
 
 ```bash
 python main_reproject.daksh.py
-python extracting_randomized_pixels.Daksh.py [dates] [--overwrite] [--seed N] [--uniform | --pure-random] [--region {top|bottom|middle}] [--side {left|right}]
+
+- python extracting_randomized_pixels.Daksh.py [dates] [--overwrite] [--seed N] [--uniform | --pure-random] [--region {top|bottom|middle}] [--side {left|right}]
+- python extracting_randomized_pixels.Daksh.py 20241118 --overwrite --region middle --side right --scene 3
+
+
 python evaluate_dice_iou.py
 ```
 
