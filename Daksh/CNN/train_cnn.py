@@ -117,6 +117,7 @@ def load_combined_csv() -> pd.DataFrame:
     df = df[~df["notes"].str.contains("CONFLICT", case=False, na=False)]
     df = df[~df["notes"].str.contains("EXCLUDED", case=False, na=False)]
     df = df[df["modis_ndvi"].replace("", np.nan).astype(float).notna()]
+    df = df[df["ground_truth_class"].isin(VALID_LABELS)]
     df["source"] = "combined"
     return df
 

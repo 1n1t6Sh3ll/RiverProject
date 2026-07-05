@@ -43,6 +43,8 @@ OUTPUT_DIR   = PROJECT_ROOT / "outputs"
 
 COMBINED_FILE = TRAINING_DIR / "combined_all.csv"
 
+SEED = 42
+
 FEATURE_COLUMNS = [
     "I1", "I2", "I3", "I4", "I5",
     "SZA", "SAA", "VZA", "VAA",
@@ -176,7 +178,7 @@ def _save_cm_png(cm: np.ndarray, names: List[str], path: Path, title: str) -> No
 
 
 def _eval(model, X, y, rep, tag):
-    sss = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+    sss = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=SEED)
     idx_tr, idx_te = next(sss.split(X, y))
     te_counts = pd.Series(y[idx_te]).value_counts()
     use_loo = te_counts.min() < 2
@@ -198,7 +200,7 @@ def _eval(model, X, y, rep, tag):
 
 def _cv(model, X, y, rep, tag):
     try:
-        skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=SEED)
         sc = cross_val_score(model, X, y, cv=skf, scoring="accuracy")
         return float(sc.mean()), float(sc.std())
     except ValueError:
@@ -212,10 +214,10 @@ def train_and_eval(key: str, mtype: str, bundle: DatasetBundle,
     if mtype == "RF":
         mdl = RandomForestClassifier(n_estimators=200, max_depth=None,
                                      min_samples_leaf=2, class_weight="balanced",
-                                     random_state=42)
+                                     random_state=SEED)
     else:
         mdl = XGBClassifier(n_estimators=200, max_depth=4, learning_rate=0.1,
-                            eval_metric="mlogloss", random_state=42)
+                            eval_metric="mlogloss", random_state=SEED)
 
     y_true, y_pred, n_tr, n_te, acc = _eval(
         mdl, bundle.X, bundle.y_encoded, rep, f"{key}")
@@ -260,7 +262,7 @@ def print_pretraining(bundles: Dict[str, DatasetBundle], class_names: List[str],
         rep.log(f"  {c} -> {int(le.transform([c])[0])}")
     for name, b in bundles.items():
         rep.log(f"\n{name} shape: {b.X.shape}")
-        sss = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+        sss = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=SEED)
         i_tr, i_te = next(sss.split(b.X, b.y_encoded))
         rep.log(f"  Train class counts: {pd.Series(b.y_encoded[i_tr]).value_counts().sort_index().to_dict()}")
         rep.log(f"  Test  class counts: {pd.Series(b.y_encoded[i_te]).value_counts().sort_index().to_dict()}")
