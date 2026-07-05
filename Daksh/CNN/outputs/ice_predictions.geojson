@@ -1,0 +1,6193 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.91263,
+          63.68803
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.6356,
+          63.2556
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.30452,
+          63.04614
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.99708,
+          62.97181
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.62546,
+          62.85019
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.65249,
+          62.63398
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.64911,
+          62.55289
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.916,
+          62.45154
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.38222,
+          62.16776
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.19979,
+          61.9583
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.53087,
+          61.89411
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2022-10-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.44426,
+          64.94764
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2023-04-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.23818,
+          64.90034
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2023-04-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.13007,
+          64.84628
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-04-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.7348,
+          64.77196
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2023-04-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.4848,
+          64.72128
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2023-04-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.50507,
+          64.65372
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2023-04-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.07264,
+          64.41723
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2023-04-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.46115,
+          63.92061
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2023-04-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.46696,
+          65.1927
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-05-19"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.07506,
+          65.12175
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-05-19"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.64939,
+          65.08459
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-05-19"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.11655,
+          64.84628
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -147.65034,
+          64.77196
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.04223,
+          64.6875
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.11993,
+          64.58953
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.53547,
+          64.32939
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.65372,
+          64.15034
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.71791,
+          63.77872
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.13682,
+          63.67061
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.88682,
+          63.58615
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.11993,
+          63.68074
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.33953,
+          63.55236
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.09628,
+          63.43412
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.1402,
+          63.36655
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.94426,
+          62.86655
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.65709,
+          62.79561
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.24831,
+          62.72128
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.4375,
+          62.63682
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.42736,
+          62.21791
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.47466,
+          62.07939
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.24155,
+          61.96791
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-10-26"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.93074,
+          64.99831
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-03-14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.47804,
+          64.94088
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-03-14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.80236,
+          64.86993
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-03-14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.21791,
+          64.82601
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-03-14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.43388,
+          66.17648
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-04-27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.94402,
+          66.08864
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-04-27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.74807,
+          64.93661
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-04-27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.13659,
+          64.68661
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-04-27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.51878,
+          65.18454
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-10-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.60999,
+          65.02238
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-10-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.43621,
+          63.07927
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.22675,
+          62.97791
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.61864,
+          62.94075
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.62878,
+          62.82589
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.93621,
+          62.76508
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.74364,
+          62.65359
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.74026,
+          62.57251
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.74026,
+          62.32927
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.19972,
+          62.10291
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.45648,
+          61.95764
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.31171,
+          66.29878
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-05-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.59211,
+          66.19068
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-05-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.93333,
+          65.98797
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2025-05-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.67319,
+          65.47108
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-05-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.62927,
+          65.17716
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-05-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.19008,
+          65.13324
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-05-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.7036,
+          65.10284
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-05-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.08873,
+          64.93054
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-05-15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.70358,
+          65.76061
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.602,
+          65.98358
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.97,
+          64.69642
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.433,
+          64.79439
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.342,
+          65.36196
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.65,
+          65.26736
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.373,
+          65.19642
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.197,
+          65.06466
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.535,
+          64.91264
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.552,
+          65.70993
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.166,
+          65.51061
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.163,
+          66.04439
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.957,
+          65.88899
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.359,
+          65.8552
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.295,
+          65.80453
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.704,
+          65.76061
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.785,
+          65.22777
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.67,
+          65.06223
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.052,
+          64.98453
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.68,
+          64.86966
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.491,
+          64.81561
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.822,
+          64.74466
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.055,
+          64.71764
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.741,
+          64.68047
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.984,
+          64.65007
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.339,
+          64.61966
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.575,
+          64.57236
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.636,
+          64.51493
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.238,
+          64.46764
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.285,
+          64.43385
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.072,
+          64.40682
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.738,
+          64.37304
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.437,
+          64.26831
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.592,
+          64.11628
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.69,
+          63.69399
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.444,
+          63.63993
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.788,
+          63.60277
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.592,
+          63.55885
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.412,
+          66.73507
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.085,
+          66.4952
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.412,
+          66.46142
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.76,
+          66.42426
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.605,
+          65.96818
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-02-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.706,
+          67.18169
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.568,
+          66.98236
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.115,
+          66.92155
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.084,
+          66.88439
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.345,
+          66.60399
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -160.091,
+          66.54655
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.997,
+          66.51615
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -161.736,
+          66.4452
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -160.628,
+          66.29318
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.309,
+          65.5052
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-10"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.073,
+          65.2248
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-10"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.397,
+          65.04574
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-10"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.498,
+          64.96128
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2024-06-10"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -160.214,
+          65.77547
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-10"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -161.025,
+          65.10993
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-10"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -161.956,
+          70.17264
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.024,
+          70.10507
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -160.963,
+          70.30439
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -160.602,
+          70.27061
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -160.463,
+          70.24358
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -161.919,
+          70.06453
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -160.453,
+          70.00372
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.615,
+          69.88547
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -161.264,
+          69.83818
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.882,
+          69.79088
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 0,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.034,
+          69.7098
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.169,
+          69.65236
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -160.426,
+          69.6152
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -161.659,
+          69.57466
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.342,
+          69.51385
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -161.396,
+          69.43953
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -161.885,
+          69.23007
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.825,
+          69.10169
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.706,
+          66.85061
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -159.348,
+          66.78304
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.774,
+          66.75264
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-07-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.22935,
+          61.88352
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2020-03-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.54354,
+          61.78217
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2020-03-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.94895,
+          61.70109
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2020-03-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.2226,
+          61.6369
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2020-03-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.06043,
+          61.58622
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2020-03-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.05368,
+          61.5592
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2020-03-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.64489,
+          61.52204
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2020-03-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -159.11787,
+          61.23487
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2020-03-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.80706,
+          60.89366
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2020-03-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.93421,
+          64.89295
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.21799,
+          64.84565
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.38691,
+          64.78822
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.64029,
+          64.73755
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.55245,
+          64.68349
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.22475,
+          64.52133
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.67745,
+          64.28484
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.34299,
+          63.53822
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.6538,
+          63.44363
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.74164,
+          65.25106
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.45448,
+          64.98755
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.74164,
+          64.92674
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.37002,
+          64.88282
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.15042,
+          64.86255
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.9815,
+          64.83552
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.00853,
+          64.80849
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.72137,
+          64.77471
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.38691,
+          64.75106
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.47813,
+          64.70038
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.36664,
+          64.56187
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.6234,
+          64.47741
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.81596,
+          64.41998
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.95448,
+          64.19025
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.5288,
+          64.01795
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.88015,
+          63.73079
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.57948,
+          63.62268
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.37002,
+          63.55849
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.85988,
+          63.38957
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2021-05-03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.82948,
+          64.88282
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-03-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.81258,
+          64.83552
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-03-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.74164,
+          64.77471
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-03-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.44096,
+          64.72741
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2022-03-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.68758,
+          64.6666
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-03-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.13015,
+          64.45714
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2022-03-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.75515,
+          63.56863
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2022-03-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.9984,
+          63.27133
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2022-03-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.68421,
+          64.93011
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2022-10-05"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.25853,
+          64.07201
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2022-10-05"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.02007,
+          69.28358
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.3748,
+          69.22277
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.84439,
+          69.1552
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.08088,
+          69.06736
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.20926,
+          68.97615
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.64169,
+          68.89507
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.13493,
+          68.83088
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.33764,
+          68.74642
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.91534,
+          68.68899
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.77682,
+          68.63155
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.08088,
+          68.56399
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.02682,
+          68.50655
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.99304,
+          68.45588
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.97953,
+          68.41872
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.96358,
+          69.41655
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.73047,
+          69.37601
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -164.39115,
+          68.91669
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -164.43169,
+          68.84574
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.41818,
+          67.97074
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.17155,
+          67.94034
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.3202,
+          67.90655
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -163.94182,
+          67.86939
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.72899,
+          67.83223
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.52628,
+          67.69034
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.71885,
+          67.63966
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.58709,
+          67.58561
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.95872,
+          67.51466
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.30115,
+          66.30804
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.34507,
+          66.27764
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.34169,
+          66.21345
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.31804,
+          66.16277
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -163.08182,
+          69.41993
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -163.16966,
+          69.3152
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.78115,
+          69.26791
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -163.27101,
+          69.20372
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -164.15615,
+          68.9402
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -164.60209,
+          68.9098
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -164.40953,
+          68.84899
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-06-09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.91804,
+          67.45804
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-09-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -163.04304,
+          67.39723
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-09-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -163.07007,
+          67.35331
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-09-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.90791,
+          67.31277
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-09-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -162.87074,
+          67.25196
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-09-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -163.47547,
+          67.0898
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-09-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -166.43372,
+          64.7502
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-09-23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.71115,
+          65.01182
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.19426,
+          64.95777
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.77534,
+          64.89696
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.8598,
+          64.84291
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -147.24493,
+          64.77196
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -147.11655,
+          64.59291
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 0,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.30236,
+          64.47128
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.62331,
+          64.15034
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.19764,
+          64.00507
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.52196,
+          63.67399
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.90034,
+          63.41723
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2023-09-25"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.38995,
+          66.17648
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-04-27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.819,
+          66.08865
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-04-27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.90008,
+          65.75756
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-04-27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.66698,
+          65.04473
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-04-27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.15008,
+          64.68662
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-04-27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.11865,
+          62.94418
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.79094,
+          62.76512
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.84162,
+          62.50836
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.89905,
+          62.32931
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.40581,
+          62.23134
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.55108,
+          61.95769
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.38216,
+          61.88674
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-04-20"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.82047,
+          59.12736
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.46236,
+          59.08682
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.76304,
+          58.97196
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.28331,
+          58.85034
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.15831,
+          58.81655
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.17858,
+          58.7152
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -159.17182,
+          58.56993
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.94209,
+          58.44831
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.87115,
+          58.40439
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.7225,
+          59.0598
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.90155,
+          58.92804
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.88466,
+          58.90101
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.83061,
+          58.87736
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -159.27318,
+          58.67128
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.18872,
+          58.61723
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.77318,
+          58.48209
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.00179,
+          68.83088
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-10-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.97814,
+          68.80048
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2024-10-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.85652,
+          68.72615
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2024-10-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.50855,
+          68.7025
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2024-10-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.23828,
+          68.63156
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2024-10-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -153.47138,
+          68.58088
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2024-10-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.17747,
+          68.06399
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-10-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.83963,
+          67.92885
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-10-01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.00508,
+          69.21385
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-10-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.86318,
+          69.15979
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-10-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.8294,
+          69.10912
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-10-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -147.35981,
+          69.02466
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-10-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.8294,
+          68.87601
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2024-10-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -147.30575,
+          68.80506
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-10-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -148.68075,
+          68.7679
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2024-10-02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.29676,
+          69.1011
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.91838,
+          69.03353
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.24608,
+          68.59772
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.06365,
+          68.37475
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.05689,
+          68.28015
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.14811,
+          68.15515
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.53325,
+          68.04029
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 0,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.06365,
+          67.44569
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.90825,
+          67.18556
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.41838,
+          68.43218
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.06365,
+          68.2734
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.07716,
+          68.24299
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.10081,
+          68.11799
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.22244,
+          68.6484
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.25622,
+          68.60448
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.46568,
+          68.40178
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.47919,
+          68.33759
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.09068,
+          68.11461
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.22244,
+          68.6484
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.25622,
+          68.60448
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.46568,
+          68.40178
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.47919,
+          68.33759
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.09068,
+          68.11461
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.41838,
+          68.43218
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_land",
+        "class_id": 3,
+        "true_class": "ice_free_river_snow_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.06365,
+          68.2734
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.07716,
+          68.24299
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.10081,
+          68.11799
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2025-10-11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.88345,
+          58.26899
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.78547,
+          58.41088
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.87331,
+          58.29601
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.30574,
+          58.26561
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.7652,
+          58.12709
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.92128,
+          58.39318
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.89764,
+          58.11953
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.91791,
+          57.81547
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.78615,
+          57.72764
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.97872,
+          57.85601
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.77939,
+          58.27493
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.90101,
+          58.22088
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.74223,
+          58.12628
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.01926,
+          58.10939
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.83682,
+          58.07561
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.11723,
+          57.94385
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.91791,
+          57.87291
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.89764,
+          57.86615
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.13074,
+          57.81209
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-21"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.02439,
+          59.54466
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 0,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.93318,
+          59.37574
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.33858,
+          59.3352
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.20777,
+          59.48966
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.47804,
+          59.34101
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.10642,
+          59.28358
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.17061,
+          59.13155
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.61318,
+          58.77345
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.70439,
+          58.70926
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.86993,
+          58.65858
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.94426,
+          58.55385
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.19426,
+          58.49304
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.03209,
+          58.30385
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.93412,
+          58.13155
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.41723,
+          57.96601
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.96034,
+          58.11764
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-11-29"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.16993,
+          57.80169
+        ]
+      },
+      "properties": {
+        "predicted": "ice_free_river_snow_free_land",
+        "class_id": 2,
+        "true_class": "ice_free_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-29"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.27453,
+          59.43182
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 0,
+        "date": "2024-11-29"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.93007,
+          58.30169
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-29"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.99088,
+          58.15304
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-29"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.88277,
+          58.12939
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-11-29"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.85236,
+          58.12264
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_free_land",
+        "class_id": 1,
+        "true_class": "ice_covered_river_snow_free_land",
+        "correct": 1,
+        "date": "2024-11-29"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.73412,
+          58.11588
+        ]
+      },
+      "properties": {
+        "predicted": "ice_covered_river_snow_covered_land",
+        "class_id": 0,
+        "true_class": "ice_covered_river_snow_covered_land",
+        "correct": 1,
+        "date": "2024-11-29"
+      }
+    }
+  ]
+}
