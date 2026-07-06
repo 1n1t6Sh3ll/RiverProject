@@ -1,0 +1,2 @@
+viirs_date,landsat_scene,row_shared_grid,col_shared_grid,lat,lon,water_fraction_occ,I1,I2,I3,I4,I5,SZA,SAA,VZA,VAA,ground_truth_class,notes,modis_ndvi,modis_lc_type1,modis_lc_name
+2024-11-05,LC09_L1TP_079012_20241105_20241105_02_T2,1196,2748,67.95791,-161.71493,0.6902,0.2521,0.1933,0.0337,261.2372,260.7473,85.7304,-155.5483,52.4216,-93.8892,ice_covered_river_snow_land,Landsat confirmed at 30m. ST_B10=260.76K NDSI=0.0778.,0.0023,7,Open Shrublands
