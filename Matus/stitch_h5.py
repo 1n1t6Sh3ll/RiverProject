@@ -56,4 +56,4 @@ def stitch_svi_files(target_dir, satellite="j01", t_code="t2053"):
     return gimgo_path
 
 if __name__ == "__main__":
-    stitch_svi_files("viirs_data")
+    stitch_svi_files("viirs_data", satellite="j01", t_code="t2144")

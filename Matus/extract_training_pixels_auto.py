@@ -33,14 +33,23 @@ from viirs_training_loader import load_viirs_training_pair
 # ── SCENE REGISTRY ────────────────────────────────────────────────────────────
 
 SCENES = {
-    "2024-04-27": {
-        "gitco":         "viirs_data/GITCO_j02_d20240427_t2028217_e2029464_b07584_c20240427204149474000_oebc_ops.h5",
-        "gimgo":         "viirs_data/GIMGO-SVI01-SVI02-SVI03-SVI04-SVI05_j02_d20240427_t2028217_e2029464_b07584_stitched.h5",
-        "landsat_scene": "LC80710142024118LGN00",
-        "landsat_bbox":  (64.45474013450857, 66.70519256447828, -152.42881658598267, -147.0838276763541),
-        "output_dir":    "20240427",
+    "2024-10-02": {
+        "gitco":         "viirs_data/GITCO_j02_d20241002_t2108325_e2109572_b09826_c20241002212244673000_oebc_ops.h5",
+        "gimgo":         "viirs_data/GIMGO-SVI01-SVI02-SVI03-SVI04-SVI05_j02_d20241002_t2108325_e2109572_b09826_stitched.h5",
+        "landsat_scene": "LC80730112024276LGN00",
+        "landsat_bbox":  (68.4479, 70.7527, -151.3919, -144.8754),
+        "output_dir":    "20241002",
         "ee_collection": "LANDSAT/LC08/C02/T1_L2",
-        "viirs_tif":     "20240427/viirs_alaska_20240427.tif",
+        "viirs_tif":     "20241002/viirs_alaska_20241002.tif",
+    },
+    "2024-10-01": {
+        "gitco":         "viirs_data/GITCO_npp_d20241001_t2010398_e2012039_b67000_c20241001203039925000_oebc_ops.h5",
+        "gimgo":         "viirs_data/GIMGO-SVI01-SVI02-SVI03-SVI04-SVI05_npp_d20241001_t2010398_e2012039_b67000_stitched.h5",
+        "landsat_scene": "LC90740122024275LGN00",
+        "landsat_bbox":  (67.1273222036833, 69.41365118989921, -154.44942490496624, -148.36261906395418),
+        "output_dir":    "20241001",
+        "ee_collection": "LANDSAT/LC09/C02/T1_L2",
+        "viirs_tif":     "20241001/viirs_alaska_20241001.tif",
     },
 }
 
@@ -781,7 +790,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Extract VIIRS training pixels for a given scene date.")
     parser.add_argument(
-        "--date", required=False, default="2022-10-23",
+        "--date", required=False, default="2024-10-01",
         choices=list(SCENES.keys()),
         help="Scene date to process (YYYY-MM-DD)")
     parser.add_argument(

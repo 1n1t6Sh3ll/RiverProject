@@ -5,10 +5,10 @@ ee.Initialize(project='noaa-river-ice')
 # Landsat 8 collection
 collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_L2')
 
-# Path 71, Row 16
-img = collection.filter(ee.Filter.eq('WRS_PATH', 71)) \
-                .filter(ee.Filter.eq('WRS_ROW', 16)) \
-                .filterDate('2022-10-23', '2022-10-24') \
+# Path 75, Row 12
+img = collection.filter(ee.Filter.eq('WRS_PATH', 75)) \
+                .filter(ee.Filter.eq('WRS_ROW', 12)) \
+                .filterDate('2025-10-11', '2025-10-12') \
                 .first()
 
 info = img.getInfo()
@@ -18,8 +18,8 @@ if info is None:
 else:
     footprint = info['properties']['system:footprint']['coordinates']
 
-    print(f"Landsat Scene: LC90710162022296LGN01 (Path 71, Row 16)")
-    print(f"Date: 2022-10-23")
+    print(f"Landsat Scene: LC90750122025284LGN00 (Path 75, Row 12)")
+    print(f"Date: 2025-10-11")
     print(f"Cloud Cover: {info['properties'].get('CLOUD_COVER')}%")
     print()
     print("Footprint coordinates (Lon, Lat):")
