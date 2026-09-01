@@ -71,7 +71,7 @@ def download_viirs_data(target_date_str, target_utc_hour, download_dir='./viirs_
 
 if __name__ == "__main__":
     # Execute the downloader
-    TARGET_DATE = '2022-10-23'
-    TARGET_HOUR = '_t2053'
+    TARGET_DATE = '2025-10-11'
+    TARGET_HOUR = '_t2144'
 
     download_viirs_data(TARGET_DATE, TARGET_HOUR, download_dir='./viirs_data', max_files_per_band=1)
