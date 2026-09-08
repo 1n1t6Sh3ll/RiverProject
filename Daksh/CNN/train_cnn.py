@@ -36,13 +36,17 @@ OUTPUT_DIR   = PROJECT_ROOT / "outputs"
 
 COMBINED_FILE = TRAINING_DIR / "combined_all.csv"
 
+# MODIS IGBP land-cover type codes observed in the training data
+LC_CATEGORIES = [1, 4, 5, 7, 8, 9, 10, 11, 16]
+LC_COLUMNS = [f"lc_{code}" for code in LC_CATEGORIES]
+
 FEATURE_COLUMNS = [
     "I1", "I2", "I3", "I4", "I5",
     "SZA", "SAA", "VZA", "VAA",
     "VIIRS_NDWI",
     "water_fraction",
     "modis_ndvi",
-]
+] + LC_COLUMNS
 N_FEATURES = len(FEATURE_COLUMNS)
 
 VALID_LABELS = {
@@ -106,6 +110,13 @@ def _add_viirs_ndwi(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def _add_landcover_onehot(df: pd.DataFrame) -> pd.DataFrame:
+    lc = pd.to_numeric(df["modis_lc_type1"], errors="coerce")
+    for code, col in zip(LC_CATEGORIES, LC_COLUMNS):
+        df[col] = (lc == code).astype(float)
+    return df
+
+
 
 def load_combined_csv() -> pd.DataFrame:
     df = pd.read_csv(COMBINED_FILE)
@@ -138,6 +149,7 @@ def prepare_datasets() -> Dict[str, pd.DataFrame]:
         if col in comb.columns:
             comb[col] = comb[col].fillna(comb[col].median())
     _add_viirs_ndwi(comb)
+    _add_landcover_onehot(comb)
     for col in FEATURE_COLUMNS:
         comb[col] = pd.to_numeric(comb[col], errors="coerce")
     _nan_guard(comb, "Combined")

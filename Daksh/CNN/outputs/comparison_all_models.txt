@@ -1,109 +1,109 @@
 
 ======================================================================
 MODEL COMPARISON REPORT — CNN vs Random Forest vs XGBoost
-Dataset: Combined (364 rows)  |  Split: 80/20 stratified  |  Seed: 42
+Dataset: Combined (385 rows)  |  Split: 80/20 stratified  |  Seed: 42
 ======================================================================
 
 --- OVERALL METRICS ---
 Metric                      | CNN         | RF          | XGB         
 ----------------------------------------------------------------------
-n_train                     | 291         | 291         | 291         
-n_test                      | 73          | 73          | 73          
-Test accuracy               | 0.7534      | 0.7808      | 0.7397      
-Balanced accuracy           | 0.7846      | 0.7481      | 0.7208      
-CV mean (5-fold)            | 0.7527      | 0.7973      | 0.7971      
-CV std                      | 0.0467      | 0.0467      | 0.0472      
-Macro F1                    | 0.7384      | 0.7503      | 0.7071      
-Weighted F1                 | 0.7586      | 0.7777      | 0.7389      
-Macro Precision             | 0.7288      | 0.7535      | 0.7003      
-Macro Recall                | 0.7846      | 0.7481      | 0.7208      
-Cohen's Kappa               | 0.6609      | 0.6863      | 0.6324      
-Matthews CC                 | 0.6675      | 0.6868      | 0.6336      
+n_train                     | 308         | 308         | 308         
+n_test                      | 77          | 77          | 77          
+Test accuracy               | 0.7792      | 0.7792      | 0.7532      
+Balanced accuracy           | 0.7835      | 0.7004      | 0.6842      
+CV mean (5-fold)            | 0.7766      | 0.7889      | 0.7887      
+CV std                      | 0.0362      | 0.0290      | 0.0448      
+Macro F1                    | 0.7713      | 0.7187      | 0.6965      
+Weighted F1                 | 0.7793      | 0.7689      | 0.7488      
+Macro Precision             | 0.7863      | 0.7743      | 0.7200      
+Macro Recall                | 0.7835      | 0.7004      | 0.6842      
+Cohen's Kappa               | 0.6898      | 0.6812      | 0.6465      
+Matthews CC                 | 0.6983      | 0.6898      | 0.6490      
 
 --- PER-CLASS F1 ---
 Metric                      | CNN         | RF          | XGB         
 ----------------------------------------------------------------------
-covered snow_covered        | 0.7429      | 0.7027      | 0.6286      
-covered snow_free           | 0.6471      | 0.6452      | 0.6667      
-free snow_free              | 0.8364      | 0.9032      | 0.8667      
-free snow                   | 0.7273      | 0.7500      | 0.6667      
+covered snow_covered        | 0.7222      | 0.7368      | 0.7805      
+covered snow_free           | 0.6818      | 0.7000      | 0.6667      
+free snow_free              | 0.8814      | 0.8923      | 0.8387      
+free snow                   | 0.8000      | 0.5455      | 0.5000      
 
 --- DICE COEFFICIENT (per class) ---
 Metric                      | CNN         | RF          | XGB         
 ----------------------------------------------------------------------
-covered snow_covered        | 0.7429      | 0.7027      | 0.6286      
-covered snow_free           | 0.6471      | 0.6452      | 0.6667      
-free snow_free              | 0.8364      | 0.9032      | 0.8667      
-free snow                   | 0.7273      | 0.7500      | 0.6667      
-Macro average               | 0.7384      | 0.7503      | 0.7071      
+covered snow_covered        | 0.7222      | 0.7368      | 0.7805      
+covered snow_free           | 0.6818      | 0.7000      | 0.6667      
+free snow_free              | 0.8814      | 0.8923      | 0.8387      
+free snow                   | 0.8000      | 0.5455      | 0.5000      
+Macro average               | 0.7713      | 0.7187      | 0.6965      
 
 --- IoU / JACCARD (per class) ---
 Metric                      | CNN         | RF          | XGB         
 ----------------------------------------------------------------------
-covered snow_covered        | 0.5909      | 0.5417      | 0.4583      
-covered snow_free           | 0.4783      | 0.4762      | 0.5000      
-free snow_free              | 0.7187      | 0.8235      | 0.7647      
-free snow                   | 0.5714      | 0.6000      | 0.5000      
-Macro average               | 0.5898      | 0.6103      | 0.5558      
+covered snow_covered        | 0.5652      | 0.5833      | 0.6400      
+covered snow_free           | 0.5172      | 0.5385      | 0.5000      
+free snow_free              | 0.7879      | 0.8056      | 0.7222      
+free snow                   | 0.6667      | 0.3750      | 0.3333      
+Macro average               | 0.6343      | 0.5756      | 0.5489      
 
 --- CONFUSION MATRIX: CNN ---
 True \ Pred   ice cove  ice cove  ice free  ice free
-ice covered         13         6         0         0
-ice covered          3        11         2         0
-ice free             0         1        23         6
-ice free             0         0         0         8
+ice covered         13         9         0         0
+ice covered          1        15         3         0
+ice free             0         1        26         2
+ice free             0         0         1         6
 
 --- CONFUSION MATRIX: RF ---
 True \ Pred   ice cove  ice cove  ice free  ice free
-ice covered         13         5         0         1
-ice covered          2        10         4         0
-ice free             1         0        28         1
-ice free             2         0         0         6
+ice covered         14         7         0         1
+ice covered          1        14         4         0
+ice free             0         0        29         0
+ice free             1         0         3         3
 
 --- CONFUSION MATRIX: XGB ---
 True \ Pred   ice cove  ice cove  ice free  ice free
-ice covered         11         6         0         2
-ice covered          1        11         4         0
-ice free             2         0        26         2
-ice free             2         0         0         6
+ice covered         16         6         0         0
+ice covered          2        13         4         0
+ice free             0         1        26         2
+ice free             1         0         3         3
 
 --- CLASSIFICATION REPORT: CNN ---
                                      precision    recall  f1-score   support
 
-ice_covered_river_snow_covered_land       0.81      0.68      0.74        19
-   ice_covered_river_snow_free_land       0.61      0.69      0.65        16
-      ice_free_river_snow_free_land       0.92      0.77      0.84        30
-           ice_free_river_snow_land       0.57      1.00      0.73         8
+ice_covered_river_snow_covered_land       0.93      0.59      0.72        22
+   ice_covered_river_snow_free_land       0.60      0.79      0.68        19
+      ice_free_river_snow_free_land       0.87      0.90      0.88        29
+           ice_free_river_snow_land       0.75      0.86      0.80         7
 
-                           accuracy                           0.75        73
-                          macro avg       0.73      0.78      0.74        73
-                       weighted avg       0.79      0.75      0.76        73
+                           accuracy                           0.78        77
+                          macro avg       0.79      0.78      0.77        77
+                       weighted avg       0.81      0.78      0.78        77
 
 
 --- CLASSIFICATION REPORT: RF ---
                                      precision    recall  f1-score   support
 
-ice_covered_river_snow_covered_land       0.72      0.68      0.70        19
-   ice_covered_river_snow_free_land       0.67      0.62      0.65        16
-      ice_free_river_snow_free_land       0.88      0.93      0.90        30
-           ice_free_river_snow_land       0.75      0.75      0.75         8
+ice_covered_river_snow_covered_land       0.88      0.64      0.74        22
+   ice_covered_river_snow_free_land       0.67      0.74      0.70        19
+      ice_free_river_snow_free_land       0.81      1.00      0.89        29
+           ice_free_river_snow_land       0.75      0.43      0.55         7
 
-                           accuracy                           0.78        73
-                          macro avg       0.75      0.75      0.75        73
-                       weighted avg       0.78      0.78      0.78        73
+                           accuracy                           0.78        77
+                          macro avg       0.77      0.70      0.72        77
+                       weighted avg       0.79      0.78      0.77        77
 
 
 --- CLASSIFICATION REPORT: XGB ---
                                      precision    recall  f1-score   support
 
-ice_covered_river_snow_covered_land       0.69      0.58      0.63        19
-   ice_covered_river_snow_free_land       0.65      0.69      0.67        16
-      ice_free_river_snow_free_land       0.87      0.87      0.87        30
-           ice_free_river_snow_land       0.60      0.75      0.67         8
+ice_covered_river_snow_covered_land       0.84      0.73      0.78        22
+   ice_covered_river_snow_free_land       0.65      0.68      0.67        19
+      ice_free_river_snow_free_land       0.79      0.90      0.84        29
+           ice_free_river_snow_land       0.60      0.43      0.50         7
 
-                           accuracy                           0.74        73
-                          macro avg       0.70      0.72      0.71        73
-                       weighted avg       0.74      0.74      0.74        73
+                           accuracy                           0.75        77
+                          macro avg       0.72      0.68      0.70        77
+                       weighted avg       0.75      0.75      0.75        77
 
 
 ======================================================================

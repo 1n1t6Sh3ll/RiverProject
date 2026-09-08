@@ -1,1 +1,1 @@
-CNN1D-Combined: test=0.7671  CV=0.7527±0.0467  n_train=291  n_test=73
+CNN1D-Combined: test=0.7922  CV=0.7766±0.0362  n_train=308  n_test=77

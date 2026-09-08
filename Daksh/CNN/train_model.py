@@ -45,13 +45,17 @@ COMBINED_FILE = TRAINING_DIR / "combined_all.csv"
 
 SEED = 42
 
+# MODIS IGBP land-cover type codes observed in the training data
+LC_CATEGORIES = [1, 4, 5, 7, 8, 9, 10, 11, 16]
+LC_COLUMNS = [f"lc_{code}" for code in LC_CATEGORIES]
+
 FEATURE_COLUMNS = [
     "I1", "I2", "I3", "I4", "I5",
     "SZA", "SAA", "VZA", "VAA",
     "VIIRS_NDWI",
     "water_fraction",
     "modis_ndvi",
-]
+] + LC_COLUMNS
 
 F1_CLASSES = [
     "ice_free_river_snow_free_land",
@@ -59,6 +63,8 @@ F1_CLASSES = [
     "ice_covered_river_snow_covered_land",
     "ice_covered_river_snow_free_land",
 ]
+
+VALID_LABELS = set(F1_CLASSES)
 
 
 class Reporter:
@@ -113,6 +119,13 @@ def _add_viirs_indices(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def _add_landcover_onehot(df: pd.DataFrame) -> pd.DataFrame:
+    lc = pd.to_numeric(df["modis_lc_type1"], errors="coerce")
+    for code, col in zip(LC_CATEGORIES, LC_COLUMNS):
+        df[col] = (lc == code).astype(float)
+    return df
+
+
 
 def load_combined(rep: Reporter) -> pd.DataFrame:
     df = pd.read_csv(COMBINED_FILE)
@@ -124,6 +137,7 @@ def load_combined(rep: Reporter) -> pd.DataFrame:
     df = df[~df["notes"].str.contains("CONFLICT", case=False, na=False)]
     df = df[~df["notes"].str.contains("EXCLUDED", case=False, na=False)]
     df = df[df["modis_ndvi"].replace("", np.nan).astype(float).notna()]
+    df = df[df["ground_truth_class"].isin(VALID_LABELS)]
     df["source"] = "combined"
     rep.log(f"=== Combined dataset after filters: {len(df)} rows ===")
     for cls, cnt in df["ground_truth_class"].value_counts().sort_index().items():
@@ -324,6 +338,7 @@ def main() -> None:
 
     ds_combined = load_combined(rep)
     _add_viirs_indices(ds_combined)
+    _add_landcover_onehot(ds_combined)
     for col in FEATURE_COLUMNS:
         ds_combined[col] = pd.to_numeric(ds_combined[col], errors="coerce")
     _nan_check(ds_combined, "Combined", rep)
