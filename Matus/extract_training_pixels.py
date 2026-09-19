@@ -33,42 +33,6 @@ from viirs_training_loader import load_viirs_training_pair
 # ── SCENE REGISTRY ────────────────────────────────────────────────────────────
 
 SCENES = {
-    "2025-10-11": {
-        "gitco":         "viirs_data/GITCO_j01_d20251011_t2144017_e2145262_b40925_c20251011215724658000_oebc_ops.h5",
-        "gimgo":         "viirs_data/GIMGO-SVI01-SVI02-SVI03-SVI04-SVI05_j01_d20251011_t2144017_e2145262_b40925_stitched.h5",
-        "landsat_scene": "LC90750122025284LGN00",
-        "landsat_bbox":  (67.1274, 69.4136, -156.0248, -149.9376),
-        "output_dir":    "20251011",
-        "ee_collection": "LANDSAT/LC09/C02/T1_L2",
-        "viirs_tif":     "20251011/viirs_alaska_20251011.tif",
-    },
-    "2023-09-25": {
-        "gitco":         None,  # H5 granules cleared after first run; uses cached TIF
-        "gimgo":         None,
-        "landsat_scene": "LC80700152023268LGN00",
-        "landsat_bbox":  (63.100253286007, 65.33670733566584, -151.88703837439672, -146.84307752809028),
-        "output_dir":    "20230925",
-        "ee_collection": "LANDSAT/LC08/C02/T1_L2",
-        "viirs_tif":     "20230925/viirs_alaska_20230925.tif",
-    },
-    "2022-10-23": {
-        "gitco":         "viirs_data/GITCO_j01_d20221023_t2053479_e2055106_b25545_c20221023210616118927_oeac_ops.h5",
-        "gimgo":         "viirs_data/GIMGO-SVI01-SVI02-SVI03-SVI04-SVI05_j01_d20221023_t2053479_e2055106_b25545_stitched.h5",
-        "landsat_scene": "LC90710162022296LGN01",
-        "landsat_bbox":  (61.733758606360816, 63.95661083361867, -154.46161174807895, -149.68068983997256),
-        "output_dir":    "20221023",
-        "ee_collection": "LANDSAT/LC09/C02/T1_L2",
-        "viirs_tif":     "20221023/viirs_alaska_20221023.tif",
-    },
-    "2024-04-27": {
-        "gitco":         "viirs_data/GITCO_j02_d20240427_t2028217_e2029464_b07584_c20240427204149474000_oebc_ops.h5",
-        "gimgo":         "viirs_data/GIMGO-SVI01-SVI02-SVI03-SVI04-SVI05_j02_d20240427_t2028217_e2029464_b07584_stitched.h5",
-        "landsat_scene": "LC80710142024118LGN00",
-        "landsat_bbox":  (64.45474013450857, 66.70519256447828, -152.42881658598267, -147.0838276763541),
-        "output_dir":    "20240427",
-        "ee_collection": "LANDSAT/LC08/C02/T1_L2",
-        "viirs_tif":     "20240427/viirs_alaska_20240427.tif",
-    },
     "2025-04-20": {
         "gitco":         "viirs_data/GITCO_npp_d20250420_t2221517_e2223159_b69853_c20250421000632694000_oeac_ops.h5",
         "gimgo":         "viirs_data/GIMGO-SVI01-SVI02-SVI03-SVI04-SVI05_npp_d20250420_t2221517_e2223159_b69853_stitched.h5",
@@ -566,7 +530,7 @@ def main(date: str, region: str | None = None):
             if   not is_ice and not is_snow:
                 auto_class = "ice_free_river_snow_free_land"
             elif not is_ice and is_snow:
-                auto_class = "ice_free_river_snow_land"
+                auto_class = "ice_free_river_snow_covered_land"
             elif is_ice and not is_snow:
                 auto_class = "ice_covered_river_snow_free_land"
             else:
@@ -774,20 +738,22 @@ var candidates = [
 {candidates_js}
 ];
 
-var iceSnow = [], iceNoSnow = [], freeNoSnow = [], freeSnow = [];
+var iceSnow = [], iceNoSnow = [], freeNoSnow = [], freeSnow = [], unknown = [];
 candidates.forEach(function(c) {{
   var feat = ee.Feature(ee.Geometry.Point([c.lon, c.lat]),
     {{'Pixel': c.id, 'Auto_Class': c.auto_class, 'ST_B10_K': c.st, 'NDSI': c.ndsi}});
   if (c.auto_class === 'ice_covered_river_snow_covered_land') iceSnow.push(feat);
   else if (c.auto_class === 'ice_covered_river_snow_free_land') iceNoSnow.push(feat);
   else if (c.auto_class === 'ice_free_river_snow_free_land') freeNoSnow.push(feat);
-  else freeSnow.push(feat);
+  else if (c.auto_class === 'ice_free_river_snow_covered_land') freeSnow.push(feat);
+  else unknown.push(feat);
 }});
 
 if (iceSnow.length > 0)   Map.addLayer(ee.FeatureCollection(iceSnow),   {{color: 'FF0000'}}, 'ice_covered+snow_covered (' + iceSnow.length + ')', true);
 if (iceNoSnow.length > 0) Map.addLayer(ee.FeatureCollection(iceNoSnow), {{color: 'FF8800'}}, 'ice_covered+snow_free (' + iceNoSnow.length + ')', true);
 if (freeNoSnow.length > 0) Map.addLayer(ee.FeatureCollection(freeNoSnow), {{color: '00FF00'}}, 'ice_free+snow_free (' + freeNoSnow.length + ')', true);
-if (freeSnow.length > 0)  Map.addLayer(ee.FeatureCollection(freeSnow),  {{color: '0088FF'}}, 'ice_free+snow (' + freeSnow.length + ')', true);
+if (freeSnow.length > 0)  Map.addLayer(ee.FeatureCollection(freeSnow),  {{color: '0088FF'}}, 'ice_free+snow_covered (' + freeSnow.length + ')', true);
+if (unknown.length > 0)   Map.addLayer(ee.FeatureCollection(unknown),   {{color: 'AAAAAA'}}, 'unlabeled / legacy class (' + unknown.length + ')', true);
 
 Map.setCenter({(float(confirmed_rows[0]['lon']) + float(confirmed_rows[-1]['lon'])) / 2:.1f}, {(float(confirmed_rows[0]['lat']) + float(confirmed_rows[-1]['lat'])) / 2:.1f}, 8);
 
@@ -817,7 +783,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Extract VIIRS training pixels for a given scene date.")
     parser.add_argument(
-        "--date", required=False, default="2022-10-23",
+        "--date", required=False, default="2025-04-20",
         choices=list(SCENES.keys()),
         help="Scene date to process (YYYY-MM-DD)")
     parser.add_argument(

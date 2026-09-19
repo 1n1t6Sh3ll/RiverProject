@@ -67,19 +67,29 @@ def _read_csv_robust(path: pathlib.Path) -> pd.DataFrame:
     column) contains a literal comma that was not quoted on write.  We handle
     this at the csv-module level: if a row has more fields than the header,
     all extra fields are re-joined into the last column with a comma.
+
+    Encoding: the extract scripts write UTF-8, so that is tried first (with
+    utf-8-sig to absorb a BOM if Excel added one).  A few older CSVs were
+    re-saved by Excel as cp1252 and contain a literal em-dash in `notes`;
+    those fall back to cp1252 rather than crashing.
     """
-    with open(path, newline='', encoding='cp1252') as fh:
-        reader = _csv.reader(fh)
-        header = next(reader)
-        n_cols = len(header)
-        rows = []
-        for raw in reader:
-            if len(raw) > n_cols:
-                # notes field contained an unquoted comma — merge extras back
-                merged = raw[:n_cols - 1] + [','.join(raw[n_cols - 1:])]
-                rows.append(merged)
-            else:
-                rows.append(raw)
+    try:
+        text = path.read_text(encoding='utf-8-sig')
+    except UnicodeDecodeError:
+        text = path.read_text(encoding='cp1252')
+        print(f"  NOTE: {path.name} is not UTF-8 - read as cp1252")
+
+    reader = _csv.reader(text.splitlines())
+    header = next(reader)
+    n_cols = len(header)
+    rows = []
+    for raw in reader:
+        if len(raw) > n_cols:
+            # notes field contained an unquoted comma — merge extras back
+            merged = raw[:n_cols - 1] + [','.join(raw[n_cols - 1:])]
+            rows.append(merged)
+        else:
+            rows.append(raw)
     return pd.DataFrame(rows, columns=header)
 
 
