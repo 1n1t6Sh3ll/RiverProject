@@ -539,7 +539,7 @@ def main(date: str, region: str | None = None):
             if   not is_ice and not is_snow:
                 auto_class = "ice_free_river_snow_free_land"
             elif not is_ice and is_snow:
-                auto_class = "ice_free_river_snow_land"
+                auto_class = "ice_free_river_snow_covered_land"
             elif is_ice and not is_snow:
                 auto_class = "ice_covered_river_snow_free_land"
             else:
@@ -747,20 +747,22 @@ var candidates = [
 {candidates_js}
 ];
 
-var iceSnow = [], iceNoSnow = [], freeNoSnow = [], freeSnow = [];
+var iceSnow = [], iceNoSnow = [], freeNoSnow = [], freeSnow = [], unknown = [];
 candidates.forEach(function(c) {{
   var feat = ee.Feature(ee.Geometry.Point([c.lon, c.lat]),
     {{'Pixel': c.id, 'Auto_Class': c.auto_class, 'ST_B10_K': c.st, 'NDSI': c.ndsi}});
   if (c.auto_class === 'ice_covered_river_snow_covered_land') iceSnow.push(feat);
   else if (c.auto_class === 'ice_covered_river_snow_free_land') iceNoSnow.push(feat);
   else if (c.auto_class === 'ice_free_river_snow_free_land') freeNoSnow.push(feat);
-  else freeSnow.push(feat);
+  else if (c.auto_class === 'ice_free_river_snow_covered_land') freeSnow.push(feat);
+  else unknown.push(feat);
 }});
 
 if (iceSnow.length > 0)   Map.addLayer(ee.FeatureCollection(iceSnow),   {{color: 'FF0000'}}, 'ice_covered+snow_covered (' + iceSnow.length + ')', true);
 if (iceNoSnow.length > 0) Map.addLayer(ee.FeatureCollection(iceNoSnow), {{color: 'FF8800'}}, 'ice_covered+snow_free (' + iceNoSnow.length + ')', true);
 if (freeNoSnow.length > 0) Map.addLayer(ee.FeatureCollection(freeNoSnow), {{color: '00FF00'}}, 'ice_free+snow_free (' + freeNoSnow.length + ')', true);
-if (freeSnow.length > 0)  Map.addLayer(ee.FeatureCollection(freeSnow),  {{color: '0088FF'}}, 'ice_free+snow (' + freeSnow.length + ')', true);
+if (freeSnow.length > 0)  Map.addLayer(ee.FeatureCollection(freeSnow),  {{color: '0088FF'}}, 'ice_free+snow_covered (' + freeSnow.length + ')', true);
+if (unknown.length > 0)   Map.addLayer(ee.FeatureCollection(unknown),   {{color: 'AAAAAA'}}, 'unlabeled / legacy class (' + unknown.length + ')', true);
 
 Map.setCenter({(float(confirmed_rows[0]['lon']) + float(confirmed_rows[-1]['lon'])) / 2:.1f}, {(float(confirmed_rows[0]['lat']) + float(confirmed_rows[-1]['lat'])) / 2:.1f}, 8);
 

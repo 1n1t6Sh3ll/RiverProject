@@ -5,7 +5,8 @@ Given a Landsat scene ID and date, this script:
   1. Queries Earth Engine for the Landsat scene bbox.
   2. Lists all GITCO granules for the date in the J01, J02, and NPP buckets.
   3. Reads each granule's bounding-box attributes over S3 byte-range (no full download).
-  4. Picks the granule with the highest bbox coverage (>= 65%).
+  4. Ranks granules by nadir distance (ascending), then coverage (descending),
+     and picks the best one that still meets the >= 65% coverage threshold.
   5. Downloads the full SVI01-05 + GITCO files for that granule.
   6. Stitches the SVI bands into a GIMGO H5.
   7. Rewrites the SCENES dict in extract_training_pixels_auto.py to point at the new files.
