@@ -22,6 +22,7 @@ viirs_data/
 
 # Re-allow training candidate CSVs (parent .gitignore excludes *.csv)
 !training_candidates_*.csv
+!narrow_rivers/data/*.csv
 
 # OS
 .DS_Store
