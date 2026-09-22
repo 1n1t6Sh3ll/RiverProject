@@ -1,0 +1,11 @@
+VIIRS geolocation check — 2024-06-12-j02
+Landsat LC08_L2SP_073011_20240612_20240628_02_T1
+Region lat 68.7–70.2 lon -148.95–-147.95, 40184 VIIRS pixels, box 390 m
+
+band pair       r at 0 m   best r   best shift east, north (m)
+I1 vs SR_B4        0.983    0.987            +0, +30
+I2 vs SR_B5        0.977    0.981            +0, +60
+I3 vs SR_B6        0.986    0.990           -30, +30
+mean of 3          0.982    0.986            +0, +60
+
+Best overall shift: +0 m east, +60 m north (60 m total)
