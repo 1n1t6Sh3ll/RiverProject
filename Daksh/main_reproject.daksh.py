@@ -345,6 +345,10 @@ def parse_mtl(mtl_path):
         "K2_CONSTANT_BAND_10": "K2",
         "RADIANCE_MULT_BAND_10": "RADIANCE_MULT",
         "RADIANCE_ADD_BAND_10": "RADIANCE_ADD",
+        "REFLECTANCE_MULT_BAND_3": "REFL_MULT_B3",
+        "REFLECTANCE_ADD_BAND_3": "REFL_ADD_B3",
+        "REFLECTANCE_MULT_BAND_6": "REFL_MULT_B6",
+        "REFLECTANCE_ADD_BAND_6": "REFL_ADD_B6",
     }
     string_keys = {
         "DATE_ACQUIRED": "DATE_ACQUIRED",
@@ -382,6 +386,20 @@ def dn_to_kelvin(dn, mtl_vals):
     if rad <= 0:
         return None
     return mtl_vals["K2"] / math.log(mtl_vals["K1"] / rad + 1)
+
+
+def dn_to_toa_reflectance(dn, band, mtl_vals):
+    """Convert Landsat DN to TOA reflectance using MTL REFLECTANCE_MULT/ADD.
+    Sun-elevation correction is skipped — it divides every band by the same
+    sin(elev), so it cancels in band ratios like NDSI. Returns dn unchanged
+    if dn is None or the MTL coefficients for this band aren't available."""
+    if dn is None or not mtl_vals:
+        return dn
+    mult = mtl_vals.get(f"REFL_MULT_B{band}")
+    add  = mtl_vals.get(f"REFL_ADD_B{band}")
+    if mult is None or add is None:
+        return dn
+    return mult * dn + add
 
 
 def discover_landsat():
@@ -460,26 +478,39 @@ def process_viirs(gitco, gimgo, area_def, out_path):
     log.info(f"  Reprojecting {n_bands} bands → Alaska 4326 "
              f"({VIIRS_W}x{VIIRS_H}) ...")
 
-    with rasterio.open(
-        out_path, "w", driver="GTiff",
-        height=VIIRS_H, width=VIIRS_W, count=n_bands,
-        dtype=np.float32, crs=TARGET_CRS, transform=VIIRS_TF,
-        nodata=NODATA, compress="deflate", predictor=2,
-        tiled=True, blockxsize=256, blockysize=256,
-        BIGTIFF="IF_SAFER",
-    ) as dst:
-        for i, name in enumerate(VIIRS_BAND_ORDER, 1):
-            if name in all_data:
-                arr = _reproject_viirs_band(lat, lon, all_data[name], area_def)
-                arr[~np.isfinite(arr)] = NODATA
-            else:
-                arr = np.full((VIIRS_H, VIIRS_W), NODATA, np.float32)
-            dst.write(arr, i)
-            dst.update_tags(i, name=name)
-            valid = int(np.sum(arr != NODATA))
-            log.info(f"    {name}: {valid:,} valid px")
-            del arr
+    # Atomic write: build .tmp, then os.replace() so an interrupted run never
+    # leaves a half-written file that the exists-check above would reuse.
+    tmp_path = out_path + ".tmp"
+    if os.path.exists(tmp_path):
+        try: os.remove(tmp_path)
+        except OSError: pass
 
+    try:
+        with rasterio.open(
+            tmp_path, "w", driver="GTiff",
+            height=VIIRS_H, width=VIIRS_W, count=n_bands,
+            dtype=np.float32, crs=TARGET_CRS, transform=VIIRS_TF,
+            nodata=NODATA, compress="deflate", predictor=2,
+            tiled=True, blockxsize=256, blockysize=256,
+            BIGTIFF="IF_SAFER",
+        ) as dst:
+            for i, name in enumerate(VIIRS_BAND_ORDER, 1):
+                if name in all_data:
+                    arr = _reproject_viirs_band(lat, lon, all_data[name], area_def)
+                    arr[~np.isfinite(arr)] = NODATA
+                else:
+                    arr = np.full((VIIRS_H, VIIRS_W), NODATA, np.float32)
+                dst.write(arr, i)
+                dst.update_tags(i, name=name)
+                valid = int(np.sum(arr != NODATA))
+                log.info(f"    {name}: {valid:,} valid px")
+                del arr
+    except BaseException:
+        try: os.remove(tmp_path)
+        except OSError: pass
+        raise
+
+    os.replace(tmp_path, out_path)
     mb = os.path.getsize(out_path) / 1048576
     log.info(f"  Wrote {out_path} ({mb:.1f} MB)")
     return True
@@ -670,14 +701,12 @@ def _sample_modis(ee, confirmed_rows, scene_date):
 
     Returns {row_idx: {'modis_ndvi': float|None, 'modis_lc_type1': int|None}}.
     NDVI: 16-day lookback window (MOD13Q1 is a 16-day composite, 250 m).
-    LC:   year_start → year_end (MCD12Q1 is annual, 500 m).
+    LC:   scene year, else up to 2 prior years (MCD12Q1 is annual, 500 m).
     """
     if not confirmed_rows:
         return {}
 
     dt         = datetime.strptime(scene_date, "%Y-%m-%d")
-    year_start = f"{dt.year}-01-01"
-    year_end   = f"{dt.year + 1}-01-01"
 
     features = [
         ee.Feature(
@@ -716,14 +745,27 @@ def _sample_modis(ee, confirmed_rows, scene_date):
     except Exception as exc:
         log.warning(f"  MODIS NDVI sampling failed for {scene_date}: {exc}")
 
-    # Land Cover — MCD12Q1 (500 m, annual)
+    # Land Cover — MCD12Q1 (500 m, annual). It lags real time by ~1 year, so
+    # fall back to up to 2 prior years when the scene year isn't published.
+    lc_img = None
+    for year_offset in range(0, 3):
+        lc_year = dt.year - year_offset
+        col = (ee.ImageCollection("MODIS/061/MCD12Q1")
+                 .filterDate(f"{lc_year}-01-01", f"{lc_year + 1}-01-01"))
+        try:
+            if col.size().getInfo() > 0:
+                lc_img = col.first().select("LC_Type1")
+                if year_offset > 0:
+                    log.info(f"  MCD12Q1 {dt.year} not available — "
+                             f"using {lc_year} land cover instead")
+                break
+        except Exception as exc:
+            log.warning(f"  MCD12Q1 {lc_year} lookup failed: {exc}")
+    if lc_img is None:
+        log.warning(f"  No MCD12Q1 data within 3 years of {scene_date}")
+        return results
+
     try:
-        lc_img = (
-            ee.ImageCollection("MODIS/061/MCD12Q1")
-              .filterDate(year_start, year_end)
-              .first()
-              .select("LC_Type1")
-        )
         lc_sampled = lc_img.sampleRegions(
             collection=fc, scale=500,
             projection="EPSG:4326", geometries=True,
@@ -948,8 +990,9 @@ def generate_csv(viirs_path, landsat_path, date_str, out_dir,
             for bname in ls_band_names:
                 row[f"LS_{bname}"] = _safe_ls(bname)
             # NDSI = (B3 - B6) / (B3 + B6)  — same index as valen/
-            b3 = ls_vals.get("B3")
-            b6 = ls_vals.get("B6")
+            # NDSI needs reflectance: DN has a -0.1 offset that biases it low
+            b3 = dn_to_toa_reflectance(ls_vals.get("B3"), 3, mtl_vals)
+            b6 = dn_to_toa_reflectance(ls_vals.get("B6"), 6, mtl_vals)
             if b3 is not None and b6 is not None and (b3 + b6) != 0:
                 ndsi = (b3 - b6) / (b3 + b6)
                 row["LS_NDSI"] = round(ndsi, 4)

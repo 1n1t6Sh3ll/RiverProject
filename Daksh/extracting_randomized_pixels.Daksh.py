@@ -24,6 +24,7 @@ import rasterio
 from rasterio.warp import reproject as rio_reproject, Resampling
 from rasterio.transform import from_bounds
 from rasterio.windows import from_bounds as window_from_bounds
+from pyproj import Transformer
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -76,6 +77,10 @@ def parse_mtl(mtl_path):
         "K2_CONSTANT_BAND_10": "K2",
         "RADIANCE_MULT_BAND_10": "RADIANCE_MULT",
         "RADIANCE_ADD_BAND_10": "RADIANCE_ADD",
+        "REFLECTANCE_MULT_BAND_3": "REFL_MULT_B3",
+        "REFLECTANCE_ADD_BAND_3": "REFL_ADD_B3",
+        "REFLECTANCE_MULT_BAND_6": "REFL_MULT_B6",
+        "REFLECTANCE_ADD_BAND_6": "REFL_ADD_B6",
     }
     vals = {}
     try:
@@ -87,7 +92,9 @@ def parse_mtl(mtl_path):
                         vals[short] = float(line.split("=")[1].strip())
     except Exception:
         return None
-    return vals if len(vals) == 4 else None
+    if all(k in vals for k in ("K1", "K2", "RADIANCE_MULT", "RADIANCE_ADD")):
+        return vals
+    return None
 
 
 def dn_to_kelvin(dn, mtl_vals):
@@ -95,6 +102,20 @@ def dn_to_kelvin(dn, mtl_vals):
     if rad <= 0:
         return None
     return mtl_vals["K2"] / math.log(mtl_vals["K1"] / rad + 1)
+
+
+def dn_to_toa_reflectance(dn, band, mtl_vals):
+    """Convert Landsat DN to TOA reflectance using MTL REFLECTANCE_MULT/ADD.
+    Sun-elevation correction is skipped — it divides every band by the same
+    sin(elev), so it cancels in band ratios like NDSI. Returns dn unchanged
+    if dn is None or the MTL coefficients for this band aren't available."""
+    if dn is None or not mtl_vals:
+        return dn
+    mult = mtl_vals.get(f"REFL_MULT_B{band}")
+    add  = mtl_vals.get(f"REFL_ADD_B{band}")
+    if mult is None or add is None:
+        return dn
+    return mult * dn + add
 
 
 def _normalize(arr, pct_lo=2, pct_hi=98):
@@ -405,8 +426,9 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
             for bname in ls_band_names:
                 row[f"LS_{bname}"] = _safe_ls(bname)
 
-            b3 = ls_vals.get("B3")
-            b6 = ls_vals.get("B6")
+            # NDSI needs reflectance: DN has a -0.1 offset that biases it low
+            b3 = dn_to_toa_reflectance(ls_vals.get("B3"), 3, mtl_vals)
+            b6 = dn_to_toa_reflectance(ls_vals.get("B6"), 6, mtl_vals)
             if b3 is not None and b6 is not None and (b3 + b6) != 0:
                 ndsi = (b3 - b6) / (b3 + b6)
                 row["LS_NDSI"] = round(ndsi, 4)
@@ -418,7 +440,10 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
             if b10_path and mtl_vals and ls_inside:
                 try:
                     with rasterio.open(b10_path) as b10_src:
-                        b10_col, b10_row = ~b10_src.transform * (lon_px, lat_px)
+                        b10_x, b10_y = Transformer.from_crs(
+                            "EPSG:4326", b10_src.crs, always_xy=True
+                        ).transform(lon_px, lat_px)
+                        b10_col, b10_row = ~b10_src.transform * (b10_x, b10_y)
                         b10_col, b10_row = int(b10_col), int(b10_row)
                         if (0 <= b10_row < b10_src.height and
                                 0 <= b10_col < b10_src.width):
