@@ -69,7 +69,7 @@ For every date that has both VIIRS and Landsat:
 5. MODIS enrichment (see below)
 
 Settings at the top of the file: `OVERWRITE`, `ENABLE_MODIS`, `EE_PROJECT`.
-Dates in this CSV are written as `MM/DD/YYYY`. Log: `output/pipeline_run.log`.
+Dates (`viirs_date`, `landsat_date`) are written as `YYYY-MM-DD`, same as step 3. Log: `output/pipeline_run.log`.
 
 ## 3. Random candidates + report — `extracting_randomized_pixels.Daksh.py`
 

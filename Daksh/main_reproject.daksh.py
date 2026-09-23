@@ -670,16 +670,6 @@ def _normalize(arr, pct_lo=2, pct_hi=98):
     lo, hi = np.nanpercentile(fin, pct_lo), np.nanpercentile(fin, pct_hi)
     return np.clip((arr - lo) / (hi - lo + 1e-9), 0, 1)
 
-def _to_us_date(iso_date):
-    """YYYY-MM-DD → MM/DD/YYYY for CSV display. Returns input unchanged
-    if it isn't a parseable ISO date (so empty/None/odd MTL strings pass through)."""
-    if not iso_date:
-        return iso_date
-    try:
-        return datetime.strptime(iso_date, "%Y-%m-%d").strftime("%m/%d/%Y")
-    except ValueError:
-        return iso_date
-
 
 def generate_csv(viirs_path, landsat_path, date_str, out_dir,
                   b10_path=None, mtl_vals=None, ee=None):
@@ -872,9 +862,9 @@ def generate_csv(viirs_path, landsat_path, date_str, out_dir,
 
             row = {
                 "id":              idx + 1,
-                "viirs_date":      _to_us_date(date_fmt),
+                "viirs_date":      date_fmt,
                 "landsat_scene":   ls_scene_id,
-                "landsat_date":    _to_us_date(ls_date),
+                "landsat_date":    ls_date,
                 "row_shared_grid": r_shared,
                 "col_shared_grid": c_shared,
                 "lat":                  round(lat_px, 5),
