@@ -6,6 +6,8 @@ Scans output/ for date folders containing viirs_alaska_*.tif and
 landsat_*.tif, then generates:
     training_candidates_YYYY-MM-DD.csv
     viirs_vs_watermask_YYYY-MM-DD.png
+    training_candidates_YYYY-MM-DD_report.html      (via output/report_main.py)
+    training_candidates_YYYY-MM-DD_gee_results.csv  (via output/report_main.py)
 
 Usage:
     python extract_pixels.py                  # all dates, random 25 pixels
@@ -15,10 +17,15 @@ Usage:
     python extract_pixels.py --seed 42        # reproducible random selection
     python extract_pixels.py --uniform        # evenly spaced (main.py behavior)
     python extract_pixels.py --pure-random    # fully random (no spatial spread)
+    python extract_pixels.py --no-modis       # skip MODIS NDVI / land cover columns
+    python extract_pixels.py --no-report      # skip the GEE HTML report per CSV
+    python extract_pixels.py --view           # open report(s) + start live map server
+    python extract_pixels.py --no-view        # never ask to open reports
+    (default asks at the end whether to open the report(s) + start the map server)
     (default is stratified random — spread out but different each run)
 """
 
-import os, re, math, csv, sys, logging
+import os, re, math, csv, sys, logging, subprocess, socket, time, webbrowser
 import numpy as np
 import rasterio
 from rasterio.warp import reproject as rio_reproject, Resampling
@@ -29,6 +36,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
+
+import modis_enrich
 
 # ---------------------------------------------------------------------------
 # Configuration — same constants as main.py
@@ -57,6 +66,15 @@ VIIRS_H     = int(round((ALASKA_LAT_MAX - ALASKA_LAT_MIN) / VIIRS_RES))
 NODATA       = -9999.0
 N_CANDIDATES = 25
 
+# MODIS enrichment (Earth Engine). Set False (or pass --no-modis) to skip.
+ENABLE_MODIS = True
+
+# GEE report (output/report_main.py) run on every CSV. Set False (or pass --no-report) to skip.
+ENABLE_REPORT = True
+REPORT_SCRIPT = os.path.join(OUTPUT_DIR, "report_main.py")
+MAP_SERVER_SCRIPT = os.path.join(OUTPUT_DIR, "report_map_server.py")
+MAP_SERVER_PORT = 8765   # must match MAP_SERVER_PORT in output/report_main.py
+
 VIIRS_BAND_ORDER = ["I1", "I2", "I3", "I4", "I5", "SZA", "SAA", "VZA", "VAA"]
 
 log = logging.getLogger("extract_pixels")
@@ -66,13 +84,18 @@ _ch.setLevel(logging.INFO)
 _ch.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(message)s",
                                     datefmt="%H:%M:%S"))
 log.addHandler(_ch)
+_modis_log = logging.getLogger("modis_enrich")
+_modis_log.setLevel(logging.INFO)
+_modis_log.addHandler(_ch)
 
 # ---------------------------------------------------------------------------
 # Helpers (same as main.py)
 # ---------------------------------------------------------------------------
 
 def parse_mtl(mtl_path):
-    keys = {
+    """Parse MTL.txt (same as main_reproject.daksh.py): thermal/reflectance
+    constants + LANDSAT_PRODUCT_ID / DATE_ACQUIRED / SCENE_CENTER_TIME."""
+    numeric_keys = {
         "K1_CONSTANT_BAND_10": "K1",
         "K2_CONSTANT_BAND_10": "K2",
         "RADIANCE_MULT_BAND_10": "RADIANCE_MULT",
@@ -82,14 +105,27 @@ def parse_mtl(mtl_path):
         "REFLECTANCE_MULT_BAND_6": "REFL_MULT_B6",
         "REFLECTANCE_ADD_BAND_6": "REFL_ADD_B6",
     }
+    string_keys = {
+        "DATE_ACQUIRED": "DATE_ACQUIRED",
+        "SCENE_CENTER_TIME": "SCENE_CENTER_TIME",
+        "LANDSAT_PRODUCT_ID": "LANDSAT_PRODUCT_ID",
+    }
     vals = {}
     try:
         with open(mtl_path, "r") as f:
             for line in f:
-                line = line.strip()
-                for mtl_key, short in keys.items():
-                    if line.upper().startswith(mtl_key):
-                        vals[short] = float(line.split("=")[1].strip())
+                key, eq, raw = line.strip().partition("=")
+                if not eq:
+                    continue
+                key = key.strip().upper()
+                raw = raw.strip().strip('"').strip()
+                if key in numeric_keys:
+                    try:
+                        vals[numeric_keys[key]] = float(raw)
+                    except ValueError:
+                        pass
+                elif key in string_keys:
+                    vals[string_keys[key]] = raw
     except Exception:
         return None
     if all(k in vals for k in ("K1", "K2", "RADIANCE_MULT", "RADIANCE_ADD")):
@@ -129,21 +165,54 @@ def _normalize(arr, pct_lo=2, pct_hi=98):
 # Discover B10 + MTL from raw Landsat data
 # ---------------------------------------------------------------------------
 
-def find_b10_and_mtl(date_str):
-    """Look in data/landsat/<date_str>/ for B10 and MTL files."""
+def find_b10_and_mtl(date_str, landsat_path=None):
+    """Return (b10_path, mtl_vals) for the raw scene behind landsat_path.
+
+    main_reproject.daksh.py writes landsat_<date>_<N>.tif where N is the index
+    of the scene in data/landsat/<date>/ grouped by scene ID, sorted, keeping
+    scenes with >= 5 spectral bands (no suffix when there is only one scene).
+    Mirror that here so thermal + LANDSAT_PRODUCT_ID come from the right scene.
+    """
     ls_folder = os.path.join(LANDSAT_DIR, date_str)
     if not os.path.isdir(ls_folder):
         return None, None
-    files = os.listdir(ls_folder)
-    b10 = [f for f in files if re.search(r'_B10\.TIF$', f, re.I)]
-    mtl = [f for f in files if f.upper().endswith("MTL.TXT")]
+    groups = {}
+    for f in os.listdir(ls_folder):
+        m = re.match(r'^(.+)_(B\d+|SAA|SZA|VAA|VZA)\.TIF$', f, re.I)
+        if m:
+            sid = m.group(1)
+        elif f.upper().endswith("_MTL.TXT"):
+            sid = f[:-8]
+        else:
+            continue
+        groups.setdefault(sid, []).append(f)
+    scenes = [sid for sid in sorted(groups)
+              if len([f for f in groups[sid] if re.search(r'_B[1-6]\.TIF$', f, re.I)]) >= 5]
+    if not scenes:
+        return None, None
+
+    idx = 0
+    if landsat_path:
+        m = re.search(rf'landsat_{date_str}_(\d+)\.tif$', os.path.basename(landsat_path))
+        if m:
+            idx = int(m.group(1))
+        elif len(scenes) > 1:
+            log.warning(f"  {os.path.basename(landsat_path)} has no scene index but "
+                        f"{len(scenes)} scenes exist — using the first")
+    if idx >= len(scenes):
+        log.warning(f"  No raw scene #{idx} in {ls_folder} — thermal/scene ID unavailable")
+        return None, None
+
+    sfiles = groups[scenes[idx]]
+    b10 = sorted(f for f in sfiles if re.search(r'_B10\.TIF$', f, re.I))
+    mtl = [f for f in sfiles if f.upper().endswith("MTL.TXT")]
     if not b10 or not mtl:
         return None, None
-    b10_path = os.path.join(ls_folder, b10[0])
     mtl_vals = parse_mtl(os.path.join(ls_folder, mtl[0]))
     if mtl_vals is None:
         return None, None
-    return b10_path, mtl_vals
+    return os.path.join(ls_folder, b10[0]), mtl_vals
+
 
 # ---------------------------------------------------------------------------
 # Discover processed TIFs in output/
@@ -187,7 +256,8 @@ def discover_output_dates(requested_dates=None):
 
 def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
                      b10_path=None, mtl_vals=None, overwrite=False,
-                     seed=None, mode="stratified", region=None, side=None):
+                     seed=None, mode="stratified", region=None, side=None,
+                     ee=None):
 
     date_fmt = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
     pixel_date_dir = os.path.join(PIXEL_DIR, date_str)
@@ -211,7 +281,7 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
     png_path = os.path.join(pixel_date_dir, f"viirs_vs_watermask_{date_fmt}{tag}.png")
     if os.path.exists(csv_path) and os.path.exists(png_path) and not overwrite:
         log.info(f"  CSV+PNG exist, skip: {date_fmt}{tag}")
-        return
+        return csv_path
 
     # --- Load Landsat metadata ---
     with rasterio.open(landsat_path) as ls_src:
@@ -223,7 +293,12 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
             tags = ls_src.tags(bi)
             ls_band_names.append(tags.get("name", f"band{bi}"))
 
-    ls_scene_id = os.path.basename(landsat_path).replace(".tif", "")
+    # Real USGS scene ID from MTL when available (needed by output/report_main.py);
+    # fall back to the output filename.
+    if mtl_vals and mtl_vals.get("LANDSAT_PRODUCT_ID"):
+        ls_scene_id = mtl_vals["LANDSAT_PRODUCT_ID"]
+    else:
+        ls_scene_id = os.path.basename(landsat_path).replace(".tif", "")
 
     scene_lon_min, scene_lat_min = ls_bounds.left, ls_bounds.bottom
     scene_lon_max, scene_lat_max = ls_bounds.right, ls_bounds.top
@@ -495,6 +570,9 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
         log.warning(f"  No valid candidates — no CSV for {date_fmt}")
         return
 
+    # --- MODIS enrichment (NDVI + IGBP land cover) ---
+    modis_enrich.enrich_rows(ee, rows_out, date_fmt)
+
     fieldnames = list(rows_out[0].keys())
     with open(csv_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -684,6 +762,75 @@ def extract_and_save(viirs_path, landsat_path, date_str, out_dir,
     plt.savefig(ls_panel, dpi=150, bbox_inches="tight")
     plt.close()
     log.info(f"  Saved 3 panel PNGs to: {panels_dir}")
+    return csv_path
+
+
+def run_report(csv_path, use_modis, overwrite=False):
+    """Run the GEE report generator (output/report_main.py) on one candidates CSV."""
+    html_path = os.path.splitext(csv_path)[0] + "_report.html"
+    if os.path.exists(html_path) and not overwrite:
+        log.info(f"  Report exists, skip: {html_path}")
+        return
+    cmd = [sys.executable, REPORT_SCRIPT, csv_path,
+           "--project", modis_enrich.EE_PROJECT, "--no-open"]
+    if not use_modis:
+        cmd.append("--no-modis")
+    log.info(f"  Generating GEE report for {os.path.basename(csv_path)} ...")
+    result = subprocess.run(cmd)
+    if result.returncode == 0:
+        log.info(f"  Saved report: {html_path}")
+        return html_path
+    log.warning(f"  Report generation failed (exit {result.returncode}) "
+                f"for {csv_path}")
+    return None
+
+
+def _port_open(port):
+    with socket.socket() as sock:
+        sock.settimeout(0.5)
+        return sock.connect_ex(("127.0.0.1", port)) == 0
+
+
+def view_reports(report_paths):
+    """Start output/report_map_server.py (live Earth Engine map) and open the reports
+    through it. Blocks until Ctrl+C, then stops the server it started."""
+    server = None
+    if _port_open(MAP_SERVER_PORT):
+        log.info(f"Map server already running on port {MAP_SERVER_PORT} — reusing it")
+    else:
+        log.info("Starting map server (Earth Engine init takes a few seconds) ...")
+        server = subprocess.Popen(
+            [sys.executable, MAP_SERVER_SCRIPT, "--project", modis_enrich.EE_PROJECT,
+             "--port", str(MAP_SERVER_PORT), "--root", PIXEL_DIR])
+        deadline = time.time() + 60
+        while not _port_open(MAP_SERVER_PORT):
+            if server.poll() is not None or time.time() > deadline:
+                log.error("Map server failed to start — opening report files directly "
+                          "(live map panel will be unavailable)")
+                for rp in report_paths:
+                    webbrowser.open("file:///" + os.path.abspath(rp).replace(os.sep, "/"))
+                if server.poll() is None:
+                    server.terminate()
+                return
+            time.sleep(0.5)
+
+    for rp in report_paths:
+        rel = os.path.relpath(rp, PIXEL_DIR).replace(os.sep, "/")
+        url = f"http://127.0.0.1:{MAP_SERVER_PORT}/{rel}"
+        log.info(f"  Opening {url}")
+        webbrowser.open(url)
+
+    if server is None:
+        return
+    log.info("Map server running. Press Ctrl+C to stop it.")
+    try:
+        server.wait()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        if server.poll() is None:
+            server.terminate()
+        log.info("Map server stopped.")
 
 # ---------------------------------------------------------------------------
 # Main
@@ -693,6 +840,10 @@ def main():
     overwrite    = "--overwrite" in sys.argv
     uniform      = "--uniform" in sys.argv
     pure_random  = "--pure-random" in sys.argv
+    use_modis    = ENABLE_MODIS and "--no-modis" not in sys.argv
+    use_report   = ENABLE_REPORT and "--no-report" not in sys.argv
+    view_flag    = ("yes" if "--view" in sys.argv
+                    else "no" if "--no-view" in sys.argv else "ask")
     seed      = None
     region    = None
     args = sys.argv[1:]
@@ -729,21 +880,50 @@ def main():
         log.error("No processed TIF pairs found in output/")
         return
 
+    # Initialise Earth Engine once for MODIS enrichment.  Degrade gracefully
+    # if EE is unavailable: MODIS columns are still written, just empty.
+    ee = modis_enrich.init_ee() if use_modis else None
+
+    reports = []
     for date_str, viirs_path, landsat_path, out_dir in pairs:
         log.info(f"\n{'='*60}")
         log.info(f"Date {date_str}")
         log.info(f"  VIIRS:   {os.path.basename(viirs_path)}")
         log.info(f"  Landsat: {os.path.basename(landsat_path)}")
 
-        b10_path, mtl_vals = find_b10_and_mtl(date_str)
+        b10_path, mtl_vals = find_b10_and_mtl(date_str, landsat_path)
         if b10_path:
-            log.info(f"  B10 + MTL found — thermal enabled")
+            log.info(f"  B10 + MTL found — thermal enabled "
+                     f"({mtl_vals.get('LANDSAT_PRODUCT_ID', '?')})")
 
-        extract_and_save(viirs_path, landsat_path, date_str, out_dir,
-                         b10_path, mtl_vals, overwrite, seed, mode, region, side)
+        csv_path = extract_and_save(viirs_path, landsat_path, date_str, out_dir,
+                                    b10_path, mtl_vals, overwrite, seed, mode,
+                                    region, side, ee)
+        if use_report and csv_path and os.path.exists(csv_path):
+            html_path = run_report(csv_path, use_modis, overwrite)
+            if html_path is None:
+                existing = os.path.splitext(csv_path)[0] + "_report.html"
+                html_path = existing if os.path.exists(existing) else None
+            if html_path:
+                reports.append(html_path)
 
     log.info(f"\n{'='*60}")
     log.info("Pixel extraction complete.")
+
+    if reports:
+        log.info("Reports:")
+        for rp in reports:
+            log.info(f"  {rp}")
+        want = view_flag == "yes"
+        if view_flag == "ask" and sys.stdin.isatty():
+            ans = input("\nOpen the report(s) in the browser with the live map "
+                        "server? [y/N]: ").strip().lower()
+            want = ans in ("y", "yes")
+        if want:
+            view_reports(reports)
+        else:
+            log.info("To view later with the live map:  python extracting_randomized_pixels.Daksh.py "
+                     "<date> --view")
 
 
 if __name__ == "__main__":
