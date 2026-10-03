@@ -20,9 +20,18 @@ viirs_data/
 *.h5
 *.tif
 
+# QGIS writes these next to rasters: display statistics only, regenerated
+*.aux.xml
+
+# QGIS projects: personal workspaces. They do use relative layer paths, so
+# force-add one (git add -f) if a shared project is ever wanted.
+*.qgz
+*.qgz~
+
 # Re-allow training candidate CSVs (parent .gitignore excludes *.csv)
 !training_candidates_*.csv
 !narrow_rivers/data/*.csv
+!narrow_rivers/patches/patch_tracking.csv
 
 # OS
 .DS_Store
