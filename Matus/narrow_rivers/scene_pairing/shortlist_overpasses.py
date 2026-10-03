@@ -20,7 +20,7 @@ Run from Matus/:
 
 import os, sys, csv, math, time
 from datetime import datetime, timedelta
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
 import h5py
@@ -36,11 +36,16 @@ from auto_pipeline import (BUCKETS, S3RangeReader, list_gitco_keys,
                            parse_time_window, in_time_window,
                            GITCO_ATTR_PATH, DEFAULT_TIME_WINDOW)
 
-NODES_CSV     = os.path.join(NR_ROOT, "data", "sword_nodes_75_300m_csv.csv")
+DEFAULT_NODES_CSV = os.path.join(NR_ROOT, "data", "sword_nodes_75_300m_csv.csv")
 OUTPUT_DIR    = os.path.join(NR_ROOT, "scene_pairing", "output")
 EE_PROJECT    = "noaa-river-ice"
 
 DEFAULT_RIVER = "Sagavanirktok River"
+# Processes, not threads: h5py holds one global lock for every HDF5 call, and
+# our S3 reads happen inside those calls, so threads queue up instead of
+# overlapping (measured: 0.46 s/granule at 1 thread, 0.41 s at 48). Separate
+# processes each get their own lock, so the waiting actually overlaps.
+MAX_PROCS     = 8
 MAX_SCAN_DEG  = 56.06        # VIIRS I-band swath half-angle
 MAX_WORKERS   = 16
 
@@ -57,9 +62,9 @@ WGS84_E2 = 6.69437999014e-3
 
 # ── helpers ───────────────────────────────────────────────────────────────────
 
-def _load_nodes(river):
+def _load_nodes(river, nodes_csv):
     lats, lons = [], []
-    with open(NODES_CSV, newline="", encoding="utf-8") as f:
+    with open(nodes_csv, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             if row["river_name"] == river:
                 lats.append(float(row["lat"]))
@@ -98,6 +103,24 @@ def _landsat_info(product_id):
     t = props["SCENE_CENTER_TIME"][:8]            # "HH:MM:SS.xxxxxxZ"
     dt = datetime.strptime(f"{props['DATE_ACQUIRED']} {t}", "%Y-%m-%d %H:%M:%S")
     return footprint, dt
+
+
+_WORKER_S3 = None
+
+
+def _worker_s3():
+    """One boto3 client per worker process (clients cannot be pickled)."""
+    global _WORKER_S3
+    if _WORKER_S3 is None:
+        _WORKER_S3 = boto3.client("s3", config=Config(
+            signature_version=UNSIGNED, max_pool_connections=4))
+    return _WORKER_S3
+
+
+def _read_granule_task(job):
+    """Process-pool entry point: (sat, bucket, key, size, lat_rng)."""
+    sat, bucket, key, size, lat_rng = job
+    return _read_granule(_worker_s3(), sat, bucket, key, size, lat_rng)
 
 
 def _read_granule(s3, sat, bucket, key, size, lat_rng):
@@ -155,8 +178,8 @@ def _corridor_geometry(g, node_xyz, node_up):
 
 # ── main ──────────────────────────────────────────────────────────────────────
 
-def main(landsat_id, river, time_window):
-    node_lat, node_lon = _load_nodes(river)
+def main(landsat_id, river, time_window, nodes_csv=DEFAULT_NODES_CSV):
+    node_lat, node_lon = _load_nodes(river, nodes_csv)
     if node_lat.size == 0:
         print(f"ERROR: No SWORD nodes for river '{river}'")
         sys.exit(1)
@@ -187,11 +210,13 @@ def main(landsat_id, river, time_window):
         print(f"{sat}: {len(keys)} granules in {time_window[0]:04d}-{time_window[1]:04d} UTC")
         jobs += [(sat, bucket, k, s) for k, s in keys]
 
-    print(f"\nReading headers + spacecraft positions of {len(jobs)} granules...")
+    print(f"\nReading headers + spacecraft positions of {len(jobs)} granules "
+          f"({MAX_PROCS} processes)...")
     t_start = time.time()
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-        granules = [g for g in ex.map(
-            lambda j: _read_granule(s3, *j, lat_rng), jobs) if g is not None]
+    tasks = [(sat, bucket, key, size, lat_rng) for sat, bucket, key, size in jobs]
+    with ProcessPoolExecutor(max_workers=MAX_PROCS) as ex:
+        granules = [g for g in ex.map(_read_granule_task, tasks, chunksize=4)
+                    if g is not None]
     print(f"  {len(granules)} daytime ascending granules reach the corridor latitudes "
           f"({time.time() - t_start:.0f} s)")
 
@@ -251,5 +276,7 @@ if __name__ == "__main__":
     p.add_argument("--river", default=DEFAULT_RIVER, help="SWORD river_name")
     p.add_argument("--time-window", default=DEFAULT_TIME_WINDOW,
                    help="UTC HHMM-HHMM filter on granule start time")
+    p.add_argument("--nodes", default=DEFAULT_NODES_CSV,
+                   help="SWORD nodes CSV (e.g. data/sword_nodes_nenana.csv)")
     a = p.parse_args()
-    main(a.landsat, a.river, parse_time_window(a.time_window))
+    main(a.landsat, a.river, parse_time_window(a.time_window), a.nodes)
