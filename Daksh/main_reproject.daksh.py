@@ -34,6 +34,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 
+
 # ---------------------------------------------------------------------------
 # Configuration — matches valen/extract_training_pixels.py
 # ---------------------------------------------------------------------------
@@ -82,6 +83,33 @@ VIIRS_BAND_ORDER = ["I1", "I2", "I3", "I4", "I5", "SZA", "SAA", "VZA", "VAA"]
 ENABLE_MODIS  = True
 EE_PROJECT    = "noaa-river-ice"
 
+
+log = logging.getLogger("pipeline")
+log.setLevel(logging.INFO)
+
+# Console handler
+_ch = logging.StreamHandler()
+_ch.setLevel(logging.INFO)
+_ch.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(message)s",
+                                    datefmt="%H:%M:%S"))
+log.addHandler(_ch)
+
+# File handler — one log per run in output/
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+_fh = logging.FileHandler(
+    os.path.join(OUTPUT_DIR, "pipeline_run.log"), mode="a", encoding="utf-8")
+_fh.setLevel(logging.INFO)
+_fh.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(message)s",
+                                    datefmt="%Y-%m-%d %H:%M:%S"))
+log.addHandler(_fh)
+
+# ---------------------------------------------------------------------------
+# MODIS enrichment (Earth Engine)
+#   modis_ndvi      MOD13Q1 NDVI (250 m, 16-day composite, scaled to -1..1)
+#   modis_lc_type1  MCD12Q1 LC_Type1 IGBP class (500 m, annual)
+#   modis_lc_name   readable IGBP class name
+# ---------------------------------------------------------------------------
+
 IGBP_LOOKUP = {
     0:   'Water Bodies',
     1:   'Evergreen Needleleaf Forests',
@@ -104,24 +132,146 @@ IGBP_LOOKUP = {
     255: 'Fill/NoData',
 }
 
-log = logging.getLogger("pipeline")
-log.setLevel(logging.INFO)
 
-# Console handler
-_ch = logging.StreamHandler()
-_ch.setLevel(logging.INFO)
-_ch.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(message)s",
-                                    datefmt="%H:%M:%S"))
-log.addHandler(_ch)
+def init_ee(project=EE_PROJECT):
+    """Initialise Earth Engine; return the ee module, or None if unavailable."""
+    try:
+        import ee
+        ee.Initialize(project=project)
+        log.info(f"Earth Engine initialised (project={project})")
+        return ee
+    except Exception as exc:
+        log.warning(f"Earth Engine init failed: {exc}")
+        log.warning("MODIS columns will be empty — "
+                    "check 'earthengine authenticate' and project access.")
+        return None
 
-# File handler — one log per run in output/
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-_fh = logging.FileHandler(
-    os.path.join(OUTPUT_DIR, "pipeline_run.log"), mode="a", encoding="utf-8")
-_fh.setLevel(logging.INFO)
-_fh.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(message)s",
-                                    datefmt="%Y-%m-%d %H:%M:%S"))
-log.addHandler(_fh)
+
+def sample_modis(ee, points, scene_date):
+    """Sample MOD13Q1 NDVI and MCD12Q1 LC_Type1 at the given points.
+
+    points     : list of (key, lat, lon); key is any int/str identifier
+    scene_date : 'YYYY-MM-DD'
+
+    Returns {key: {'modis_ndvi': float|None, 'modis_lc_type1': int|None}}.
+    NDVI: 16-day lookback window (MOD13Q1 is a 16-day composite, 250 m).
+    LC:   scene year, else up to 2 prior years (MCD12Q1 is annual, 500 m).
+    """
+    if not points:
+        return {}
+
+    dt = datetime.strptime(scene_date, "%Y-%m-%d")
+
+    # EE feature properties round-trip keys as strings; map back afterwards.
+    keys = {str(k): k for k, _, _ in points}
+    fc = ee.FeatureCollection([
+        ee.Feature(ee.Geometry.Point([float(lon), float(lat)]), {"key": str(k)})
+        for k, lat, lon in points
+    ])
+
+    results = {k: {"modis_ndvi": None, "modis_lc_type1": None}
+               for k, _, _ in points}
+
+    # NDVI — MOD13Q1 (250 m, 16-day composite)
+    try:
+        ndvi_img = (
+            ee.ImageCollection("MODIS/061/MOD13Q1")
+              .filterDate(
+                  ee.Date(scene_date).advance(-16, "day"),
+                  ee.Date(scene_date).advance(1,   "day"),
+              )
+              .sort("system:time_start", False)
+              .first()
+              .select("NDVI")
+        )
+        ndvi_sampled = ndvi_img.sampleRegions(
+            collection=fc, scale=250,
+            projection="EPSG:4326", geometries=True,
+        ).getInfo()
+        for feat in ndvi_sampled.get("features", []):
+            props = feat["properties"]
+            raw   = props.get("NDVI")
+            if raw is not None:
+                results[keys[props["key"]]]["modis_ndvi"] = round(float(raw) * 0.0001, 6)
+    except Exception as exc:
+        log.warning(f"  MODIS NDVI sampling failed for {scene_date}: {exc}")
+
+    # Land Cover — MCD12Q1 (500 m, annual). It lags real time by ~1 year, so
+    # fall back to up to 2 prior years when the scene year isn't published.
+    lc_img = None
+    for year_offset in range(0, 3):
+        lc_year = dt.year - year_offset
+        col = (ee.ImageCollection("MODIS/061/MCD12Q1")
+                 .filterDate(f"{lc_year}-01-01", f"{lc_year + 1}-01-01"))
+        try:
+            if col.size().getInfo() > 0:
+                lc_img = col.first().select("LC_Type1")
+                if year_offset > 0:
+                    log.info(f"  MCD12Q1 {dt.year} not available — "
+                             f"using {lc_year} land cover instead")
+                break
+        except Exception as exc:
+            log.warning(f"  MCD12Q1 {lc_year} lookup failed: {exc}")
+    if lc_img is None:
+        log.warning(f"  No MCD12Q1 data within 3 years of {scene_date}")
+        return results
+
+    try:
+        lc_sampled = lc_img.sampleRegions(
+            collection=fc, scale=500,
+            projection="EPSG:4326", geometries=True,
+        ).getInfo()
+        for feat in lc_sampled.get("features", []):
+            props = feat["properties"]
+            raw   = props.get("LC_Type1")
+            if raw is not None:
+                results[keys[props["key"]]]["modis_lc_type1"] = int(raw)
+    except Exception as exc:
+        log.warning(f"  MODIS land cover sampling failed for {scene_date}: {exc}")
+
+    return results
+
+
+def enrich_rows(ee, rows_out, scene_date):
+    """Add modis_ndvi / modis_lc_type1 / modis_lc_name to every row (in place).
+
+    Columns are always added so the CSV schema is stable; only rows that are
+    Landsat-confirmed (notes without "Landsat null") are sampled.
+    """
+    for r in rows_out:
+        r["modis_ndvi"]     = ""
+        r["modis_lc_type1"] = ""
+        r["modis_lc_name"]  = ""
+
+    if ee is None:
+        return
+
+    confirmed = [
+        (i, r["lat"], r["lon"])
+        for i, r in enumerate(rows_out)
+        if "Landsat null" not in str(r.get("notes", ""))
+    ]
+    if not confirmed:
+        log.info("  No Landsat-confirmed pixels — skipping MODIS sampling")
+        return
+
+    log.info(f"  Sampling MODIS for {len(confirmed)} "
+             f"Landsat-confirmed pixel(s)...")
+    modis = sample_modis(ee, confirmed, scene_date)
+    n_ndvi = n_lc = 0
+    for idx, vals in modis.items():
+        ndvi = vals.get("modis_ndvi")
+        lc   = vals.get("modis_lc_type1")
+        if ndvi is not None:
+            rows_out[idx]["modis_ndvi"] = ndvi
+            n_ndvi += 1
+        if lc is not None:
+            rows_out[idx]["modis_lc_type1"] = lc
+            rows_out[idx]["modis_lc_name"]  = IGBP_LOOKUP.get(lc, f"Unknown({lc})")
+            n_lc += 1
+    log.info(f"  MODIS returned: NDVI {n_ndvi}/{len(confirmed)}, "
+             f"LC {n_lc}/{len(confirmed)}")
+
 
 # ---------------------------------------------------------------------------
 # VIIRS H5 loaders  (replicated from valen/viirs_training_loader.py)
@@ -345,6 +495,10 @@ def parse_mtl(mtl_path):
         "K2_CONSTANT_BAND_10": "K2",
         "RADIANCE_MULT_BAND_10": "RADIANCE_MULT",
         "RADIANCE_ADD_BAND_10": "RADIANCE_ADD",
+        "REFLECTANCE_MULT_BAND_3": "REFL_MULT_B3",
+        "REFLECTANCE_ADD_BAND_3": "REFL_ADD_B3",
+        "REFLECTANCE_MULT_BAND_6": "REFL_MULT_B6",
+        "REFLECTANCE_ADD_BAND_6": "REFL_ADD_B6",
     }
     string_keys = {
         "DATE_ACQUIRED": "DATE_ACQUIRED",
@@ -382,6 +536,20 @@ def dn_to_kelvin(dn, mtl_vals):
     if rad <= 0:
         return None
     return mtl_vals["K2"] / math.log(mtl_vals["K1"] / rad + 1)
+
+
+def dn_to_toa_reflectance(dn, band, mtl_vals):
+    """Convert Landsat DN to TOA reflectance using MTL REFLECTANCE_MULT/ADD.
+    Sun-elevation correction is skipped — it divides every band by the same
+    sin(elev), so it cancels in band ratios like NDSI. Returns dn unchanged
+    if dn is None or the MTL coefficients for this band aren't available."""
+    if dn is None or not mtl_vals:
+        return dn
+    mult = mtl_vals.get(f"REFL_MULT_B{band}")
+    add  = mtl_vals.get(f"REFL_ADD_B{band}")
+    if mult is None or add is None:
+        return dn
+    return mult * dn + add
 
 
 def discover_landsat():
@@ -460,26 +628,39 @@ def process_viirs(gitco, gimgo, area_def, out_path):
     log.info(f"  Reprojecting {n_bands} bands → Alaska 4326 "
              f"({VIIRS_W}x{VIIRS_H}) ...")
 
-    with rasterio.open(
-        out_path, "w", driver="GTiff",
-        height=VIIRS_H, width=VIIRS_W, count=n_bands,
-        dtype=np.float32, crs=TARGET_CRS, transform=VIIRS_TF,
-        nodata=NODATA, compress="deflate", predictor=2,
-        tiled=True, blockxsize=256, blockysize=256,
-        BIGTIFF="IF_SAFER",
-    ) as dst:
-        for i, name in enumerate(VIIRS_BAND_ORDER, 1):
-            if name in all_data:
-                arr = _reproject_viirs_band(lat, lon, all_data[name], area_def)
-                arr[~np.isfinite(arr)] = NODATA
-            else:
-                arr = np.full((VIIRS_H, VIIRS_W), NODATA, np.float32)
-            dst.write(arr, i)
-            dst.update_tags(i, name=name)
-            valid = int(np.sum(arr != NODATA))
-            log.info(f"    {name}: {valid:,} valid px")
-            del arr
+    # Atomic write: build .tmp, then os.replace() so an interrupted run never
+    # leaves a half-written file that the exists-check above would reuse.
+    tmp_path = out_path + ".tmp"
+    if os.path.exists(tmp_path):
+        try: os.remove(tmp_path)
+        except OSError: pass
 
+    try:
+        with rasterio.open(
+            tmp_path, "w", driver="GTiff",
+            height=VIIRS_H, width=VIIRS_W, count=n_bands,
+            dtype=np.float32, crs=TARGET_CRS, transform=VIIRS_TF,
+            nodata=NODATA, compress="deflate", predictor=2,
+            tiled=True, blockxsize=256, blockysize=256,
+            BIGTIFF="IF_SAFER",
+        ) as dst:
+            for i, name in enumerate(VIIRS_BAND_ORDER, 1):
+                if name in all_data:
+                    arr = _reproject_viirs_band(lat, lon, all_data[name], area_def)
+                    arr[~np.isfinite(arr)] = NODATA
+                else:
+                    arr = np.full((VIIRS_H, VIIRS_W), NODATA, np.float32)
+                dst.write(arr, i)
+                dst.update_tags(i, name=name)
+                valid = int(np.sum(arr != NODATA))
+                log.info(f"    {name}: {valid:,} valid px")
+                del arr
+    except BaseException:
+        try: os.remove(tmp_path)
+        except OSError: pass
+        raise
+
+    os.replace(tmp_path, out_path)
     mb = os.path.getsize(out_path) / 1048576
     log.info(f"  Wrote {out_path} ({mb:.1f} MB)")
     return True
@@ -650,94 +831,6 @@ def _normalize(arr, pct_lo=2, pct_hi=98):
         return np.zeros_like(arr)
     lo, hi = np.nanpercentile(fin, pct_lo), np.nanpercentile(fin, pct_hi)
     return np.clip((arr - lo) / (hi - lo + 1e-9), 0, 1)
-
-def _to_us_date(iso_date):
-    """YYYY-MM-DD → MM/DD/YYYY for CSV display. Returns input unchanged
-    if it isn't a parseable ISO date (so empty/None/odd MTL strings pass through)."""
-    if not iso_date:
-        return iso_date
-    try:
-        return datetime.strptime(iso_date, "%Y-%m-%d").strftime("%m/%d/%Y")
-    except ValueError:
-        return iso_date
-
-
-def _sample_modis(ee, confirmed_rows, scene_date):
-    """Sample MOD13Q1 NDVI and MCD12Q1 LC_Type1 at confirmed pixel locations.
-
-    confirmed_rows : list of (row_idx, lat, lon)
-    scene_date     : 'YYYY-MM-DD'
-
-    Returns {row_idx: {'modis_ndvi': float|None, 'modis_lc_type1': int|None}}.
-    NDVI: 16-day lookback window (MOD13Q1 is a 16-day composite, 250 m).
-    LC:   year_start → year_end (MCD12Q1 is annual, 500 m).
-    """
-    if not confirmed_rows:
-        return {}
-
-    dt         = datetime.strptime(scene_date, "%Y-%m-%d")
-    year_start = f"{dt.year}-01-01"
-    year_end   = f"{dt.year + 1}-01-01"
-
-    features = [
-        ee.Feature(
-            ee.Geometry.Point([float(lon), float(lat)]),
-            {"row_idx": int(idx)},
-        )
-        for idx, lat, lon in confirmed_rows
-    ]
-    fc = ee.FeatureCollection(features)
-
-    results = {int(idx): {"modis_ndvi": None, "modis_lc_type1": None}
-               for idx, _, _ in confirmed_rows}
-
-    # NDVI — MOD13Q1 (250 m, 16-day composite)
-    try:
-        ndvi_img = (
-            ee.ImageCollection("MODIS/061/MOD13Q1")
-              .filterDate(
-                  ee.Date(scene_date).advance(-16, "day"),
-                  ee.Date(scene_date).advance(1,   "day"),
-              )
-              .sort("system:time_start", False)
-              .first()
-              .select("NDVI")
-        )
-        ndvi_sampled = ndvi_img.sampleRegions(
-            collection=fc, scale=250,
-            projection="EPSG:4326", geometries=True,
-        ).getInfo()
-        for feat in ndvi_sampled.get("features", []):
-            props = feat["properties"]
-            idx   = int(props["row_idx"])
-            raw   = props.get("NDVI")
-            if raw is not None:
-                results[idx]["modis_ndvi"] = round(float(raw) * 0.0001, 6)
-    except Exception as exc:
-        log.warning(f"  MODIS NDVI sampling failed for {scene_date}: {exc}")
-
-    # Land Cover — MCD12Q1 (500 m, annual)
-    try:
-        lc_img = (
-            ee.ImageCollection("MODIS/061/MCD12Q1")
-              .filterDate(year_start, year_end)
-              .first()
-              .select("LC_Type1")
-        )
-        lc_sampled = lc_img.sampleRegions(
-            collection=fc, scale=500,
-            projection="EPSG:4326", geometries=True,
-        ).getInfo()
-        for feat in lc_sampled.get("features", []):
-            props = feat["properties"]
-            idx   = int(props["row_idx"])
-            raw   = props.get("LC_Type1")
-            if raw is not None:
-                results[idx]["modis_lc_type1"] = int(raw)
-    except Exception as exc:
-        log.warning(f"  MODIS land cover sampling failed for {scene_date}: {exc}")
-
-    return results
 
 
 def generate_csv(viirs_path, landsat_path, date_str, out_dir,
@@ -931,9 +1024,9 @@ def generate_csv(viirs_path, landsat_path, date_str, out_dir,
 
             row = {
                 "id":              idx + 1,
-                "viirs_date":      _to_us_date(date_fmt),
+                "viirs_date":      date_fmt,
                 "landsat_scene":   ls_scene_id,
-                "landsat_date":    _to_us_date(ls_date),
+                "landsat_date":    ls_date,
                 "row_shared_grid": r_shared,
                 "col_shared_grid": c_shared,
                 "lat":                  round(lat_px, 5),
@@ -948,8 +1041,9 @@ def generate_csv(viirs_path, landsat_path, date_str, out_dir,
             for bname in ls_band_names:
                 row[f"LS_{bname}"] = _safe_ls(bname)
             # NDSI = (B3 - B6) / (B3 + B6)  — same index as valen/
-            b3 = ls_vals.get("B3")
-            b6 = ls_vals.get("B6")
+            # NDSI needs reflectance: DN has a -0.1 offset that biases it low
+            b3 = dn_to_toa_reflectance(ls_vals.get("B3"), 3, mtl_vals)
+            b6 = dn_to_toa_reflectance(ls_vals.get("B6"), 6, mtl_vals)
             if b3 is not None and b6 is not None and (b3 + b6) != 0:
                 ndsi = (b3 - b6) / (b3 + b6)
                 row["LS_NDSI"] = round(ndsi, 4)
@@ -1019,39 +1113,7 @@ def generate_csv(viirs_path, landsat_path, date_str, out_dir,
         return
 
     # --- MODIS enrichment (NDVI + IGBP land cover) ---
-    # Initialise empty MODIS columns on every row so the schema is stable
-    # whether or not EE is available / the row is Landsat-confirmed.
-    for r in rows_out:
-        r["modis_ndvi"]     = ""
-        r["modis_lc_type1"] = ""
-        r["modis_lc_name"]  = ""
-
-    if ee is not None:
-        confirmed = [
-            (i, r["lat"], r["lon"])
-            for i, r in enumerate(rows_out)
-            if "Landsat null" not in str(r.get("notes", ""))
-        ]
-        if confirmed:
-            log.info(f"  Sampling MODIS for {len(confirmed)} "
-                     f"Landsat-confirmed pixel(s)...")
-            modis = _sample_modis(ee, confirmed, date_fmt)
-            n_ndvi = n_lc = 0
-            for idx, vals in modis.items():
-                ndvi = vals.get("modis_ndvi")
-                lc   = vals.get("modis_lc_type1")
-                if ndvi is not None:
-                    rows_out[idx]["modis_ndvi"] = ndvi
-                    n_ndvi += 1
-                if lc is not None:
-                    rows_out[idx]["modis_lc_type1"] = lc
-                    rows_out[idx]["modis_lc_name"]  = IGBP_LOOKUP.get(
-                        lc, f"Unknown({lc})")
-                    n_lc += 1
-            log.info(f"  MODIS returned: NDVI {n_ndvi}/{len(confirmed)}, "
-                     f"LC {n_lc}/{len(confirmed)}")
-        else:
-            log.info("  No Landsat-confirmed pixels — skipping MODIS sampling")
+    enrich_rows(ee, rows_out, date_fmt)
 
     fieldnames = list(rows_out[0].keys())
     with open(csv_path, "w", newline="") as f:
@@ -1271,17 +1333,7 @@ def main():
 
     # Initialise Earth Engine once for MODIS enrichment.  Degrade gracefully
     # if EE is unavailable: MODIS columns are still written, just empty.
-    ee = None
-    if ENABLE_MODIS:
-        try:
-            import ee as _ee
-            _ee.Initialize(project=EE_PROJECT)
-            ee = _ee
-            log.info(f"Earth Engine initialised (project={EE_PROJECT})")
-        except Exception as exc:
-            log.warning(f"Earth Engine init failed: {exc}")
-            log.warning("MODIS columns will be empty — "
-                        "check 'earthengine authenticate' and project access.")
+    ee = init_ee(EE_PROJECT) if ENABLE_MODIS else None
 
     viirs_map   = discover_viirs()
     landsat_map = discover_landsat()
