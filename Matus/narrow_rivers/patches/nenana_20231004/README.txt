@@ -51,3 +51,13 @@ CLOUD CHECK (wide-area VIIRS)
                                          cloud tops are colder than the surface
   2023-10-04_viirs_wide_375m.tif         I1..I5 + SZA/SAA/VZA/VAA over the wide area
   2023-10-04_study_box.geojson           the study box, red outline, no fill
+
+SENTINEL-2 (10 m, digitising aid)
+  Acquired  : 2023-10-04 21:37 UTC, +0.4 h from the Landsat scene
+  Cloud+shadow over the box: 0.0 %
+  2023-10-04_s2_truecolour_10m.tif  B4/B3/B2 — banks and gravel
+  2023-10-04_s2_swir_10m.tif        B11/B8/B4 — snow/ice cyan, water black
+  2023-10-04_s2_ndwi_10m.tif        (B3-B8)/(B3+B8); water is high,
+                                the edge sits near 0
+  Grid: 3 x 3 Sentinel cells per Landsat cell, so everything stays aligned.
+  Trace borders on these, but remember the labels describe the LANDSAT scene.

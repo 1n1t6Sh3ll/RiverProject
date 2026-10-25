@@ -55,6 +55,17 @@ SCENES = {
                    "collection": "LANDSAT/LC09/C02/T1_L2", "cloud": 0.0},
     "2023-10-04": {"scene_id": "LC80690152023277LGN00", "season": "freeze-up",
                    "collection": "LANDSAT/LC08/C02/T1_L2", "cloud": 2.6},
+    # second batch (2026-10-10): more dates per the professor's request
+    "2026-08-01": {"scene_id": "LC90690152026213LGN00", "season": "summer",
+                   "collection": "LANDSAT/LC09/C02/T1_L2", "cloud": 7.7},
+    "2025-07-04": {"scene_id": "LC90700152025185LGN00", "season": "summer",
+                   "collection": "LANDSAT/LC09/C02/T1_L2", "cloud": 9.1},
+    "2023-04-19": {"scene_id": "LC90690152023109LGN00", "season": "pre-breakup",
+                   "collection": "LANDSAT/LC09/C02/T1_L2", "cloud": 0.1},
+    "2023-05-05": {"scene_id": "LC90690152023125LGN00", "season": "breakup",
+                   "collection": "LANDSAT/LC09/C02/T1_L2", "cloud": 1.2},
+    "2024-09-02": {"scene_id": "LC80710152024246LGN00", "season": "freeze-up",
+                   "collection": "LANDSAT/LC08/C02/T1_L2", "cloud": 4.8},
 }
 
 SR_BANDS = ["SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B6", "SR_B7"]
