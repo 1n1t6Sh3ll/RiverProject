@@ -225,6 +225,38 @@ def stream_overlaps_aoi(fs, bucket, key, aoi):
         return _aoi_test(g["Latitude"][:], g["Longitude"][:], aoi)
 
 
+def aoi_window(fs, bucket, gitco_key, aoi):
+    """Stream one GITCO and return (r0, r1, c0, c1, full_shape) bounding the
+    pixels inside the AOI (end-exclusive), or None if no pixel is inside."""
+    with fs.open(f"{bucket}/{gitco_key}", "rb") as f, h5py.File(f, "r") as h:
+        g = h["All_Data/VIIRS-IMG-GEO-TC_All"]
+        lat, lon = g["Latitude"][:], g["Longitude"][:]
+    inside = (_valid_mask(lat, lon) &
+              (lat >= aoi["lat_min"]) & (lat <= aoi["lat_max"]) &
+              (lon >= aoi["lon_min"]) & (lon <= aoi["lon_max"]))
+    if not inside.any():
+        return None
+    rows = np.where(inside.any(axis=1))[0]
+    cols = np.where(inside.any(axis=0))[0]
+    return (int(rows[0]), int(rows[-1]) + 1,
+            int(cols[0]), int(cols[-1]) + 1, lat.shape)
+
+
+def stream_crop_h5(fs, bucket, key, dest, win):
+    """Read `key` straight from S3 and write only the window to `dest`.
+    Datasets shaped like the full swath are sliced; all others are kept whole."""
+    r0, r1, c0, c1, full = win
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    with fs.open(f"{bucket}/{key}", "rb") as f, h5py.File(f, "r") as src, \
+            h5py.File(dest, "w") as dst:
+        def copy(name, obj):
+            if not isinstance(obj, h5py.Dataset) or obj.dtype == object:
+                return
+            data = obj[r0:r1, c0:c1] if obj.shape == full else obj[...]
+            dst.create_dataset(f"All_Data/{name}", data=data)
+        src["All_Data"].visititems(copy)
+
+
 def aggregate_h5(src_paths, out_path):
     """Stack same-named datasets from src files vertically (axis 0).
     Sources are time-sorted by their filename's d/t/e fields, so per-band
@@ -428,8 +460,11 @@ def write_coverage_map(gitco_paths, aoi, html_path):
 
     lat_c = (aoi["lat_min"] + aoi["lat_max"]) / 2
     lon_c = (aoi["lon_min"] + aoi["lon_max"]) / 2
+    # Esri imagery: OSM tiles return 403 when the HTML is opened from file://
     m = folium.Map(location=[lat_c, lon_c], zoom_start=4,
-                   tiles="OpenStreetMap", world_copy_jump=True)
+                   tiles="https://server.arcgisonline.com/ArcGIS/rest/services/"
+                         "World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                   attr="Tiles &copy; Esri", world_copy_jump=True)
 
     folium.Rectangle(
         bounds=[(aoi["lat_min"], aoi["lon_min"]),
@@ -461,10 +496,10 @@ def write_coverage_map(gitco_paths, aoi, html_path):
 
 # ── per-ref orchestration ─────────────────────────────────────────────────────
 
-def process(ref_str, out_root, aoi, s3_clients, fs, make_map=True, pad=0):
+def process(ref_str, out_root, aoi, s3_clients, fs, make_map=True, pad=0, crop=False):
     agg         = parse_ref(ref_str)
     bucket      = SAT_TO_BUCKET[agg["sat"]]
-    granule_dir = out_root / agg["subdir"]
+    granule_dir = out_root / (agg["subdir"] + ("_crop" if crop else ""))
     staging     = granule_dir / "_staging"
     map_html    = granule_dir / "coverage_map.html"
 
@@ -494,28 +529,69 @@ def process(ref_str, out_root, aoi, s3_clients, fs, make_map=True, pad=0):
         print("  none found, skipping")
         return False
 
-    # 2. AOI overlap check (informational)
-    sample = individuals[len(individuals) // 2]
-    try:
-        in_aoi = stream_overlaps_aoi(fs, bucket, sample["gitco_key"], aoi)
-        print(f"  AOI overlap (middle granule): {'YES' if in_aoi else 'NO'}")
-    except Exception as e:
-        print(f"  AOI check failed: {e}")
+    if crop:
+        # 2c. find the AOI window in each granule, keep overlapping granules only
+        wins = {}
+        for r in individuals:
+            w = aoi_window(fs, bucket, r["gitco_key"], aoi)
+            print(f"  {r['subdir']}: "
+                  + (f"rows {w[0]}-{w[1]}, cols {w[2]}-{w[3]}" if w else "no AOI pixels, skipped"))
+            if w:
+                wins[r["subdir"]] = w
+        individuals = [r for r in individuals if r["subdir"] in wins]
+        if not individuals:
+            print("  AOI not covered by any granule, skipping")
+            return False
+        # all granules must share one column range so they stack along-track
+        c0 = min(w[2] for w in wins.values())
+        c1 = max(w[3] for w in wins.values())
+        wins = {k: (w[0], w[1], c0, c1, w[4]) for k, w in wins.items()}
 
-    # 3. download all 6 files per individual granule into a staging folder
-    plan = []
-    for r in individuals:
-        plan.append((r["gitco_key"], staging / Path(r["gitco_key"]).name))
-        for fp, prod in PRODUCTS:
-            if fp == "GITCO":
-                continue
-            k = find_key(s3, bucket, prod, fp, r)
-            if k:
-                plan.append((k, staging / Path(k).name))
-            else:
-                print(f"  warn {r['subdir']}: missing {fp} on S3")
-    print(f"Step 2: downloading {len(plan)} files")
-    parallel_download(s3, bucket, plan)
+        # 3c. stream only the window of each file straight into staging
+        jobs = []
+        for r in individuals:
+            keys = [r["gitco_key"]]
+            for fp, prod in PRODUCTS:
+                if fp == "GITCO":
+                    continue
+                k = find_key(s3, bucket, prod, fp, r)
+                if k:
+                    keys.append(k)
+                else:
+                    print(f"  warn {r['subdir']}: missing {fp} on S3")
+            jobs += [(k, staging / Path(k).name, wins[r["subdir"]]) for k in keys]
+        print(f"Step 2: streaming cropped windows of {len(jobs)} files")
+        with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+            futs = {pool.submit(stream_crop_h5, fs, bucket, k, d, w): k
+                    for k, d, w in jobs}
+            for fut in as_completed(futs):
+                try:
+                    fut.result()
+                except Exception as e:
+                    print(f"  err {futs[fut]}: {e}")
+    else:
+        # 2. AOI overlap check (informational)
+        sample = individuals[len(individuals) // 2]
+        try:
+            in_aoi = stream_overlaps_aoi(fs, bucket, sample["gitco_key"], aoi)
+            print(f"  AOI overlap (middle granule): {'YES' if in_aoi else 'NO'}")
+        except Exception as e:
+            print(f"  AOI check failed: {e}")
+
+        # 3. download all 6 files per individual granule into a staging folder
+        plan = []
+        for r in individuals:
+            plan.append((r["gitco_key"], staging / Path(r["gitco_key"]).name))
+            for fp, prod in PRODUCTS:
+                if fp == "GITCO":
+                    continue
+                k = find_key(s3, bucket, prod, fp, r)
+                if k:
+                    plan.append((k, staging / Path(k).name))
+                else:
+                    print(f"  warn {r['subdir']}: missing {fp} on S3")
+        print(f"Step 2: downloading {len(plan)} files")
+        parallel_download(s3, bucket, plan)
 
     # 4. aggregate GITCOs into one
     gitco_paths = sorted(staging.glob("GITCO_*.h5"))
@@ -566,6 +642,9 @@ def main():
                    help=f"AOI XML (default: {DEFAULT_XML.name})")
     p.add_argument("--out", default=str(DEFAULT_OUT),
                    help=f"Output root (default: {DEFAULT_OUT})")
+    p.add_argument("--crop", action="store_true",
+                   help="Keep only the AOI window of each granule (streamed from S3, "
+                        "skips non-overlapping granules); output goes to <date>_t<start>_crop/")
     p.add_argument("--no-map", action="store_true",
                    help="Skip writing per-granule coverage_map.html files")
     args = p.parse_args()
@@ -585,7 +664,8 @@ def main():
     ok = fail  = 0
     for ref in refs:
         try:
-            if process(ref, out_root, aoi, s3_clients, fs, make_map=not args.no_map):
+            if process(ref, out_root, aoi, s3_clients, fs, make_map=not args.no_map,
+                       crop=args.crop):
                 ok += 1
             else:
                 fail += 1
