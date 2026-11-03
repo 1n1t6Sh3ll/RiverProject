@@ -1,0 +1,66 @@
+============================================================================
+Label check -- 2024-06-22   (diagnostic, not a pipeline step)
+============================================================================
+  endmembers from this date only (4,052 water, 33,480 vegetation, 469 gravel from polygons [20, 39])
+                   green     red     NIR   SWIR1   SWIR2
+    water          0.074   0.075   0.054   0.012   0.009
+    gravel         0.071   0.076   0.088   0.083   0.064
+    dark forest    0.026   0.015   0.213   0.093   0.040
+    vegetation     0.036   0.022   0.266   0.133   0.058
+    thermal      water 292.1 K   vegetation 299.1 K
+  Sentinel nodata excluded: 328,237 cells (2.24% of the 10 m grid)
+
+  Sentinel unmix: 3 endmembers, cond 31.0; |dark-veg| 0.0319 vs |water-veg| 0.2421
+  NDWI calibration (median Landsat NDWI vs the Sentinel threshold fraction)
+  ------------------------------------------------------------------------
+    water  0.04   0.12   0.21   0.38   0.46   0.54   0.71   0.79   0.88   0.96
+    NDWI  -0.71  -0.21  -0.20  -0.13  -0.10  -0.07  -0.06  -0.02  -0.00  +0.13
+
+  whole-box sanity check (the river is roughly 1.5 % of the box)
+  ------------------------------------------------------------------------
+    cells >= 0.90 water   f_mix  0.77 %   (unmix alone  0.92 %, NDWI alone  1.34 %, NIR alone  1.96 %)
+    gravel  f_gravel >= 0.50: 24.76 % of the box (dry bars; the two-endmember version counted these as water)
+    unexplained: resid cut 0.2101 (95th percentile of labelled vegetation),  3.98 % of the box beyond it
+
+  45,385 labelled pixels
+
+  median estimate by hand-labelled class
+  ------------------------------------------------------------------------
+  class          n    f_mix  f_gravel  f_dark  s2_frac    f_nir    resid
+  river      6,110    0.832     0.017   0.002    0.919    0.977   0.0117
+  land      39,275    0.000     0.000   0.000    0.029    0.053   0.0775
+
+  Flags
+  ------------------------------------------------------------------------
+  river_dry           97 of 6,110 (1.6%)  -- labelled river, no water found
+  land_wet            34 of 39,275 (0.1%)  -- labelled land, mostly water
+  shadow_suspect       9 of 45,385 (0.0%)  -- dark in NIR and green: shadow, not water
+  ndwi_denies      8,461 of 45,385 (18.6%)  -- unmix says water, NDWI says not
+  off_line             0 of 45,385 (0.0%)  -- no endmember mixture explains it
+  disagree         5,931 of 45,385 (13.1%)  -- the estimates disagree
+
+  Worst 10 polygons by flagged pixel count
+  ------------------------------------------------------------------------
+  class     poly_id  flagged       of   share
+  land           76    2,216    4,810   46.1%
+  land           24    1,095    2,050   53.4%
+  land           77    1,065    3,185   33.4%
+  land            7      810    1,681   48.2%
+  land           11      798    1,194   66.8%
+  land           70      782    2,389   32.7%
+  land           27      706    2,748   25.7%
+  land           40      641    1,601   40.0%
+  land           12      534      725   73.7%
+  land           26      498      902   55.2%
+
+  wrote  label_check_2024-06-22.geojson   (14,532 points)
+         label_check_2024-06-22.qml
+         f_mix_2024-06-22.tif         + .qml   median 0.000
+         f_nir_2024-06-22.tif         + .qml   median 0.255
+         f_unmix_2024-06-22.tif       + .qml   median 0.000
+         f_ndwi_2024-06-22.tif        + .qml   median 0.042
+         f_gravel_2024-06-22.tif      + .qml   median 0.289
+         resid_2024-06-22.tif         + .qml   median 0.050
+         s2_frac_2024-06-22.tif       + .qml   median 0.028
+         s2_frac_10m_2024-06-22.tif   + .qml   median 0.000
+         label_check_2024-06-22.txt

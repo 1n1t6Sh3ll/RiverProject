@@ -14,9 +14,24 @@ Landsat cell and 37.5 per VIIRS cell (patch_config).
 
 Outputs (in patches/<patch>/):
   <date>_s2_truecolour_10m.tif  B4/B3/B2, 8-bit — banks, gravel, general view
+                                (this is the "432" composite)
   <date>_s2_swir_10m.tif        B11/B8/B4, 8-bit — snow/ice cyan, water black
   <date>_s2_ndwi_10m.tif        (B3-B8)/(B3+B8), float — sharpest water edge
   *.qml styles
+
+With --extras, only these are written and nothing existing is touched:
+  <date>_s2_843_10m.tif         B8/B4/B3, 8-bit — colour infrared: water black,
+                                vegetation red, the narrow-channel view
+  <date>_s2_mndwi_10m.tif       (B3-B11)/(B3+B11), float — water absorbs SWIR
+                                harder than NIR, so a narrow channel keeps more
+                                contrast here than in NDWI
+  <date>_s2_swir_refl_10m.tif   B11 and B12 as float reflectance, for spectral
+                                unmixing (SWIR is what separates dry gravel
+                                from water)
+  NOTE: B11 is natively 20 m, resampled onto the 10 m grid. The MNDWI therefore
+  carries 20 m detail at 10 m spacing -- better contrast, coarser edges. For a
+  channel under ~20 m wide, read NDWI and MNDWI together, not one alone.
+  --extras does not update README.txt; add the lines by hand before committing.
 
 Run from Matus/:
     .venv\\Scripts\\python.exe narrow_rivers\\patches\\add_sentinel.py --dates 2024-06-22
@@ -148,6 +163,70 @@ def _ndwi_qml():
             '  </rasterrenderer></pipe></qgis>\n')
 
 
+def _mndwi_qml():
+    return ('<!DOCTYPE qgis PUBLIC \'http://mrcc.com/qgis.dtd\' \'SYSTEM\'>\n'
+            '<qgis version="3.34" styleCategories="Symbology"><pipe>\n'
+            '  <rasterrenderer type="singlebandpseudocolor" band="1" opacity="1">\n'
+            '   <rastershader><colorrampshader colorRampType="INTERPOLATED" clip="0">\n'
+            '     <item value="-0.6" color="#8c510a" label="-0.6 dry land"/>\n'
+            '     <item value="-0.3" color="#f6e8c3" label="-0.3"/>\n'
+            '     <item value="0"    color="#ffffff" label="0 (usual water edge)"/>\n'
+            '     <item value="0.3"  color="#80cdc1" label="0.3"/>\n'
+            '     <item value="0.7"  color="#01665e" label="0.7 open water"/>\n'
+            '   </colorrampshader></rastershader>\n'
+            '  </rasterrenderer></pipe></qgis>\n')
+
+
+def extras(dates, max_days):
+    """Only the files the existing run does not write. Nothing is overwritten."""
+    import ee
+    ee.Initialize(project=EE_PROJECT)
+    g = _grid()
+
+    for date in dates:
+        patch_dir = os.path.join(NR_ROOT, "patches", f"nenana_{date.replace('-', '')}")
+        if not os.path.isdir(patch_dir):
+            raise SystemExit(f"ERROR: no patch folder for {date}")
+        base = os.path.join(patch_dir, f"{date}_s2")
+        print(f"\n{date}  ->  {os.path.basename(patch_dir)}  (extras only)")
+
+        best = _pick_scene(ee, date, max_days)
+        print(f"  chosen: {best['day']} {best['time']:%H:%M} UTC, "
+              f"{best['gap_h']:+.1f} h from Landsat, "
+              f"{100*best['frac']:.1f} % cloud+shadow over the box")
+
+        print("    reflectance (B3,B4,B8,B11,B12):")
+        b = _fetch(ee, best["col"].mosaic(), ["B3", "B4", "B8", "B11", "B12"],
+                   g, scale_divisor=10000.0)
+
+        _write(base + "_843_10m.tif",
+               np.stack([_scale8(b["B8"], 0.45), _scale8(b["B4"], 0.45),
+                         _scale8(b["B3"], 0.45)]),
+               g, "uint8", None, ["nir B8", "red B4", "green B3"])
+        mndwi = (b["B3"] - b["B11"]) / (b["B3"] + b["B11"] + 1e-9)
+        mndwi[~np.isfinite(mndwi)] = np.nan
+        _write(base + "_mndwi_10m.tif", mndwi, g, "float32", np.nan,
+               ["MNDWI (B3-B11)/(B3+B11)"])
+
+        # B11 and B12 as real reflectance, not 8-bit and not folded into an
+        # index. Spectral unmixing needs them: SWIR is the only thing that
+        # separates dry gravel from water, and with green/red/NIR that gives
+        # five independent bands -- enough to carry a fourth endmember, which
+        # four bands could not (the abundances went unstable and land came out
+        # at 0.61 water).
+        _write(base + "_swir_refl_10m.tif",
+               np.stack([b["B11"], b["B12"]]), g, "float32", np.nan,
+               ["swir1 B11 reflectance", "swir2 B12 reflectance"])
+
+        open(base + "_843_10m.qml", "w", encoding="utf-8").write(_rgb_qml())
+        open(base + "_mndwi_10m.qml", "w", encoding="utf-8").write(_mndwi_qml())
+
+        ok = np.isfinite(mndwi)
+        print(f"    MNDWI median {np.nanmedian(mndwi):+.3f}, above 0: "
+              f"{100.0 * np.nansum(mndwi > 0) / max(ok.sum(), 1):.2f}%")
+        print("    README.txt not updated -- add the two lines before committing")
+
+
 def main(dates, max_days):
     import ee
     ee.Initialize(project=EE_PROJECT)
@@ -209,5 +288,7 @@ if __name__ == "__main__":
     p.add_argument("--dates", nargs="+", required=True)
     p.add_argument("--max-days", type=int, default=2,
                    help="how far from the Landsat date to look (default 2)")
+    p.add_argument("--extras", action="store_true",
+                   help="write only the 843 composite and MNDWI; touch nothing else")
     a = p.parse_args()
-    main(a.dates, a.max_days)
+    (extras if a.extras else main)(a.dates, a.max_days)
