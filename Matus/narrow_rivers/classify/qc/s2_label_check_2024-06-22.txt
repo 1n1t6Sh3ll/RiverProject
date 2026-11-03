@@ -1,0 +1,50 @@
+======================================================================
+Sentinel-2 label check -- 2024-06-22   (diagnostic, not a pipeline step)
+======================================================================
+  water      NDWI > +0.00 at 10 m, block-averaged 3x3 to 30 m
+  fractions  in ninths; 0.11 steps are the finest real distinction
+
+  43,229 labelled pixels, 0 flagged qa_bad (kept here; train_rf drops them with --drop-qa)
+
+  S2 water fraction by hand-labelled class
+  ------------------------------------------------------------------
+  class          n    mean  median   frac=0   frac=1
+  river      6,110   0.794   1.000      658    4,052
+  land      37,119   0.023   0.000   35,472      228
+
+  Histogram in ninths (columns 0/9 .. 9/9)
+  ------------------------------------------------------------------
+  river       658     96    145    153    138    156    197    282    233  4,052
+  land     35,472    223    248    211    170    166    154    143    104    228
+
+  Disagreements
+  ------------------------------------------------------------------
+  river_dry     658 of 6,110 river pixels (10.8%) have no S2 water at all
+  land_wet      629 of 37,119 land pixels (1.7%) are >= 0.67 water
+  (thin         241 river pixels at 0 < frac <= 0.22: genuinely mixed, not an error)
+
+  Worst 10 polygons by flagged pixel count (edit these in QGIS first)
+  ------------------------------------------------------------------
+  class     poly_id  flagged       of   share
+  river          83      184    1,081   17.0%
+  river         101      130      690   18.8%
+  river          89       80       80  100.0%
+  land           39       69      172   40.1%
+  land           16       64      885    7.2%
+  land           76       48    4,810    1.0%
+  land           32       47      971    4.8%
+  land           70       38    2,389    1.6%
+  river          91       36       45   80.0%
+  land           40       30    1,601    1.9%
+
+  Threshold sensitivity
+  ------------------------------------------------------------------
+    NDWI >  river_dry   land_wet
+     -0.10        451      1,709
+     +0.00        658        629  <- used
+     +0.10      1,240        207
+
+  wrote  s2_label_check_2024-06-22.txt
+         s2_label_check_2024-06-22.geojson   (1,287 points)
+         s2_label_check_2024-06-22.qml
+         s2_waterfrac_2024-06-22.tif
