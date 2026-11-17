@@ -1,0 +1,80 @@
+{
+ "mean": {
+  "test": {
+   "n_cells": 33,
+   "n_channel_cells": 11,
+   "mae_river": 0.08797860890626907,
+   "mae_ice": 0.11533112823963165,
+   "mae_snow": 0.0709252655506134,
+   "mae_land": 0.25242114067077637,
+   "mae_channel": 0.19847552478313446,
+   "mae_channel_on_channel_cells": 0.31073543429374695,
+   "false_channel_on_land_cells": 0.1423456072807312,
+   "r_channel": NaN
+  },
+  "train": {
+   "n_cells": 98,
+   "n_channel_cells": 31,
+   "mae_river": 0.09263935685157776,
+   "mae_ice": 0.1163133978843689,
+   "mae_snow": 0.06770527362823486,
+   "mae_land": 0.27010175585746765,
+   "mae_channel": 0.20571936666965485,
+   "mae_channel_on_channel_cells": 0.34268850088119507,
+   "false_channel_on_land_cells": 0.14234556257724762,
+   "r_channel": NaN
+  }
+ },
+ "rf": {
+  "test": {
+   "n_cells": 33,
+   "n_channel_cells": 11,
+   "mae_river": 0.06272718663064769,
+   "mae_ice": 0.06605965099732358,
+   "mae_snow": 0.045715456094236,
+   "mae_land": 0.13035961708427143,
+   "mae_channel": 0.11886355002536984,
+   "mae_channel_on_channel_cells": 0.2607618704517614,
+   "false_channel_on_land_cells": 0.047914389812174024,
+   "r_channel": 0.5846786467883595
+  },
+  "train": {
+   "n_cells": 98,
+   "n_channel_cells": 31,
+   "mae_river": 0.046939844235502834,
+   "mae_ice": 0.05655845910120566,
+   "mae_snow": 0.03595048302509123,
+   "mae_land": 0.11989175332810907,
+   "mae_channel": 0.09692017598299153,
+   "mae_channel_on_channel_cells": 0.19135559624055254,
+   "false_channel_on_land_cells": 0.05322617556531412,
+   "r_channel": 0.7857432245451812
+  }
+ },
+ "unet": {
+  "test": {
+   "n_cells": 33,
+   "n_channel_cells": 11,
+   "mae_river": 0.059986624866724014,
+   "mae_ice": 0.07063906639814377,
+   "mae_snow": 0.05898090451955795,
+   "mae_land": 0.14627642929553986,
+   "mae_channel": 0.13003015518188477,
+   "mae_channel_on_channel_cells": 0.34542950987815857,
+   "false_channel_on_land_cells": 0.022330475971102715,
+   "r_channel": 0.4155451121889993
+  },
+  "train": {
+   "n_cells": 98,
+   "n_channel_cells": 31,
+   "mae_river": 0.004343046341091394,
+   "mae_ice": 0.005539109464734793,
+   "mae_snow": 0.0035914122126996517,
+   "mae_land": 0.006840552669018507,
+   "mae_channel": 0.006150603760033846,
+   "mae_channel_on_channel_cells": 0.01923006772994995,
+   "false_channel_on_land_cells": 9.891037188936025e-05,
+   "r_channel": 0.9986833646722947
+  }
+ }
+}

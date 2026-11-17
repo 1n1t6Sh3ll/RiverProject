@@ -149,12 +149,13 @@ def write(path, data, src_profile, dtype, nodata, desc):
 
 # ── main ─────────────────────────────────────────────────────────────────────
 
-def main(date, min_conf, n_estimators, drop_qa, audit_n, seed, class_weight):
+def main(date, min_conf, n_estimators, drop_qa, audit_n, seed, class_weight,
+         out_subdir=OUT_SUBDIR, error_weight=1.0, frozen_gate=False):
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.model_selection import StratifiedGroupKFold
 
     patch = os.path.join(PATCHES, f"nenana_{date.replace('-', '')}")
-    out_dir = os.path.join(patch, OUT_SUBDIR)
+    out_dir = os.path.join(patch, out_subdir)
     os.makedirs(out_dir, exist_ok=True)
     print("=" * 66)
     print(f"Random Forest — {date}  (Mode A: train and predict within this date)")
@@ -181,14 +182,28 @@ def main(date, min_conf, n_estimators, drop_qa, audit_n, seed, class_weight):
     splits = min(N_SPLITS, n_groups)
     print(f"\n  cross-validation: {splits} folds, whole polygons held out")
     oof = np.zeros_like(y)
+    oof_w = np.zeros_like(y)
     for k, (tr, te) in enumerate(
             StratifiedGroupKFold(n_splits=splits, shuffle=True,
                                  random_state=seed).split(X, y, groups=g), 1):
         rf = forest().fit(X[tr], y[tr])
         oof[te] = rf.predict(X[te])
+        if error_weight > 1:
+            # error weighting, honest: the training fold's errors are found by an
+            # inner polygon-held-out CV on the training fold only, never using te
+            inner = np.zeros(len(tr), dtype=y.dtype)
+            n_in = min(N_SPLITS - 1, len(set(g[tr])))
+            for itr, ite in StratifiedGroupKFold(n_splits=n_in, shuffle=True,
+                                                 random_state=seed).split(
+                                                     X[tr], y[tr], groups=g[tr]):
+                inner[ite] = forest().fit(X[tr][itr], y[tr][itr]).predict(X[tr][ite])
+            sw = 1.0 + (error_weight - 1.0) * (inner != y[tr])
+            oof_w[te] = forest().fit(X[tr], y[tr], sample_weight=sw).predict(X[te])
         print(f"    fold {k}: trained on {len(tr):,} px / "
               f"{len(set(g[tr]))} polygons, tested on {len(te):,} px / "
               f"{len(set(g[te]))} polygons")
+    if error_weight > 1:
+        print("\n  WITHOUT error weighting")
     report(y, oof, classes)
     cv = {"date": date, "classes": [int(c) for c in classes],
           "n_samples": int(len(y)), "n_polygons": int(n_groups),
@@ -196,9 +211,24 @@ def main(date, min_conf, n_estimators, drop_qa, audit_n, seed, class_weight):
           "matrix": [[int(((oof == pc) & (y == tc)).sum()) for pc in classes]
                      for tc in classes],
           "support": {int(c): int((y == c).sum()) for c in classes}}
+    if error_weight > 1:
+        print(f"\n  WITH error weighting (x{error_weight:g} on pixels the model got "
+              f"wrong when they were held out) — same folds")
+        report(y, oof_w, classes)
+        cv["error_weight"] = error_weight
+        cv["matrix_error_weighted"] = [[int(((oof_w == pc) & (y == tc)).sum())
+                                        for pc in classes] for tc in classes]
 
     # ── final model on everything ───────────────────────────────────────────
-    rf = forest().fit(X, y)
+    if error_weight > 1:
+        # every labelled pixel's error comes from the outer CV, where its own
+        # polygon was held out
+        sw_all = 1.0 + (error_weight - 1.0) * (oof != y)
+        print(f"\n  final model: {int((oof != y).sum()):,} error pixels weighted "
+              f"x{error_weight:g}")
+        rf = forest().fit(X, y, sample_weight=sw_all)
+    else:
+        rf = forest().fit(X, y)
     importances(rf)
     cv["importances"] = {f: float(v) for f, v in
                          zip(EX.FEATURES, rf.feature_importances_)}
@@ -230,6 +260,15 @@ def main(date, min_conf, n_estimators, drop_qa, audit_n, seed, class_weight):
     proba = rf.predict_proba(flat)
     cls[predictable] = rf.classes_[proba.argmax(1)].astype(np.uint8)
     conf[predictable] = proba.max(1)
+    if frozen_gate and {2, 3} <= set(rf.classes_.tolist()):
+        # ice vs snow is decided later by location (channel rule), so a pixel the
+        # model splits between ice and snow is not "unsure": gate on
+        # max(P river, P ice + P snow, P land) instead
+        ci = {c: i for i, c in enumerate(rf.classes_.tolist())}
+        grouped = np.stack([proba[:, ci[c]] for c in (1, 4) if c in ci]
+                           + [proba[:, ci[2]] + proba[:, ci[3]]], axis=1)
+        conf[predictable] = grouped.max(1)
+        print("    confidence gate on river / frozen (ice+snow) / land")
 
     low = predictable & (conf < min_conf)
     cls[low] = C.NODATA_CLASS
@@ -283,7 +322,7 @@ def main(date, min_conf, n_estimators, drop_qa, audit_n, seed, class_weight):
             w.writerows(answers)
         print(f"    {os.path.basename(base)}_audit.geojson     {len(feats)} points, "
               f"class hidden — classify them blind, then compare with "
-              f"{OUT_SUBDIR}/{date}_rf_audit_answers.csv")
+              f"{out_subdir}/{date}_rf_audit_answers.csv")
 
     print("\n  done. Nothing was written to the label shapefile.")
 
@@ -298,9 +337,18 @@ if __name__ == "__main__":
                    help="exclude labelled pixels that QA_PIXEL flags")
     p.add_argument("--audit-n", type=int, default=AUDIT_N)
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--error-weight", type=float, default=1.0,
+                   help="weight for labelled pixels the model gets wrong when their "
+                        "polygon is held out (default 1 = off); CV is reported with "
+                        "and without it on the same folds")
+    p.add_argument("--frozen-gate", action="store_true",
+                   help="gate confidence on river / ice+snow / land (for dates where the "
+                        "channel rule decides ice vs snow)")
+    p.add_argument("--out-subdir", default=OUT_SUBDIR,
+                   help="folder inside the patch to write to (default rf); use a new name to keep an earlier run")
     p.add_argument("--class-weight", default=None, choices=[None, "balanced"],
                    help="default None; 'balanced' helps rare-class recall but "
                         "overstates that class's area")
     a = p.parse_args()
     main(a.date, a.min_conf, a.n_estimators, a.drop_qa, a.audit_n, a.seed,
-         a.class_weight)
+         a.class_weight, a.out_subdir, a.error_weight, a.frozen_gate)

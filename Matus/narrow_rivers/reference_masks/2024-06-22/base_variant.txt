@@ -1,0 +1,2 @@
+s2_ndwi010_k1
+from 2024-06-22_union_s2_ndwi010_k1.tif, written 2026-11-03 17:31, hand labels win (870 px changed)

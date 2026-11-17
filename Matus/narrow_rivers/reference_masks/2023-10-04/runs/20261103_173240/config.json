@@ -1,0 +1,16 @@
+{
+ "script": "select_cells.py",
+ "date": "2023-10-04",
+ "keep_frac": 0.5,
+ "max_unsure": 0.15,
+ "correction_east_m": 0.0,
+ "correction_north_m": 0.0,
+ "uncertainty_e_m": 50.0,
+ "uncertainty_n_m": 50.0,
+ "r_i2_raw": 0.1133,
+ "r_i2_corrected": 0.1133,
+ "base": "2023-10-04_base_water.tif",
+ "base_variant": "rf + channel rule",
+ "candidates": 1730,
+ "usable": 508
+}

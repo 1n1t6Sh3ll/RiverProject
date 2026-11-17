@@ -1,0 +1,11 @@
+{
+ "script": "select_cells.py",
+ "date": "2024-06-22",
+ "max_swing": 0.1,
+ "max_unsure": 0.05,
+ "geoloc_offset_m": 71.0,
+ "base": "2024-06-22_base_water.tif",
+ "base_variant": "s2_ndwi010_k1",
+ "candidates": 1230,
+ "usable": 515
+}

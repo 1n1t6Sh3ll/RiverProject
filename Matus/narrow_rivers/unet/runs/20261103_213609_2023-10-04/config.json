@@ -1,0 +1,10 @@
+{
+ "date": "2023-10-04",
+ "epochs": 1500,
+ "lr": 0.002,
+ "width": 16,
+ "block": 4,
+ "max_unsure": 0.15,
+ "seed": 2,
+ "predict_dates": []
+}

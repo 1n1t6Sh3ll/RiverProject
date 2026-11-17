@@ -1,0 +1,16 @@
+{
+ "script": "select_cells.py",
+ "date": "2024-06-22",
+ "keep_frac": 0.5,
+ "max_unsure": 0.05,
+ "correction_east_m": -60.0,
+ "correction_north_m": 50.0,
+ "uncertainty_e_m": 20.0,
+ "uncertainty_n_m": 50.0,
+ "r_i2_raw": -0.565,
+ "r_i2_corrected": -0.514,
+ "base": "2024-06-22_base_water.tif",
+ "base_variant": "s2_ndwi010_k1",
+ "candidates": 1226,
+ "usable": 753
+}

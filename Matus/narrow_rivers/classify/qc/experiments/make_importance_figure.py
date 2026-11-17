@@ -15,8 +15,10 @@ plt.rcParams.update({"figure.facecolor": SURF, "axes.facecolor": SURF, "savefig.
     "axes.spines.right": False, "font.size": 10, "axes.titlesize": 11, "axes.titleweight": "bold", "axes.titlelocation": "left"})
 
 LABEL = {"B2": "blue (B2)", "B3": "green (B3)", "B4": "red (B4)", "B5": "NIR (B5)", "B6": "SWIR1 (B6)",
-         "B7": "SWIR2 (B7)", "thermal": "thermal (B10)", "ndwi": "NDWI  green vs NIR",
-         "ndsi": "NDSI  green vs SWIR1", "ndvi": "NDVI  NIR vs red"}
+         "B7": "SWIR2 (B7)", "thermal": "thermal (B10)",
+         "ndwi": "NDWI = (green − NIR) / (green + NIR)",
+         "ndsi": "NDSI = (green − SWIR1) / (green + SWIR1)",
+         "ndvi": "NDVI = (NIR − red) / (NIR + red)"}
 runs = [("2024-06-22 summer · river / land", "nenana_20240622/rf/2024-06-22_rf_cv.json", BLUE),
         ("2023-10-04 freeze-up · river / ice / snow / land", "nenana_20231004/rf/2023-10-04_rf_cv.json", ORANGE)]
 imp = {name: json.load(open(os.path.join(PATCHES, path)))["importances"] for name, path, _ in runs}
@@ -32,6 +34,4 @@ ax.set_xlabel("share of the forest's decisions (importances sum to 100 % per dat
 ax.set_xlim(0, 32); ax.legend(frameon=False, loc="lower right", fontsize=9)
 ax.set_title("Which inputs the Random Forest relies on (feature importance)\n"
              "Summer separates water by SWIR; freeze-up leans on NDWI, NDVI and green")
-fig.text(0.01, -0.02, "Mean decrease in impurity, 300 trees, model trained on all labels of each date. "
-         "Correlated inputs share credit (e.g. green also enters NDWI and NDSI).", fontsize=8, color=INK2)
 fig.savefig(OUT, dpi=200, bbox_inches="tight"); print("wrote", os.path.abspath(OUT))

@@ -1,0 +1,15 @@
+{
+ "script": "union_mask.py",
+ "date": "2024-06-22",
+ "source": "s2",
+ "variants": [
+  "s2_ndwi000_k1",
+  "s2_ndwi000_k3",
+  "s2_ndwi010_k1",
+  "s2_ndwi010_k3"
+ ],
+ "rf_class": "..\\patches\\nenana_20240622\\rf\\2024-06-22_rf_class.tif",
+ "second_source": "..\\patches\\nenana_20240622\\2024-06-22_s2_ndwi_10m.tif",
+ "nlcd_water": "2024-06-22\\2024-06-22_nlcd2016_water.tif",
+ "rule": "water = RF river OR second source wet"
+}
