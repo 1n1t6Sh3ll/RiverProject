@@ -1,0 +1,2 @@
+rf + channel rule
+from ..\patches\nenana_20231004\rf_frozengate\2023-10-04_rf_class.tif, channel 2024-06-22_final_2026-11-04.tif, written 2026-11-04 21:28, hand labels win (86 px changed)

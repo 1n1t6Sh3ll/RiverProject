@@ -1,0 +1,21 @@
+{
+ "date": "2023-10-04",
+ "exported": "2026-11-04",
+ "base": "2023-10-04_base_water.tif",
+ "base_variant": "rf + channel rule",
+ "label_polygons": 92,
+ "override_polygons": 0,
+ "override_px": 0,
+ "override_px_changed": 0,
+ "override_vs_label_conflicts": 0,
+ "done_polygons": 1,
+ "usable_cells": 509,
+ "done_cells": 42,
+ "class_px": {
+  "1": 26271,
+  "2": 18596,
+  "3": 72406,
+  "4": 1483006,
+  "9": 26546
+ }
+}

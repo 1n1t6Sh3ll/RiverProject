@@ -1,0 +1,13 @@
+{
+ "script": "union_mask.py",
+ "date": "2024-06-22",
+ "cutoffs": [
+  25,
+  50,
+  75
+ ],
+ "rf_class": "..\\patches\\nenana_20240622\\rf\\2024-06-22_rf_class.tif",
+ "jrc_occurrence": "..\\patches\\nenana_20240622\\2024-06-22_water_occurrence.tif",
+ "nlcd_water": "2024-06-22\\2024-06-22_nlcd2016_water.tif",
+ "rule": "water = RF river OR JRC occurrence >= cutoff"
+}

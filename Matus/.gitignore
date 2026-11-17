@@ -45,3 +45,6 @@ Thumbs.db
 Resources/
 *.docx
 *.pdf
+
+# U-Net weights: retrain in ~1 min per run; metrics/configs are kept
+narrow_rivers/unet/runs/*/model.pt

@@ -1,0 +1,21 @@
+{
+ "date": "2024-06-22",
+ "exported": "2026-11-03",
+ "base": "2024-06-22_base_water.tif",
+ "base_variant": "s2_ndwi010_k1",
+ "label_polygons": 124,
+ "override_polygons": 29,
+ "override_px": 116,
+ "override_px_changed": 113,
+ "override_vs_label_conflicts": 0,
+ "done_polygons": 0,
+ "usable_cells": 547,
+ "done_cells": 0,
+ "class_px": {
+  "1": 42673,
+  "2": 0,
+  "3": 0,
+  "4": 1583148,
+  "9": 1004
+ }
+}

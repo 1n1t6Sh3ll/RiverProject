@@ -54,6 +54,8 @@ requests==2.33.1
 s3transfer==0.17.0
 scikit-learn==1.9.1
 scipy==1.18.1
+# CPU build: pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu
+torch==2.15.0
 shapely==2.1.2
 six==1.17.0
 threadpoolctl==3.7.0

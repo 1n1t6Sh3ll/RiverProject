@@ -1,0 +1,32 @@
+{
+ "date": "2024-06-22",
+ "granule": "j01_t2208041",
+ "east_m": -60.0,
+ "north_m": 50.0,
+ "length_m": 78.1,
+ "r_best": 0.3551,
+ "r_zero": 0.3474,
+ "coarse_east_m": -50.0,
+ "coarse_north_m": 50.0,
+ "fine_step_m": 10.0,
+ "peak_halfwidth_e_m": 20.0,
+ "peak_halfwidth_n_m": 50.0,
+ "meaning": "a VIIRS cell sees the ground east_m/north_m away from its grid position",
+ "river_check": {
+  "method": "base water mask vs VIIRS swath I2/I3, 20 m steps, +-300 m",
+  "I2_best_e_n_m": [
+   20,
+   20
+  ],
+  "I2_r_best": -0.2859,
+  "I2_r_zero": -0.2853,
+  "I3_best_e_n_m": [
+   -40,
+   20
+  ],
+  "I3_r_best": -0.2956,
+  "I3_r_zero": -0.2913,
+  "plausible_range": "E -60..+40 m, N -40..+120 m (within 0.005 r of best)"
+ },
+ "decision": "2026-11-03: scene-wide shift NOT applied (river check finds no offset beyond noise; scene-wide shift lowers fraction-vs-I2 r from -0.572 to -0.514). select_cells run with --no-correct --unc-e 40 --unc-n 50."
+}

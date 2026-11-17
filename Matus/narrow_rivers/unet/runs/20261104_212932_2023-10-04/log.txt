@@ -1,0 +1,25 @@
+U-Net pipeline test — 2023-10-04, run 20261104_212932_2023-10-04
+  targets from reference_masks\2023-10-04\final\2023-10-04_fractions_375m_2026-11-04.tif; 1 done polygon(s)
+  checked cells: 131 = 42 with river/ice + 89 pure land
+  split by 4x4-cell blocks: train 98 cells (31 with river/ice), test 33 (11 with river/ice)
+  U-Net width 16, 118,020 parameters, 1500 steps, lr 0.002
+    step     1  train loss 1.3162  (0 s)
+    step   300  train loss 0.3273  (6 s)
+    step   600  train loss 0.3268  (11 s)
+    step   900  train loss 0.3340  (17 s)
+    step  1200  train loss 0.3300  (22 s)
+    step  1500  train loss 0.3311  (28 s)
+
+  TEST cells (held-out blocks) — lower MAE is better; channel = river + ice
+    mean   channel MAE 0.215 (on river cells 0.381, false channel on land 0.132)  r nan | MAE river 0.093 ice 0.126 snow 0.072 land 0.288
+    rf     channel MAE 0.137 (on river cells 0.262, false channel on land 0.074)  r 0.55 | MAE river 0.076 ice 0.080 snow 0.043 land 0.165
+    unet   channel MAE 0.105 (on river cells 0.279, false channel on land 0.018)  r 0.71 | MAE river 0.065 ice 0.061 snow 0.046 land 0.128
+
+  TRAIN cells (for overfitting check only)
+    mean   channel MAE 0.193 (on river cells 0.325, false channel on land 0.132)  r nan | MAE river 0.089 ice 0.108 snow 0.067 land 0.251
+    rf     channel MAE 0.092 (on river cells 0.195, false channel on land 0.044)  r 0.78 | MAE river 0.048 ice 0.048 snow 0.036 land 0.105
+    unet   channel MAE 0.004 (on river cells 0.013, false channel on land 0.0)  r 1.00 | MAE river 0.004 ice 0.003 snow 0.003 land 0.005
+  predicted 2023-04-19 (no labels there — look at it, do not score it)
+  predicted 2024-04-21 (no labels there — look at it, do not score it)
+
+  saved in unet\runs\20261104_212932_2023-10-04
